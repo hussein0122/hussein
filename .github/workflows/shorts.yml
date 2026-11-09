@@ -2,6 +2,10 @@ name: Arabic Shorts - safe test
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/shorts.yml'
 
 permissions:
   contents: read
@@ -44,7 +48,7 @@ jobs:
       - name: Verify Gemini API key without exposing it
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          LLM_MODEL: gemini-2.5-flash
+          LLM_MODEL: gemini-3.8-flash
         run: python check_gemini.py
 
       - name: Restore YouTube authorization
@@ -81,7 +85,7 @@ jobs:
           CHANNEL_NAME: ShortsPilot AR
           AUDIENCE: الجمهور العربي
           LLM_PROVIDER: gemini
-          LLM_MODEL: gemini-2.5-flash
+          LLM_MODEL: gemini-3.8-flash
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-SalmaNeural
