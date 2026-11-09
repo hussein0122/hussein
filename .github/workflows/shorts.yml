@@ -68,9 +68,14 @@ jobs:
 
       - name: Check FFmpeg renderer
         run: |
-          which ffmpeg
-          ffmpeg -version | head -n 3
-          ffmpeg -filters | grep -E "xfade|overlay|ass" | head -n 10
+          python - <<'PY'
+          import subprocess
+          import imageio_ffmpeg
+          binary = imageio_ffmpeg.get_ffmpeg_exe()
+          print("FFmpeg binary:", binary)
+          result = subprocess.run([binary, "-version"], capture_output=True, text=True, check=True)
+          print("\n".join(result.stdout.splitlines()[:3]))
+          PY
 
       - name: Generate one private Arabic test Short
         env:
