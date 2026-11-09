@@ -41,6 +41,12 @@ jobs:
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
           python -m pip install -r requirements.txt
 
+      - name: Verify Gemini API key without exposing it
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LLM_MODEL: gemini-2.5-flash
+        run: python check_gemini.py
+
       - name: Restore YouTube authorization
         env:
           TOKEN_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
