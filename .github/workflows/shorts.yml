@@ -45,12 +45,6 @@ jobs:
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
           python -m pip install -r requirements.txt
 
-      - name: Verify Gemini API key without exposing it
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          LLM_MODEL: gemini-3.8-flash
-        run: python check_gemini.py
-
       - name: Restore YouTube authorization
         env:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
@@ -85,7 +79,7 @@ jobs:
           CHANNEL_NAME: ShortsPilot AR
           AUDIENCE: الجمهور العربي
           LLM_PROVIDER: gemini
-          LLM_MODEL: gemini-3.8-flash
+          LLM_MODEL: gemini-3.5-flash-lite
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-SalmaNeural
