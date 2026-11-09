@@ -45,25 +45,37 @@ jobs:
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
           python -m pip install -r requirements.txt
 
-      - name: Restore YouTube authorization
+      - name: Validate and restore YouTube authorization
         env:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
         run: |
           python - <<'PY'
-          import json, os
-          token = {
-              'token': '',
-              'expiry': '2000-01-01T00:00:00Z',
-              'refresh_token': os.environ['YT_REFRESH_TOKEN'],
-              'token_uri': 'https://oauth2.googleapis.com/token',
-              'client_id': os.environ['YT_CLIENT_ID'],
-              'client_secret': os.environ['YT_CLIENT_SECRET'],
-              'scopes': ['https://www.googleapis.com/auth/youtube.upload'],
-          }
-          with open('token.json', 'w', encoding='utf-8') as f:
-              json.dump(token, f)
+          import os, sys
+          from google.auth.transport.requests import Request
+          from google.oauth2.credentials import Credentials
+          from pathlib import Path
+
+          scopes = ['https://www.googleapis.com/auth/youtube.upload']
+          creds = Credentials(
+              token=None,
+              refresh_token=os.environ['YT_REFRESH_TOKEN'].strip(),
+              token_uri='https://oauth2.googleapis.com/token',
+              client_id=os.environ['YT_CLIENT_ID'].strip(),
+              client_secret=os.environ['YT_CLIENT_SECRET'].strip(),
+              scopes=scopes,
+          )
+          try:
+              creds.refresh(Request())
+          except Exception as exc:
+              print('::error::YouTube OAuth refresh failed before video rendering.')
+              print('The refresh token is invalid, revoked, expired, or does not belong to the configured OAuth client.')
+              print('Create a new refresh token using the exact same Google OAuth client ID and client secret saved in GitHub Secrets.')
+              print(f'Google response: {type(exc).__name__}: {exc}')
+              sys.exit(1)
+          Path('token.json').write_text(creds.to_json(), encoding='utf-8')
+          print('YouTube authorization validated and access token refreshed successfully.')
           PY
 
       - name: Check FFmpeg renderer
