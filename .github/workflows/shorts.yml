@@ -19,12 +19,16 @@ jobs:
 
       - name: Check required credentials
         env:
-          YT_TOKEN_JSON_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: |
-          test -n "$YT_TOKEN_JSON_B64" || { echo "::error::Add YT_TOKEN_JSON_B64 in repository Actions secrets."; exit 1; }
+          test -n "$YT_REFRESH_TOKEN" || { echo "::error::Add YT_REFRESH_TOKEN in repository Actions secrets."; exit 1; }
+          test -n "$YT_CLIENT_ID" || { echo "::error::Add YT_CLIENT_ID in repository Actions secrets."; exit 1; }
+          test -n "$YT_CLIENT_SECRET" || { echo "::error::Add YT_CLIENT_SECRET in repository Actions secrets."; exit 1; }
           test -n "$GEMINI_API_KEY" || { echo "::error::Add GEMINI_API_KEY from Google AI Studio. Use a free-tier key; do not enable paid billing."; exit 1; }
           if [ -z "$PEXELS_API_KEY" ] && [ -z "$PIXABAY_API_KEY" ]; then
             echo "::error::Add at least one free visual API key: PEXELS_API_KEY or PIXABAY_API_KEY."
@@ -49,9 +53,23 @@ jobs:
 
       - name: Restore YouTube authorization
         env:
-          TOKEN_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
         run: |
-          python -c "import base64,os; open('token.json','wb').write(base64.b64decode(os.environ['TOKEN_B64']))"
+          python - <<'PY'
+          import json, os
+          token = {
+              'token': None,
+              'refresh_token': os.environ['YT_REFRESH_TOKEN'],
+              'token_uri': 'https://oauth2.googleapis.com/token',
+              'client_id': os.environ['YT_CLIENT_ID'],
+              'client_secret': os.environ['YT_CLIENT_SECRET'],
+              'scopes': ['https://www.googleapis.com/auth/youtube.upload'],
+          }
+          with open('token.json', 'w', encoding='utf-8') as f:
+              json.dump(token, f)
+          PY
 
       - name: Generate one private Arabic test Short
         env:
