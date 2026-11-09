@@ -66,6 +66,12 @@ jobs:
               json.dump(token, f)
           PY
 
+      - name: Check FFmpeg renderer
+        run: |
+          which ffmpeg
+          ffmpeg -version | head -n 3
+          ffmpeg -filters | grep -E "xfade|overlay|ass" | head -n 10
+
       - name: Generate one private Arabic test Short
         env:
           LANGUAGE: ar
@@ -93,7 +99,8 @@ jobs:
           CAPTION_POSITION: center
           CAPTION_MAX_WORDS: "3"
           COLOR_GRADE: vivid
-          TRANSITION: random
+          TRANSITION: none
+          VIDEO_ENCODER: libx264
           SOUND_EFFECTS: "true"
           VOICE_ENHANCE: "true"
           MUSIC_VOLUME: "0.10"
