@@ -60,7 +60,8 @@ jobs:
           python - <<'PY'
           import json, os
           token = {
-              'token': None,
+              'token': '',
+              'expiry': '2000-01-01T00:00:00Z',
               'refresh_token': os.environ['YT_REFRESH_TOKEN'],
               'token_uri': 'https://oauth2.googleapis.com/token',
               'client_id': os.environ['YT_CLIENT_ID'],
