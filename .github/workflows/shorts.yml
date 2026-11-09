@@ -1,10 +1,7 @@
-name: Arabic Shorts autopilot
+name: Arabic Shorts - safe test
 
 on:
   workflow_dispatch:
-  schedule:
-    # 09:00, 14:00, 19:00 Cairo time (UTC+2 in winter).
-    - cron: "0 7,12,17 * * *"
 
 permissions:
   contents: read
@@ -19,56 +16,86 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check required credentials
+        env:
+          YT_TOKEN_JSON_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+        run: |
+          test -n "$YT_TOKEN_JSON_B64" || { echo "::error::Add YT_TOKEN_JSON_B64 in repository Actions secrets."; exit 1; }
+          test -n "$GEMINI_API_KEY" || { echo "::error::Add GEMINI_API_KEY from Google AI Studio. Use a free-tier key; do not enable paid billing."; exit 1; }
+          if [ -z "$PEXELS_API_KEY" ] && [ -z "$PIXABAY_API_KEY" ]; then
+            echo "::error::Add at least one free visual API key: PEXELS_API_KEY or PIXABAY_API_KEY."
+            exit 1
+          fi
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Install PurffleShorts engine
         run: |
           python -m pip install --upgrade pip
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
           python -m pip install -r requirements.txt
+
       - name: Restore YouTube authorization
         env:
           TOKEN_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
         run: |
-          if [ -z "$TOKEN_B64" ]; then echo "Missing YT_TOKEN_JSON_B64"; exit 1; fi
           python -c "import base64,os; open('token.json','wb').write(base64.b64decode(os.environ['TOKEN_B64']))"
-      - name: Generate and upload one Short
+
+      - name: Generate one private Arabic test Short
         env:
           LANGUAGE: ar
           NICHES: "حقائق علمية,تاريخ,فضاء,تكنولوجيا,ألغاز,حيوانات,معلومات عامة"
           TOPIC_SOURCES: niche
           SCRIPT_STYLE: auto
+          SCRIPT_REVIEW: rewrite
+          SCRIPT_REVIEW_ROUNDS: "1"
+          SCRIPT_TARGET_SCORE: "80"
           TARGET_SECONDS: "35"
+          CHANNEL_NAME: ShortsPilot AR
+          AUDIENCE: الجمهور العربي
+          LLM_PROVIDER: gemini
+          LLM_MODEL: gemini-2.5-flash
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-SalmaNeural
+          TTS_RATE: "+5%"
+          VISUAL_SOURCES: pexels,pixabay
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           ASPECT: "9:16"
           RESOLUTION: 1080x1920
+          FPS: "30"
+          CAPTION_STYLE: karaoke
+          CAPTION_POSITION: center
+          CAPTION_MAX_WORDS: "3"
+          COLOR_GRADE: vivid
+          TRANSITION: random
+          SOUND_EFFECTS: "true"
+          VOICE_ENHANCE: "true"
+          MUSIC_VOLUME: "0.10"
+          END_CTA: "تابعنا للمزيد"
           UPLOAD: "true"
           YT_PRIVACY: private
-          YT_DAILY_LIMIT: "3"
+          YT_DAILY_LIMIT: "1"
+          SYNTHETIC_MEDIA: "true"
+          KEEP_VIDEOS: "true"
+          OUTPUT_DIR: output_videos
           TIMEZONE: Africa/Cairo
-          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'openrouter' }}
-          LLM_MODEL: ${{ vars.LLM_MODEL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
         run: python bot.py
-      - name: Run safe comment replies (optional)
-        if: ${{ vars.AUTO_REPLY_ENABLED == 'true' }}
-        env:
-          AUTO_REPLY_ENABLED: ${{ vars.AUTO_REPLY_ENABLED }}
-          AUTO_REPLY_DAILY_LIMIT: "20"
-          YT_COMMENTS_TOKEN_JSON_B64: ${{ secrets.YT_COMMENTS_TOKEN_JSON_B64 }}
-        run: |
-          if [ -z "$YT_COMMENTS_TOKEN_JSON_B64" ]; then echo "Missing comment token secret"; exit 1; fi
-          python -c "import base64,os; open('comment_token.json','wb').write(base64.b64decode(os.environ['YT_COMMENTS_TOKEN_JSON_B64']))"
-          python comment_replies.py
-      - name: Upload logs and generated files for inspection
+
+      - name: Save generated video and logs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: shorts-run-${{ github.run_id }}
+          name: shorts-pilot-test-${{ github.run_id }}
           path: |
-            output/
-            data/logs/
-          if-no-files-found: ignore
+            output_videos/
+            data/
+          if-no-files-found: warn
           retention-days: 7
