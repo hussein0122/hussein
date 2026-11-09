@@ -90,7 +90,7 @@ jobs:
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-SalmaNeural
           TTS_RATE: "+5%"
-          VISUAL_SOURCES: pexels,pixabay
+          VISUAL_SOURCES: pixabay
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           ASPECT: "9:16"
