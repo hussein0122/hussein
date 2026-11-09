@@ -1,0 +1,74 @@
+name: Arabic Shorts autopilot
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 09:00, 14:00, 19:00 Cairo time (UTC+2 in winter).
+    - cron: "0 7,12,17 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shorts-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PurffleShorts engine
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
+          python -m pip install -r requirements.txt
+      - name: Restore YouTube authorization
+        env:
+          TOKEN_B64: ${{ secrets.YT_TOKEN_JSON_B64 }}
+        run: |
+          if [ -z "$TOKEN_B64" ]; then echo "Missing YT_TOKEN_JSON_B64"; exit 1; fi
+          python -c "import base64,os; open('token.json','wb').write(base64.b64decode(os.environ['TOKEN_B64']))"
+      - name: Generate and upload one Short
+        env:
+          LANGUAGE: ar
+          NICHES: "حقائق علمية,تاريخ,فضاء,تكنولوجيا,ألغاز,حيوانات,معلومات عامة"
+          TOPIC_SOURCES: niche
+          SCRIPT_STYLE: auto
+          TARGET_SECONDS: "35"
+          TTS_ENGINE: edge
+          TTS_VOICE: ar-EG-SalmaNeural
+          ASPECT: "9:16"
+          RESOLUTION: 1080x1920
+          UPLOAD: "true"
+          YT_PRIVACY: private
+          YT_DAILY_LIMIT: "3"
+          TIMEZONE: Africa/Cairo
+          LLM_PROVIDER: ${{ vars.LLM_PROVIDER || 'openrouter' }}
+          LLM_MODEL: ${{ vars.LLM_MODEL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: python bot.py
+      - name: Run safe comment replies (optional)
+        if: ${{ vars.AUTO_REPLY_ENABLED == 'true' }}
+        env:
+          AUTO_REPLY_ENABLED: ${{ vars.AUTO_REPLY_ENABLED }}
+          AUTO_REPLY_DAILY_LIMIT: "20"
+          YT_COMMENTS_TOKEN_JSON_B64: ${{ secrets.YT_COMMENTS_TOKEN_JSON_B64 }}
+        run: |
+          if [ -z "$YT_COMMENTS_TOKEN_JSON_B64" ]; then echo "Missing comment token secret"; exit 1; fi
+          python -c "import base64,os; open('comment_token.json','wb').write(base64.b64decode(os.environ['YT_COMMENTS_TOKEN_JSON_B64']))"
+          python comment_replies.py
+      - name: Upload logs and generated files for inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorts-run-${{ github.run_id }}
+          path: |
+            output/
+            data/logs/
+          if-no-files-found: ignore
+          retention-days: 7
