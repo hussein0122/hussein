@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+comment_token.json
+*.sqlite3
+*.db
+data/
+output/
+logs/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
