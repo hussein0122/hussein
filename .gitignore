@@ -3,6 +3,7 @@
 !.env.example
 credentials.json
 token.json
+token_b64.txt
 comment_token.json
 *.sqlite3
 *.db
