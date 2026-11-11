@@ -8,6 +8,7 @@ on:
       - '.github/workflows/shorts.yml'
       - 'bot.py'
       - 'analytics_report.py'
+      - 'oauth_check.py'
       - 'requirements.txt'
 
 permissions:
@@ -27,6 +28,9 @@ jobs:
       TIMEZONE: Africa/Cairo
     steps:
       - uses: actions/checkout@v4
+
+      - name: Prepare persistent data directories
+        run: mkdir -p data output_videos
 
       - name: Restore channel history
         uses: actions/cache/restore@v4
@@ -64,13 +68,6 @@ jobs:
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git@38d49cd956319a73cf983153816acdbda3dc0e0c"
           python -m pip install -r requirements.txt
 
-      - name: Validate YouTube upload, channel-read and Analytics access
-        env:
-          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
-          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
-          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-        run: python oauth_check.py
-
       - name: Check Gemini free-tier model access
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -87,12 +84,20 @@ jobs:
           print("FFmpeg ready:", result.stdout.splitlines()[0])
           PY
 
+      - name: Validate YouTube upload, channel-read and Analytics access
+        env:
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+        run: python oauth_check.py
+
       - name: Collect channel Analytics before generation
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: python analytics_report.py
+        continue-on-error: true
 
       - name: Generate one private Arabic test Short
         env:
