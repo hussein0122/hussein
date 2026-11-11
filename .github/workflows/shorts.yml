@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/shorts.yml'
+      - 'bot.py'
+      - 'analytics_report.py'
+      - 'requirements.txt'
 
 permissions:
   contents: read
@@ -18,8 +21,20 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      DATA_DIR: data
+      OUTPUT_DIR: output_videos
+      TIMEZONE: Africa/Cairo
     steps:
       - uses: actions/checkout@v4
+
+      - name: Restore channel history
+        uses: actions/cache@v4
+        with:
+          path: data
+          key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: |
+            shorts-history-${{ github.ref_name }}-
 
       - name: Check required credentials
         env:
@@ -29,54 +44,38 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: |
-          test -n "$YT_REFRESH_TOKEN" || { echo "::error::Add YT_REFRESH_TOKEN in repository Actions secrets."; exit 1; }
-          test -n "$YT_CLIENT_ID" || { echo "::error::Add YT_CLIENT_ID in repository Actions secrets."; exit 1; }
-          test -n "$YT_CLIENT_SECRET" || { echo "::error::Add YT_CLIENT_SECRET in repository Actions secrets."; exit 1; }
-          test -n "$GEMINI_API_KEY" || { echo "::error::Add GEMINI_API_KEY from Google AI Studio. Use a free-tier key; do not enable paid billing."; exit 1; }
-          test -n "$PIXABAY_API_KEY" || { echo "::error::Add PIXABAY_API_KEY in repository Actions secrets."; exit 1; }
+          set -euo pipefail
+          for name in YT_REFRESH_TOKEN YT_CLIENT_ID YT_CLIENT_SECRET GEMINI_API_KEY PIXABAY_API_KEY; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required Actions secret: $name"
+              exit 1
+            fi
+          done
+          echo "All required secrets are present (values are never printed)."
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
-      - name: Install PurffleShorts engine
+      - name: Install pinned video engine and dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git"
+          python -m pip install "purffle-shorts==3.0.0"
           python -m pip install -r requirements.txt
 
-      - name: Validate and restore YouTube authorization
+      - name: Validate YouTube upload, channel-read and Analytics access
         env:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
-        run: |
-          python - <<'PY'
-          import os, sys
-          from google.auth.transport.requests import Request
-          from google.oauth2.credentials import Credentials
-          from pathlib import Path
+        run: python oauth_check.py
 
-          scopes = ['https://www.googleapis.com/auth/youtube.upload']
-          creds = Credentials(
-              token=None,
-              refresh_token=os.environ['YT_REFRESH_TOKEN'].strip(),
-              token_uri='https://oauth2.googleapis.com/token',
-              client_id=os.environ['YT_CLIENT_ID'].strip(),
-              client_secret=os.environ['YT_CLIENT_SECRET'].strip(),
-              scopes=scopes,
-          )
-          try:
-              creds.refresh(Request())
-          except Exception as exc:
-              print('::error::YouTube OAuth refresh failed before video rendering.')
-              print('The refresh token is invalid, revoked, expired, or does not belong to the configured OAuth client.')
-              print('Create a new refresh token using the exact same Google OAuth client ID and client secret saved in GitHub Secrets.')
-              print(f'Google response: {type(exc).__name__}: {exc}')
-              sys.exit(1)
-          Path('token.json').write_text(creds.to_json(), encoding='utf-8')
-          print('YouTube authorization validated and access token refreshed successfully.')
-          PY
+      - name: Check Gemini free-tier model access
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LLM_MODEL: gemini-2.5-flash
+        run: python check_gemini.py
 
       - name: Check FFmpeg renderer
         run: |
@@ -84,10 +83,16 @@ jobs:
           import subprocess
           import imageio_ffmpeg
           binary = imageio_ffmpeg.get_ffmpeg_exe()
-          print("FFmpeg binary:", binary)
           result = subprocess.run([binary, "-version"], capture_output=True, text=True, check=True)
-          print("\n".join(result.stdout.splitlines()[:3]))
+          print("FFmpeg ready:", result.stdout.splitlines()[0])
           PY
+
+      - name: Collect channel Analytics before generation
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python analytics_report.py
 
       - name: Generate one private Arabic test Short
         env:
@@ -102,8 +107,9 @@ jobs:
           CHANNEL_NAME: ShortsPilot AR
           AUDIENCE: الجمهور العربي
           LLM_PROVIDER: gemini
-          LLM_MODEL: gemini-3.5-flash-lite
+          LLM_MODEL: gemini-2.5-flash
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LEARN_FROM_STATS: "true"
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-SalmaNeural
           TTS_RATE: "+5%"
@@ -128,10 +134,11 @@ jobs:
           SYNTHETIC_MEDIA: "true"
           KEEP_VIDEOS: "true"
           OUTPUT_DIR: output_videos
+          DATA_DIR: data
           TIMEZONE: Africa/Cairo
         run: python bot.py
 
-      - name: Save generated video and logs
+      - name: Save generated video, channel history and Analytics
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -140,4 +147,4 @@ jobs:
             output_videos/
             data/
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 14
