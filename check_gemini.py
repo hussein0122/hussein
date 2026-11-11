@@ -14,7 +14,7 @@ def main() -> int:
         print("ERROR: GEMINI_API_KEY is not configured.", file=sys.stderr)
         return 2
 
-    model = os.getenv("LLM_MODEL", "gemini-2.5-flash")
+    model = os.getenv("LLM_MODEL", "gemini-3.5-flash-lite")
     url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
     payload = {
         "model": model,
