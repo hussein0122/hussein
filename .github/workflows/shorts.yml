@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Restore channel history
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: data
           key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
@@ -61,7 +61,7 @@ jobs:
       - name: Install pinned video engine and dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install "purffle-shorts==3.0.0"
+          python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git@38d49cd956319a73cf983153816acdbda3dc0e0c"
           python -m pip install -r requirements.txt
 
       - name: Validate YouTube upload, channel-read and Analytics access
@@ -137,6 +137,13 @@ jobs:
           DATA_DIR: data
           TIMEZONE: Africa/Cairo
         run: python bot.py
+
+      - name: Save channel history cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data
+          key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
 
       - name: Save generated video, channel history and Analytics
         if: always()
