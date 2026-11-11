@@ -59,9 +59,11 @@ def main() -> int:
         print("The refresh token must belong to the configured OAuth client and include upload, YouTube read, and YouTube Analytics read scopes.", file=sys.stderr)
         return 1
     except Exception as exc:
-        # Exception messages from OAuth may contain request details; do not print them.
-        print(f"ERROR: YouTube OAuth validation failed ({type(exc).__name__}).", file=sys.stderr)
-        print("Check that Client ID, Client Secret, and Refresh Token come from the same OAuth client and that the refresh token was granted all three required scopes.", file=sys.stderr)
+        # Print only a recognized OAuth error code, never request headers or credential values.
+        message = str(exc).lower()
+        code = next((item for item in ("unauthorized_client", "invalid_grant", "invalid_client", "invalid_scope") if item in message), "unknown_oauth_error")
+        print(f"ERROR: YouTube OAuth validation failed ({type(exc).__name__}; {code}).", file=sys.stderr)
+        print("Verify that Client ID, Client Secret, and Refresh Token belong to the same OAuth client; then grant upload, YouTube read, and Analytics read scopes.", file=sys.stderr)
         return 1
 
     print("OK: OAuth refresh, channel read, and YouTube Analytics read access verified.")
