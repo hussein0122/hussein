@@ -28,10 +28,7 @@ def main() -> int:
     request = urllib.request.Request(
         url,
         data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {key}",
-            "Content-Type": "application/json",
-        },
+        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
         method="POST",
     )
     try:
@@ -41,7 +38,6 @@ def main() -> int:
         if not isinstance(content, str) or not content.strip():
             raise ValueError("empty model response")
     except urllib.error.HTTPError as exc:
-        # Do not print request headers, key, or provider response body.
         print(f"ERROR: Gemini API returned HTTP {exc.code}. Check key validity, model access, and free-tier quota.", file=sys.stderr)
         return 1
     except (urllib.error.URLError, TimeoutError):
