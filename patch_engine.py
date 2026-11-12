@@ -257,6 +257,25 @@ def main() -> int:
         "verify rendered video has picture and audible soundtrack",
     )
 
+
+    # Make the narrative feel like one escalating mini-documentary, not a list
+    # of disconnected facts. Keep every visual beat tied to the spoken beat.
+    replace_once(
+        root / "script.py",
+        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+''',
+        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+- Retention is the top creative priority: the opening must create an immediate unanswered question or visual surprise in the first spoken sentence, without greetings or setup.
+- Create one coherent mini-story with a clear beginning, escalation and payoff. Each scene must add a new fact, consequence, reveal or visual development; never repeat the same point in different words.
+- Use short, natural Egyptian-friendly Arabic phrasing that sounds compelling when spoken aloud. Remove filler, long definitions and academic wording; explain technical terms in plain Arabic.
+- Keep the strongest reveal for the ending, but plant enough clues that the ending feels earned. Do not resolve the opening question too early.
+- Make scene order visually continuous: preserve the same named animal/object, habitat, era and point of view when the narration follows one subject. Change location or subject only when the narration itself changes.
+- Every scene must be filmable as one clear visual moment. Describe the exact subject, action, setting and camera framing; avoid vague queries such as "science", "nature", "amazing" or "history".
+- Do not add a call to action that interrupts the payoff. Put one brief, natural CTA only after the answer or final reveal.
+''',
+        "stronger Arabic retention arc and scene continuity",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
