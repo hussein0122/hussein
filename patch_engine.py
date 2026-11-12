@@ -48,6 +48,26 @@ def main() -> int:
         "reject unrelated stock footage",
     )
 
+    # Enforce scene-level relevance: never fall back to broad topic footage, and reject weak matches.
+    replace_once(
+        root / "media.py",
+        '''                matched = [c for c in fresh if relevance(c, query or c.query) >= 0.34]
+''',
+        '''                matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]
+''',
+        "require strong scene-to-footage relevance",
+    )
+    replace_once(
+        root / "media.py",
+        '''        for q in (query, simplify_query(query), simplify_query(topic), topic):
+''',
+        '''        # Search only for this scene's subject. Broad topic fallbacks often return
+        # attractive but unrelated footage, which is worse than a neutral background.
+        for q in (query, simplify_query(query)):
+''',
+        "remove unrelated broad-topic visual fallbacks",
+    )
+
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
     replace_once(
         root / "script.py",
@@ -56,9 +76,12 @@ def main() -> int:
 ''',
         '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Prefer a specific subject over a broad lecture: name the exact animal, body part, place, experiment or phenomenon. Avoid generic topics and recycled hooks.
-- search_query: 2-4 English words that directly describe the exact visible subject/action in THIS scene. For a named muscle/body part, use its exact anatomy (e.g. "biceps muscle anatomy", "quadriceps anatomy"); for an animal, name the exact species and habitat (e.g. "axolotl underwater", "shoebill bird"); for food, show the exact food. No abstract concepts or unrelated metaphors.
-- image_prompt: one vivid English sentence describing the same exact subject. Anatomy scenes should look like accurate educational 3D anatomical illustrations with the named muscle highlighted and surrounding anatomy subdued; animal scenes should show the named species in its natural habitat. No text, labels or letters.
-- Never use generic construction, brick-wall, business-meeting or random gym footage as a substitute for a named subject. If the exact visual is unavailable, prefer a neutral designed background over a misleading clip.
+- Every scene's visuals MUST depict the exact thing/action being narrated in that same scene. Build a literal visual storyboard, not generic B-roll.
+- search_query: 2-4 English words describing the exact visible subject AND action/place in THIS scene. Use specific names (e.g. "Tyrannosaurus running", "asteroid impact earth", "horseshoe crab ocean", "biceps muscle anatomy"). Do not repeat the overall topic when the scene describes a different event.
+- image_prompt: one detailed English sentence for the exact same moment. Prefer photorealistic documentary/cinematic footage and scientifically accurate environments, lighting and anatomy. For dinosaurs/extinction, show the actual animal, asteroid, impact winter, fire or aftermath only when that is what the narration says; do not use generic galaxy/space footage.
+- Visual style hierarchy: (1) real documentary wildlife/nature/science footage, (2) photorealistic scientific reconstruction or realistic 3D render for events that cannot be filmed today, (3) clean educational diagram/animation ONLY when explaining an internal process, anatomy or mechanism. Never use childish cartoons, clip-art, random abstract shapes or decorative filler.
+- For anatomy, use realistic medical 3D illustration with only the named muscle/organ highlighted; for historical extinct animals, use plausible scientifically grounded photorealistic reconstruction; for living animals, show the exact species in its natural habitat.
+- Never use generic landscapes, buildings, people, gym footage or unrelated animals as substitutes. If the exact visual cannot be sourced, request a neutral cinematic background rather than misleading footage.
 ''',
         "Arabic curiosity and visual-match script brief",
     )
