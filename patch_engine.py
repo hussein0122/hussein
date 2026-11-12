@@ -104,6 +104,21 @@ def main() -> int:
 ''',
         "retry transient LLM overloads with bounded backoff",
     )
+    # Cloud LLM calls should fail over promptly instead of spending many minutes
+    # timing out against an overloaded primary provider.
+    replace_once(
+        root / "llm.py",
+        '            timeout = 600 if self.preset.local else 180',
+        '            timeout = 600 if self.preset.local else 75',
+        "bound cloud LLM request timeouts before provider failover",
+    )
+    replace_once(
+        root / "llm.py",
+        'result = with_retries(_call, attempts=6, base_delay=8, label=f"LLM {p}")',
+        'result = with_retries(_call, attempts=3, base_delay=5, label=f"LLM {p}")',
+        "use three bounded retries before trying the next LLM provider",
+    )
+
     # A single-run GitHub job must never sleep for hours waiting for YouTube quota.
     # It exits cleanly with queued work; the workflow persists queued MP4s for the next run.
     replace_once(
