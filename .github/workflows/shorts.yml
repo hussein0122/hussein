@@ -118,7 +118,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LEARN_FROM_STATS: "true"
           TTS_ENGINE: edge
-          TTS_VOICE: ar-EG-SalmaNeural
+          TTS_VOICE: ar-EG-ShakirNeural
           TTS_RATE: "+5%"
           VISUAL_SOURCES: pixabay
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
