@@ -89,16 +89,37 @@ def headers():
 
 def create_video(prompt, idx):
     body={"model":MODEL,"prompt":prompt,"mode":"text","seconds":str(DURATION),"size":"720P","aspect_ratio":"16:9","n":1}
-    for attempt in range(5):
+    # Agnes free video capacity can temporarily reject admission with HTTP 503
+    # (video_queue_full). Such a response creates no task/video_id, so retry only
+    # with bounded exponential backoff and never poll the request ID as a video.
+    delays=[30,60,120,240,300]
+    for attempt in range(len(delays)+1):
         r=requests.post(f"{BASE}/v1/videos",headers=headers(),json=body,timeout=120)
-        if r.status_code==429:
-            time.sleep(min(90,15*(attempt+1))); continue
-        r.raise_for_status()
+        if r.status_code in (429,502,503,504):
+            try:
+                err=r.json()
+            except ValueError:
+                err={}
+            code=str(err.get("code") or "")
+            message=str(err.get("message") or err.get("error") or r.reason)
+            request_id=str(err.get("request_id") or "")
+            if attempt < len(delays):
+                wait=max(delays[attempt],int(r.headers.get("Retry-After","0") or 0))
+                print(f"Agnes temporary HTTP {r.status_code} on scene {idx} ({code or message[:100]}). Retry {attempt+1}/{len(delays)} in {wait}s. Request ID: {request_id or 'not supplied'}")
+                time.sleep(wait)
+                continue
+            raise RuntimeError(f"Agnes remained unavailable for scene {idx} after bounded retries: HTTP {r.status_code}, code={code or 'unknown'}, message={message[:200]}, request_id={request_id or 'not supplied'}. No video ID was returned; stop and retry later.")
+        if not r.ok:
+            try:
+                err=r.json()
+            except ValueError:
+                err={"message":r.text[:200]}
+            raise RuntimeError(f"Agnes rejected scene {idx}: HTTP {r.status_code}, response={json.dumps(err,ensure_ascii=False)[:400]}")
         data=r.json()
         vid=data.get("video_id") or data.get("id") or data.get("task_id")
         if not vid: raise RuntimeError(f"Agnes response for scene {idx} did not include a video id.")
         return str(vid)
-    raise RuntimeError(f"Agnes rate limit persisted for scene {idx}; stopped without retrying indefinitely.")
+    raise RuntimeError(f"Agnes remained unavailable for scene {idx}; stopped after bounded retries.")
 
 def poll_video(video_id, idx):
     deadline=time.time()+5400
