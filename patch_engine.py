@@ -126,6 +126,19 @@ def main() -> int:
         "use current Groq GPT-OSS 120B fallback model",
     )
 
+    # GPT-OSS 120B supports Groq strict structured outputs. Use JSON Schema mode
+    # instead of best-effort JSON Object mode to avoid provider-side JSON validation
+    # failures on complex script/review responses. The upstream client still falls
+    # back to JSON mode if the endpoint rejects a particular schema.
+    replace_once(
+        root / "llm.py",
+        '''Preset("groq", "Groq (Llama, fast)", "https://api.groq.com/openai/v1", ("GROQ_API_KEY",),
+           "openai/gpt-oss-120b"),''',
+        '''Preset("groq", "Groq (Llama, fast)", "https://api.groq.com/openai/v1", ("GROQ_API_KEY",),
+           "openai/gpt-oss-120b", schema_mode=True),''',
+        "enable Groq strict JSON Schema mode for GPT-OSS 120B",
+    )
+
     # Gemini can temporarily return HTTP 503 during demand spikes. Give the
     # provider a bounded retry window before the pipeline marks generation failed.
     replace_once(
