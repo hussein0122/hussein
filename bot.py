@@ -16,7 +16,7 @@ def main() -> int:
     # Keep the first production verification deliberately safe.
     os.environ.setdefault("LEARN_FROM_STATS", "true")
     os.environ.setdefault("YT_PRIVACY", "private")
-    os.environ.setdefault("YT_DAILY_LIMIT", "1")
+    os.environ.setdefault("YT_DAILY_LIMIT", "3")
     os.environ.setdefault("TIMEZONE", "Africa/Cairo")
 
     command = [executable, "run", "--once", "--count", "1"]
