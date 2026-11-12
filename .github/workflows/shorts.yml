@@ -1,20 +1,9 @@
-name: Arabic Shorts - fitness fact
+name: ShortsPilot AR - Automated Arabic Shorts
 
 on:
   schedule:
     - cron: "0 8,14,20 * * *"
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'bot.py'
-      - 'analytics_report.py'
-      - 'oauth_check.py'
-      - 'check_gemini.py'
-      - 'requirements.txt'
-      - 'patch_engine.py'
-      - 'prune_outputs.py'
-      - '.github/workflows/shorts.yml'
 
 permissions:
   contents: read
@@ -100,7 +89,7 @@ jobs:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: python analytics_report.py
         continue-on-error: true
-      - name: Generate one public Arabic fitness Short
+      - name: Generate one public Arabic curiosity Short
         env:
           LANGUAGE: ar
           NICHES: "غرائب الحيوانات,ماذا لو؟,أسرار جسم الإنسان,ألغاز علمية,ظواهر طبيعية غريبة,أسرار الفضاء,تاريخ غامض,اختراعات غيرت العالم,أسرار المحيطات,حقائق مذهلة"
@@ -120,7 +109,8 @@ jobs:
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-ShakirNeural
           TTS_RATE: "+2%"
-          VISUAL_SOURCES: pixabay
+          VISUAL_SOURCES: pixabay,pixabay-photos
+          WATERMARK: off
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           ASPECT: "9:16"
           RESOLUTION: 1080x1920
