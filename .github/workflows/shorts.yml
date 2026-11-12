@@ -2,7 +2,7 @@ name: Arabic Shorts - fitness fact
 
 on:
   schedule:
-    - cron: "0 6,12,18 * * *"
+    - cron: "0 8,14,20 * * *"
   workflow_dispatch:
   push:
     branches: [main]
@@ -127,7 +127,7 @@ jobs:
           END_CTA: "تابعنا للمزيد"
           UPLOAD: "true"
           YT_PRIVACY: public
-          YT_DAILY_LIMIT: "1"
+          YT_DAILY_LIMIT: "3"
           SYNTHETIC_MEDIA: "true"
           KEEP_VIDEOS: "true"
           OUTPUT_DIR: output_videos
