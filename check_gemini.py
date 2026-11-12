@@ -1,14 +1,19 @@
-"""Non-destructive Gemini API smoke test; transient 5xx must not block engine retries."""
+"""Discover a Gemini model enabled for this API key, without exposing the key."""
 from __future__ import annotations
 
 import json
 import os
 import sys
-import time
 import urllib.error
 import urllib.request
 
-API_ROOT = "https://generativelanguage.googleapis.com/v1beta/openai"
+API_ROOT = "https://generativelanguage.googleapis.com/v1beta"
+PREFERRED = (
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+)
 
 
 def main() -> int:
@@ -17,79 +22,55 @@ def main() -> int:
         print("ERROR: GEMINI_API_KEY is not configured.", file=sys.stderr)
         return 2
 
-    model = os.getenv("LLM_MODEL", "gemini-3.8-flash").strip()
-    url = f"{API_ROOT}/chat/completions"
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system", "content": "Reply with one short word."},
-            {"role": "user", "content": "Say READY."},
-        ],
-        "temperature": 0,
-        "max_tokens": 8,
-    }
-
-    for attempt in range(1, 4):
-        request = urllib.request.Request(
-            url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-            method="POST",
-        )
+    request = urllib.request.Request(
+        f"{API_ROOT}/models?pageSize=1000",
+        headers={"x-goog-api-key": key},
+        method="GET",
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=30) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
         try:
-            with urllib.request.urlopen(request, timeout=45) as response:
-                result = json.loads(response.read().decode("utf-8"))
-            content = result["choices"][0]["message"]["content"]
-            if not isinstance(content, str) or not content.strip():
-                raise ValueError("empty model response")
-            print(f"OK: Gemini API authentication and model response succeeded ({model}).")
-            return 0
-        except urllib.error.HTTPError as exc:
-            try:
-                body = json.loads(exc.read().decode("utf-8"))
-                error = body.get("error", {})
-                detail = error.get("message", "") if isinstance(error, dict) else ""
-            except Exception:
-                detail = ""
-            if exc.code >= 500:
-                if attempt < 3:
-                    delay = 5 * (2 ** (attempt - 1))
-                    print(f"WARNING: Gemini HTTP {exc.code}; smoke-test retry {attempt}/3 in {delay}s.")
-                    time.sleep(delay)
-                    continue
-                print(
-                    f"::warning::Gemini returned HTTP {exc.code} after smoke-test retries. "
-                    "Continuing to the engine, which has its own longer retry window. "
-                    + (f"Provider detail: {detail[:250]}" if detail else "")
-                )
-                return 0
-            if exc.code == 429:
-                reason = "Gemini rate limit or quota was reached; check quota and retry later."
-            elif exc.code in (401, 403):
-                reason = "Gemini rejected the API key or its API permissions."
-            elif exc.code == 404:
-                reason = f"Model '{model}' was not found or is not enabled for this API key."
-            else:
-                reason = f"Gemini returned HTTP {exc.code}."
-            if detail:
-                reason += f" Provider detail: {detail[:300]}"
-            print(f"ERROR: {reason}", file=sys.stderr)
-            return 1
-        except (urllib.error.URLError, TimeoutError):
-            if attempt < 3:
-                delay = 5 * (2 ** (attempt - 1))
-                print(f"WARNING: Gemini network issue; smoke-test retry {attempt}/3 in {delay}s.")
-                time.sleep(delay)
-                continue
-            print(
-                "::warning::Gemini smoke test could not reach the service after retries. "
-                "Continuing to the engine's own retry window."
-            )
-            return 0
-        except (KeyError, IndexError, TypeError, ValueError, json.JSONDecodeError):
-            print("ERROR: Gemini responded, but the response format was unexpected.", file=sys.stderr)
-            return 1
+            body = json.loads(exc.read().decode("utf-8"))
+            detail = body.get("error", {}).get("message", "")
+        except Exception:
+            detail = ""
+        if exc.code in (401, 403):
+            reason = "Google rejected the Gemini API key or it lacks Generative Language API access."
+        elif exc.code == 429:
+            reason = "Gemini model-list request hit a quota/rate limit."
+        else:
+            reason = f"Gemini model discovery failed with HTTP {exc.code}."
+        print(f"ERROR: {reason} {detail[:300]}", file=sys.stderr)
+        return 1
+    except Exception as exc:
+        print(f"ERROR: Could not reach Gemini model discovery: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return 1
 
+    models = {}
+    for item in data.get("models", []):
+        name = item.get("name", "").removeprefix("models/")
+        methods = item.get("supportedGenerationMethods", [])
+        if name and "generateContent" in methods:
+            models[name] = item
+
+    selected = next((name for name in PREFERRED if name in models), None)
+    if not selected:
+        available = ", ".join(sorted(models)[:30]) or "none"
+        print(
+            "ERROR: This API key has no supported Gemini Flash generation model enabled. "
+            f"Models visible to the key: {available}",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Persist the actual key-authorized model for later steps in this GitHub job.
+    github_env = os.getenv("GITHUB_ENV")
+    if github_env:
+        with open(github_env, "a", encoding="utf-8") as env_file:
+            env_file.write(f"LLM_MODEL={selected}\n")
+    print(f"OK: API key can access {len(models)} content-generation models; selected {selected}.")
     return 0
 
 
