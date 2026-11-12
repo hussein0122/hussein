@@ -12,6 +12,9 @@ on:
       - 'oauth_check.py'
       - 'check_gemini.py'
       - 'requirements.txt'
+      - 'patch_engine.py'
+      - 'prune_outputs.py'
+      - '.github/workflows/shorts.yml'
 
 permissions:
   contents: read
@@ -35,7 +38,9 @@ jobs:
       - name: Restore channel history
         uses: actions/cache/restore@v4
         with:
-          path: data
+          path: |
+            data
+            output_videos
           key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
           restore-keys: |
             shorts-history-${{ github.ref_name }}-
@@ -64,6 +69,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git@38d49cd956319a73cf983153816acdbda3dc0e0c"
           python -m pip install -r requirements.txt
+      - name: Apply verified Shorts quality patches
+        run: |
+          python patch_engine.py
+          python -m compileall -q purffle_shorts
       - name: Check Gemini free-tier model access
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -94,8 +103,9 @@ jobs:
       - name: Generate one public Arabic fitness Short
         env:
           LANGUAGE: ar
-          NICHES: "معلومة في اللياقة البدنية,تمارين القوة والعضلات,التغذية الرياضية والاستشفاء"
-          TOPIC_SOURCES: niche
+          NICHES: "غرائب الحيوانات,ماذا لو؟,أسرار جسم الإنسان,ألغاز علمية,ظواهر طبيعية غريبة,أسرار الفضاء,تاريخ غامض,اختراعات غيرت العالم,أسرار المحيطات,حقائق مذهلة"
+          TOPIC_SOURCES: "search:3,niche:5,reddit:2,trending:1,wikipedia:1"
+          TRENDS_GEO: EG
           SCRIPT_STYLE: auto
           SCRIPT_REVIEW: rewrite
           SCRIPT_REVIEW_ROUNDS: "1"
@@ -109,21 +119,25 @@ jobs:
           LEARN_FROM_STATS: "true"
           TTS_ENGINE: edge
           TTS_VOICE: ar-EG-ShakirNeural
-          TTS_RATE: "+5%"
+          TTS_RATE: "+2%"
           VISUAL_SOURCES: pixabay
           PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
           ASPECT: "9:16"
           RESOLUTION: 1080x1920
           FPS: "30"
           CAPTION_STYLE: karaoke
-          CAPTION_POSITION: center
+          CAPTION_POSITION: lower
+          CAPTION_UPPERCASE: "false"
           CAPTION_MAX_WORDS: "3"
-          COLOR_GRADE: vivid
-          TRANSITION: none
+          COLOR_GRADE: cinematic
+          TRANSITION: random
+          TRANSITION_SECONDS: "0.28"
+          MAX_SHOT_SECONDS: "3.2"
+          KEN_BURNS: "true"
           VIDEO_ENCODER: libx264
           SOUND_EFFECTS: "true"
           VOICE_ENHANCE: "true"
-          MUSIC_VOLUME: "0.10"
+          MUSIC_VOLUME: "0.08"
           END_CTA: "تابعنا للمزيد"
           UPLOAD: "true"
           YT_PRIVACY: public
@@ -151,12 +165,6 @@ jobs:
           chmod 600 comment_token.json
           python comment_replies.py
           rm -f comment_token.json
-      - name: Save channel history cache
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: data
-          key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
       - name: Save generated video, channel history and Analytics
         if: always()
         uses: actions/upload-artifact@v4
@@ -167,3 +175,14 @@ jobs:
             data/
           if-no-files-found: warn
           retention-days: 14
+      - name: Prune completed videos before cache
+        if: always()
+        run: python prune_outputs.py
+      - name: Save channel history and pending videos cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data
+            output_videos
+          key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
