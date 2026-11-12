@@ -20,7 +20,7 @@ def main() -> int:
     os.environ.setdefault("TIMEZONE", "Africa/Cairo")
 
     command = [executable, "run", "--once", "--count", "1"]
-    print("Starting one private Shorts generation cycle with channel-stat learning enabled...")
+    print("Starting one Shorts generation cycle with channel-stat learning enabled...")
     return subprocess.call(command, env=os.environ.copy())
 
 
