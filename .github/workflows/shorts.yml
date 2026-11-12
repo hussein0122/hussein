@@ -1,10 +1,6 @@
 name: ShortsPilot AR - Automated Arabic Shorts
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/shorts.yml"
   schedule:
     - cron: "0 8,14,20 * * *"
   workflow_dispatch:
