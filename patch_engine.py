@@ -63,6 +63,29 @@ def main() -> int:
         "Arabic curiosity and visual-match script brief",
     )
 
+    # Tighten scientific accuracy, especially for health and regeneration claims.
+    replace_once(
+        root / "script.py",
+        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
+''',
+        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
+- Scientific accuracy is mandatory: never claim an animal or organ regenerates, heals, survives, or behaves "completely", "fully", "always", "never", "first" or "oldest" unless the supplied context explicitly proves that exact claim. State partial limits and uncertainty plainly; distinguish a hypothetical "what if" from real science.
+- For health, supplements, exercise and nutrition, avoid personalized medical advice, unsupported dosages, guaranteed outcomes and absolute claims. Describe evidence limits and encourage qualified advice for individual medical decisions.
+- Do not invent studies, named experts, dates, numbers or sources. If reliable context is missing, choose a different verifiable topic instead of guessing.
+''',
+        "scientific accuracy and health-claim guardrails",
+    )
+
+    # Put a stable channel identity hashtag on every Short, alongside topic-specific tags.
+    replace_once(
+        root / "script.py",
+        '''    hashtags, seen = ["#shorts"], {"#shorts"}
+''',
+        '''    hashtags, seen = ["#shorts", "#shortspilot"], {"#shorts", "#shortspilot"}
+''',
+        "add the ShortsPilot brand hashtag to every Short",
+    )
+
     # A single-run GitHub job must never sleep for hours waiting for YouTube quota.
     # It exits cleanly with queued work; the workflow persists queued MP4s for the next run.
     replace_once(
