@@ -1,11 +1,12 @@
 name: Arabic Shorts - safe test
 
 on:
+  schedule:
+    - cron: "0 6,12,18 * * *"
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/shorts.yml'
       - 'bot.py'
       - 'analytics_report.py'
       - 'oauth_check.py'
@@ -100,7 +101,7 @@ jobs:
         run: python analytics_report.py
         continue-on-error: true
 
-      - name: Generate one private Arabic test Short
+      - name: Generate one private Arabic Short
         env:
           LANGUAGE: ar
           NICHES: "حقائق علمية,تاريخ,فضاء,تكنولوجيا,ألغاز,حيوانات,معلومات عامة"
