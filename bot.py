@@ -20,8 +20,20 @@ def main() -> int:
     os.environ.setdefault("TIMEZONE", "Africa/Cairo")
 
     command = [executable, "run", "--once", "--count", "1"]
+    one_time_topic = os.getenv("DATA_DIR", "data")
+    topic_file = os.path.join(one_time_topic, "next_topic.txt")
+    if os.path.isfile(topic_file):
+        with open(topic_file, encoding="utf-8") as f:
+            requested_topic = f.read().strip()
+        if requested_topic:
+            command.extend(["--topic", requested_topic])
+            print("One-time topic override loaded; it will be consumed only after a successful run.")
     print("Starting one Arabic Shorts cycle with visual relevance checks and channel-stat learning...")
-    return subprocess.call(command, env=os.environ.copy())
+    result = subprocess.call(command, env=os.environ.copy())
+    if result == 0 and os.path.isfile(topic_file):
+        os.remove(topic_file)
+        print("One-time topic override consumed after successful run.")
+    return result
 
 
 if __name__ == "__main__":
