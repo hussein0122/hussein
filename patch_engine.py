@@ -94,6 +94,15 @@ def main() -> int:
         "use current Gemini 3.8 Flash default",
     )
 
+    # Groq retired llama-3.3-70b-versatile for free/developer usage in Aug 2026.
+    # Use Groq's documented production replacement so automatic failover remains usable.
+    replace_once(
+        root / "llm.py",
+        '           "llama-3.3-70b-versatile"),',
+        '           "openai/gpt-oss-120b"),',
+        "use current Groq GPT-OSS 120B fallback model",
+    )
+
     # Gemini can temporarily return HTTP 503 during demand spikes. Give the
     # provider a bounded retry window before the pipeline marks generation failed.
     replace_once(
