@@ -1,4 +1,4 @@
-name: Arabic Shorts - safe test
+name: Arabic Shorts - fitness fact
 
 on:
   schedule:
@@ -30,10 +30,8 @@ jobs:
       TIMEZONE: Africa/Cairo
     steps:
       - uses: actions/checkout@v4
-
       - name: Prepare persistent data directories
         run: mkdir -p data output_videos
-
       - name: Restore channel history
         uses: actions/cache/restore@v4
         with:
@@ -41,7 +39,6 @@ jobs:
           key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
           restore-keys: |
             shorts-history-${{ github.ref_name }}-
-
       - name: Check required credentials
         env:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
@@ -58,24 +55,20 @@ jobs:
             fi
           done
           echo "All required secrets are present (values are never printed)."
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-
       - name: Install pinned video engine and dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git@38d49cd956319a73cf983153816acdbda3dc0e0c"
           python -m pip install -r requirements.txt
-
       - name: Check Gemini free-tier model access
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           LLM_MODEL: gemini-3.5-flash-lite
         run: python check_gemini.py
-
       - name: Check FFmpeg renderer
         run: |
           python - <<'PY'
@@ -85,14 +78,12 @@ jobs:
           result = subprocess.run([binary, "-version"], capture_output=True, text=True, check=True)
           print("FFmpeg ready:", result.stdout.splitlines()[0])
           PY
-
       - name: Validate YouTube upload, channel-read and Analytics access
         env:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
         run: python oauth_check.py
-
       - name: Collect channel Analytics before generation
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
@@ -100,11 +91,10 @@ jobs:
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: python analytics_report.py
         continue-on-error: true
-
-      - name: Generate one private Arabic Short
+      - name: Generate one public Arabic fitness Short
         env:
           LANGUAGE: ar
-          NICHES: "ماذا لو؟,تجارب الجسم لمدة 30 يومًا,الكرياتين والرياضة,النوم والصحة,العادات اليومية,حقائق علمية مفاجئة,ألغاز وتحديات"
+          NICHES: "معلومة في اللياقة البدنية,تمارين القوة والعضلات,التغذية الرياضية والاستشفاء"
           TOPIC_SOURCES: niche
           SCRIPT_STYLE: auto
           SCRIPT_REVIEW: rewrite
@@ -144,7 +134,6 @@ jobs:
           DATA_DIR: data
           TIMEZONE: Africa/Cairo
         run: python bot.py
-
       - name: Reply to recent YouTube comments
         if: success()
         env:
@@ -162,14 +151,12 @@ jobs:
           chmod 600 comment_token.json
           python comment_replies.py
           rm -f comment_token.json
-
       - name: Save channel history cache
         if: always()
         uses: actions/cache/save@v4
         with:
           path: data
           key: shorts-history-${{ github.ref_name }}-${{ github.run_id }}
-
       - name: Save generated video, channel history and Analytics
         if: always()
         uses: actions/upload-artifact@v4
