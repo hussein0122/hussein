@@ -145,6 +145,24 @@ jobs:
           TIMEZONE: Africa/Cairo
         run: python bot.py
 
+      - name: Reply to recent YouTube comments
+        if: success()
+        env:
+          YT_COMMENTS_TOKEN_JSON: ${{ secrets.YT_COMMENTS_TOKEN_JSON }}
+          AUTO_REPLY_ENABLED: "true"
+          AUTO_REPLY_DAILY_LIMIT: "20"
+          COMMENT_DB: data/comment_replies.sqlite3
+        run: |
+          set -euo pipefail
+          if [ -z "${YT_COMMENTS_TOKEN_JSON:-}" ]; then
+            echo "::warning::Comment replies skipped: YT_COMMENTS_TOKEN_JSON is not configured."
+            exit 0
+          fi
+          printf '%s' "$YT_COMMENTS_TOKEN_JSON" > comment_token.json
+          chmod 600 comment_token.json
+          python comment_replies.py
+          rm -f comment_token.json
+
       - name: Save channel history cache
         if: always()
         uses: actions/cache/save@v4
