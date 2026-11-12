@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: shortspilot-admin
+    runtime: python
+    plan: free
+    buildCommand: pip install -r dashboard/requirements.txt
+    startCommand: gunicorn --chdir dashboard app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4
+    healthCheckPath: /health
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: GITHUB_ACTIONS_TOKEN
+        sync: false
