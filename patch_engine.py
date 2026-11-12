@@ -68,6 +68,16 @@ def main() -> int:
         "remove unrelated broad-topic visual fallbacks",
     )
 
+    # When a provider search is simplified to the animal/object name, score its
+    # candidates against that simplified query, not the more detailed scene text.
+    # Otherwise valid clips (e.g. horseshoe crab footage for a DNA scene) are rejected.
+    replace_once(
+        root / "media.py",
+        '''                item = self._claim(cand, need, query)  # always judged against the scene's own query''',
+        '''                item = self._claim(cand, need, q)  # judged against the exact query sent to the provider''',
+        "score fallback footage against its actual search query",
+    )
+
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
     replace_once(
         root / "script.py",
