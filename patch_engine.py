@@ -92,7 +92,7 @@ def main() -> int:
         root / "llm.py",
         '''                result = with_retries(_call, attempts=2, base_delay=3, label=f"LLM {p}")
 ''',
-        '''                result = with_retries(_call, attempts=4, base_delay=5, label=f"LLM {p}")
+        '''                result = with_retries(_call, attempts=6, base_delay=8, label=f"LLM {p}")
 ''',
         "retry transient LLM overloads with bounded backoff",
     )
