@@ -88,7 +88,7 @@ def headers():
     return {"Authorization":f"Bearer {key}","Content-Type":"application/json"}
 
 def create_video(prompt, idx):
-    body={"model":MODEL,"prompt":prompt,"mode":"text","seconds":str(DURATION),"size":"720P","aspect_ratio":"16:9","n":1}
+    body={"model":MODEL,"prompt":prompt,"mode":"text","seconds":str(DURATION),"size":"720P","aspect_ratio":"16:9"}
     # Agnes free video capacity can temporarily reject admission with HTTP 503
     # (video_queue_full). Such a response creates no task/video_id, so retry only
     # with bounded exponential backoff and never poll the request ID as a video.
@@ -104,7 +104,11 @@ def create_video(prompt, idx):
             message=str(err.get("message") or err.get("error") or r.reason)
             request_id=str(err.get("request_id") or "")
             if attempt < len(delays):
-                wait=max(delays[attempt],int(r.headers.get("Retry-After","0") or 0))
+                try:
+                    retry_after=int(r.headers.get("Retry-After","0") or 0)
+                except ValueError:
+                    retry_after=0
+                wait=max(delays[attempt],retry_after)
                 print(f"Agnes temporary HTTP {r.status_code} on scene {idx} ({code or message[:100]}). Retry {attempt+1}/{len(delays)} in {wait}s. Request ID: {request_id or 'not supplied'}")
                 time.sleep(wait)
                 continue
