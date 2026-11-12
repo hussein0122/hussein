@@ -13,7 +13,7 @@ from googleapiclient.http import MediaFileUpload
 BASE = os.getenv("AGNES_API_BASE", "https://apihub.agnes-ai.com").rstrip("/")
 MODEL = os.getenv("AGNES_VIDEO_MODEL", "agnes-video-2.5-flash")
 OUT = Path("episode_output")
-DURATION = 12
+DURATION = 10
 SCENES = [
 ("A cinematic wide establishing shot of an Egyptian prison exterior at dawn. Adam, a 32-year-old Egyptian man with short black hair, trimmed beard, athletic build, wearing a faded dark jacket, walks out through the gate alone. Slow tracking camera, realistic live-action drama, consistent character design, 16:9.",
  "الراوي", "خرج آدم من السجن بعد سنوات طويلة، لكنه لم يخرج مهزوماً. كان يخفي حقيقة واحدة: إنه الرجل الذي يخشاه كبار رجال الأعمال."),
@@ -70,7 +70,11 @@ SCENES = [
 ("Layan smiles through tears; they walk together toward the sunrise, then a final elegant wide shot of Safwan headquarters.",
  "ليان", "وأنا اخترتك من غير ما أعرف إنك سيد العالم. اخترتك لما كنت مجرد آدم، الإنسان اللي احترم كل الناس."),
 ("A tasteful wedding celebration in an elegant garden in Cairo, Adam and Layan smiling among family, warm golden lights, cinematic finale.",
- "الراوي", "وهكذا انتهت حكاية الرجل اللي أخفى إمبراطوريته، وبدأ من جديد عامل نظافة. لأن الحب الحقيقي لا يحتاج تاجاً ولا عرشاً.")
+ "الراوي", "وهكذا انتهت حكاية الرجل اللي أخفى إمبراطوريته، وبدأ من جديد عامل نظافة. لأن الحب الحقيقي لا يحتاج تاجاً ولا عرشاً."),
+("Adam and Layan exchange wedding rings in a close cinematic shot, family applauds softly, warm golden light, elegant Egyptian garden celebration.",
+ "ليان", "من النهارده هنكتب حكايتنا سوا، من غير أسرار ولا أقنعة. أهم حاجة إننا فضلنا على حقيقتنا."),
+("Final wide aerial shot of Cairo at sunrise, Safwan headquarters in the distance, Adam and Layan walk together into a hopeful future, cinematic end frame.",
+ "الراوي", "دي كانت حكاية آدم وليان. حكاية بتفكرنا إن أعظم انتصار مش إنك تحكم العالم، لكن إنك تكسب قلب يستاهلك.")
 ]
 VOICES = {"الراوي":"ar-EG-ShakirNeural","آدم":"ar-EG-ShakirNeural","ريان":"ar-SA-HamedNeural","المدير":"ar-SA-HamedNeural","شاو":"ar-SA-HamedNeural","ليان":"ar-EG-SalmaNeural"}
 
@@ -132,7 +136,7 @@ def upload_youtube(path):
     creds=Credentials(token=None,refresh_token=os.environ["YT_REFRESH_TOKEN"].strip(),token_uri="https://oauth2.googleapis.com/token",client_id=os.environ["YT_CLIENT_ID"].strip(),client_secret=os.environ["YT_CLIENT_SECRET"].strip(),scopes=scopes)
     creds.refresh(Request())
     yt=build("youtube","v3",credentials=creds,cache_discovery=False)
-    body={"snippet":{"title":"سيد العالم: عامل النظافة الذي أخفى إمبراطوريته | الحلقة الأولى","description":"حلقة درامية عربية قصيرة. جميع الشخصيات والأحداث خيالية.","categoryId":" драм".replace(" драм","22"),"tags":["دراما","مسلسل عربي","قصة آدم وليان"]},"status":{"privacyStatus":"public","selfDeclaredMadeForKids":False}}
+    body={"snippet":{"title":"سيد العالم: عامل النظافة الذي أخفى إمبراطوريته | الحلقة الأولى","description":"حلقة درامية عربية قصيرة. جميع الشخصيات والأحداث خيالية.","categoryId":"22","tags":["دراما","مسلسل عربي","قصة آدم وليان"]},"status":{"privacyStatus":"public","selfDeclaredMadeForKids":False}}
     media=MediaFileUpload(str(path),mimetype="video/mp4",chunksize=8*1024*1024,resumable=True)
     req=yt.videos().insert(part="snippet,status",body=body,media_body=media)
     response=None
@@ -145,7 +149,13 @@ def main():
     required=["YT_CLIENT_ID","YT_CLIENT_SECRET","YT_REFRESH_TOKEN","AGNES_API_KEY"]
     missing=[x for x in required if not os.getenv(x,"").strip()]
     if missing: raise RuntimeError("Missing GitHub Actions secrets: "+", ".join(missing))
+    # Validate the API key and model access before consuming video-generation quota.
+    check=requests.get(f"{BASE}/v1/models",headers=headers(),timeout=60)
+    check.raise_for_status()
+    print("Agnes API authentication endpoint responded successfully.")
     OUT.mkdir(exist_ok=True)
+    if len(SCENES) * DURATION != 300:
+        raise RuntimeError(f"Episode plan is {len(SCENES) * DURATION}s, not exactly 300s.")
     # Submit scenes sequentially with a conservative interval for free-tier RPM limits.
     ids=[]
     for i,(prompt,_,_) in enumerate(SCENES,1):
