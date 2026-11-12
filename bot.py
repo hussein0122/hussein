@@ -13,14 +13,14 @@ def main() -> int:
         print("ERROR: purffle-shorts CLI is not installed.", file=sys.stderr)
         return 2
 
-    # Keep the first production verification deliberately safe.
+    # The workflow explicitly controls privacy and daily limits; these are local-run fallbacks.
     os.environ.setdefault("LEARN_FROM_STATS", "true")
-    os.environ.setdefault("YT_PRIVACY", "private")
+    os.environ.setdefault("YT_PRIVACY", "public")
     os.environ.setdefault("YT_DAILY_LIMIT", "3")
     os.environ.setdefault("TIMEZONE", "Africa/Cairo")
 
     command = [executable, "run", "--once", "--count", "1"]
-    print("Starting one Shorts generation cycle with channel-stat learning enabled...")
+    print("Starting one Arabic Shorts cycle with visual relevance checks and channel-stat learning...")
     return subprocess.call(command, env=os.environ.copy())
 
 
