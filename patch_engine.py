@@ -86,6 +86,14 @@ def main() -> int:
         "add the ShortsPilot brand hashtag to every Short",
     )
 
+    # The pinned upstream preset defaults to a retired Gemini model.
+    replace_once(
+        root / "llm.py",
+        '("GEMINI_API_KEY", "GOOGLE_API_KEY"), "gemini-2.5-flash", schema_mode=True),',
+        '("GEMINI_API_KEY", "GOOGLE_API_KEY"), "gemini-3.8-flash", schema_mode=True),',
+        "use current Gemini 3.8 Flash default",
+    )
+
     # Gemini can temporarily return HTTP 503 during demand spikes. Give the
     # provider a bounded retry window before the pipeline marks generation failed.
     replace_once(
