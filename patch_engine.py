@@ -86,6 +86,16 @@ def main() -> int:
         "add the ShortsPilot brand hashtag to every Short",
     )
 
+    # Gemini can temporarily return HTTP 503 during demand spikes. Give the
+    # provider a bounded retry window before the pipeline marks generation failed.
+    replace_once(
+        root / "llm.py",
+        '''                result = with_retries(_call, attempts=2, base_delay=3, label=f"LLM {p}")
+''',
+        '''                result = with_retries(_call, attempts=4, base_delay=5, label=f"LLM {p}")
+''',
+        "retry transient LLM overloads with bounded backoff",
+    )
     # A single-run GitHub job must never sleep for hours waiting for YouTube quota.
     # It exits cleanly with queued work; the workflow persists queued MP4s for the next run.
     replace_once(
