@@ -193,6 +193,70 @@ def main() -> int:
         "retire stale queue records safely",
     )
 
+
+    # Raise the scene relevance bar: with short, specific English queries, 2/3
+    # matching subject terms is a stronger minimum than a loose 1/2 overlap.
+    replace_once(
+        root / "media.py",
+        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]',
+        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.67]',
+        "raise minimum stock-footage subject match to 67 percent",
+    )
+
+    # A weakly scored script is not allowed to reach rendering/upload. The editor
+    # can retry/rewrite first; if it still misses the bar, the run stops safely.
+    replace_once(
+        root / "pipeline.py",
+        '''                script = review_script(self.llm, script, s)
+''',
+        '''                script = review_script(self.llm, script, s)
+                minimum_score = int(os.getenv("SCRIPT_MIN_SCORE", "80"))
+                if script.score is None or script.score < minimum_score:
+                    raise RuntimeError(
+                        f"Quality gate: script retention score {script.score!r} is below "
+                        f"the required {minimum_score}/100; refusing to produce or publish."
+                    )
+''',
+        "block scripts below the minimum retention score",
+    )
+
+    # Never publish a Short containing generated gradient filler because a real
+    # scene-matched visual could not be found. Keep the failure visible for retry.
+    replace_once(
+        root / "pipeline.py",
+        '''                media = [got.get((st.index, st.part)) or got[(st.index, 0)] for st in shots]
+''',
+        '''                media = [got.get((st.index, st.part)) or got[(st.index, 0)] for st in shots]
+                missing_visuals = sorted({m.query for m in media if m.source == "generated"})
+                if missing_visuals:
+                    raise RuntimeError(
+                        "Quality gate: no relevant footage was found for scene(s): "
+                        + "; ".join(missing_visuals[:8])
+                        + ". Refusing to publish a Short with generic gradient filler."
+                    )
+                log.info("Visual quality gate: all %d shots have sourced scene visuals.", len(media))
+''',
+        "refuse publication when any scene falls back to generic generated backgrounds",
+    )
+
+    # A valid MP4 must include audible narration/music, not merely valid dimensions.
+    replace_once(
+        root / "pipeline.py",
+        '''            info = ffmpeg.probe(video)
+            if (info["width"], info["height"]) != s.resolution or abs(info["duration"] - total) > 0.5:
+''',
+        '''            info = ffmpeg.probe(video)
+            if not info.get("has_video") or not info.get("has_audio"):
+                raise RuntimeError("Render quality gate failed: output must contain both video and audio streams.")
+            measured_loudness = ffmpeg.loudness(video)
+            if measured_loudness is None:
+                raise RuntimeError("Render quality gate failed: soundtrack is silent or unreadable.")
+            log.info("Audio quality gate: integrated loudness %.1f LUFS.", measured_loudness)
+            if (info["width"], info["height"]) != s.resolution or abs(info["duration"] - total) > 0.5:
+''',
+        "verify rendered video has picture and audible soundtrack",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
