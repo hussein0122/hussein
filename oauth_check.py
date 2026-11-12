@@ -72,13 +72,16 @@ def main() -> int:
         client_secret=os.environ["YT_CLIENT_SECRET"].strip(),
         scopes=SCOPES,
     )
+    phase = "OAuth refresh"
     try:
         creds.refresh(Request())
+        phase = "YouTube Data API channel read"
         yt = build("youtube", "v3", credentials=creds, cache_discovery=False)
         channel = yt.channels().list(part="id", mine=True, maxResults=1).execute()
         if not channel.get("items"):
             raise RuntimeError("OAuth succeeded but no YouTube channel was returned.")
 
+        phase = "YouTube Analytics API read"
         analytics = build("youtubeAnalytics", "v2", credentials=creds, cache_discovery=False)
         yesterday = date.today() - timedelta(days=1)
         analytics.reports().query(
@@ -106,8 +109,26 @@ def main() -> int:
         )
         return 1
     except HttpError as exc:
-        print(f"ERROR: Google API permission check failed (HTTP {exc.resp.status}).", file=sys.stderr)
-        print("OAuth refresh worked, but the channel or Analytics API request was rejected. Check API enablement and granted scopes.", file=sys.stderr)
+        detail = ""
+        try:
+            payload = json.loads(exc.content.decode("utf-8", errors="replace"))
+            error = payload.get("error", {}) if isinstance(payload, dict) else {}
+            if isinstance(error, dict):
+                reasons = error.get("errors", [])
+                reason = reasons[0].get("reason", "") if reasons and isinstance(reasons[0], dict) else ""
+                message = str(error.get("message", ""))
+                detail = "; ".join(part for part in (str(reason), message) if part)
+        except (ValueError, TypeError, AttributeError):
+            pass
+        for name in ("YT_CLIENT_ID", "YT_CLIENT_SECRET", "YT_REFRESH_TOKEN"):
+            secret = os.getenv(name, "").strip()
+            if secret:
+                detail = detail.replace(secret, "[REDACTED]")
+        detail = re.sub(r"\\s+", " ", detail).strip()[:300]
+        print(f"ERROR: {phase} failed (HTTP {exc.resp.status}).", file=sys.stderr)
+        if detail:
+            print(f"Google detail: {detail}", file=sys.stderr)
+        print("OAuth refresh worked. Check the named API is enabled in the same Google Cloud project and the refresh token has the required scope.", file=sys.stderr)
         return 1
     except Exception as exc:
         print(f"ERROR: YouTube OAuth validation failed ({type(exc).__name__}).", file=sys.stderr)
