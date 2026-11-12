@@ -88,7 +88,7 @@ def headers():
     return {"Authorization":f"Bearer {key}","Content-Type":"application/json"}
 
 def create_video(prompt, idx):
-    body={"model":MODEL,"prompt":prompt,"seconds":DURATION,"size":"720P","aspect_ratio":"16:9"}
+    body={"model":MODEL,"prompt":prompt,"mode":"text","seconds":str(DURATION),"size":"720P","aspect_ratio":"16:9","n":1}
     for attempt in range(5):
         r=requests.post(f"{BASE}/v1/videos",headers=headers(),json=body,timeout=120)
         if r.status_code==429:
@@ -103,9 +103,7 @@ def create_video(prompt, idx):
 def poll_video(video_id, idx):
     deadline=time.time()+5400
     while time.time()<deadline:
-        r=requests.get(f"{BASE}/agnesapi",headers=headers(),params={"video_id":video_id},timeout=90)
-        if r.status_code==404:
-            r=requests.get(f"{BASE}/v1/videos/{video_id}",headers=headers(),timeout=90)
+        r=requests.get(f"{BASE}/agnesapi",headers=headers(),params={"video_id":video_id,"model_name":MODEL},timeout=90)
         r.raise_for_status()
         data=r.json()
         status=str(data.get("status","")).lower()
@@ -176,14 +174,14 @@ def main():
     concat.write_text("".join(f"file '{p.resolve()}'\n" for p in normalized),encoding="utf-8")
     silent=OUT/"episode_silent.mp4"
     ffmpeg("-y","-f","concat","-safe","0","-i",concat,"-t","300","-c","copy",silent)
-    # One Egyptian Arabic voice line per scene; each audio cell is padded/cropped to exactly 12 seconds.
+    # One Egyptian Arabic voice line per scene; each audio cell is padded/cropped to exactly 10 seconds.
     audio_cells=[]
     for i,(_,speaker,line) in enumerate(SCENES,1):
         voice=VOICES[speaker]
         raw=OUT/f"voice_{i:02d}.mp3"
         asyncio.run(make_tts(line,voice,raw))
         cell=OUT/f"audio_{i:02d}.wav"
-        ffmpeg("-y","-i",raw,"-af","apad=pad_dur=12,atrim=0:12","-ar","48000","-ac","2",cell)
+        ffmpeg("-y","-i",raw,"-af","apad=pad_dur=10,atrim=0:10","-ar","48000","-ac","2",cell)
         audio_cells.append(cell)
     ac=OUT/"audio_concat.txt"
     ac.write_text("".join(f"file '{p.resolve()}'\n" for p in audio_cells),encoding="utf-8")
