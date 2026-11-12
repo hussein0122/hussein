@@ -96,7 +96,8 @@ jobs:
           TRENDS_GEO: EG
           SCRIPT_STYLE: auto
           SCRIPT_REVIEW: rewrite
-          SCRIPT_REVIEW_ROUNDS: "1"
+          SCRIPT_REVIEW_ROUNDS: "2"
+          SCRIPT_MIN_SCORE: "80"
           SCRIPT_TARGET_SCORE: "80"
           TARGET_SECONDS: "35"
           CHANNEL_NAME: ShortsPilot AR
@@ -122,9 +123,9 @@ jobs:
           CAPTION_UPPERCASE: "false"
           CAPTION_MAX_WORDS: "3"
           COLOR_GRADE: cinematic
-          TRANSITION: random
+          TRANSITION: fade
           TRANSITION_SECONDS: "0.28"
-          MAX_SHOT_SECONDS: "3.2"
+          MAX_SHOT_SECONDS: "2.8"
           KEN_BURNS: "true"
           VIDEO_ENCODER: libx264
           SOUND_EFFECTS: "true"
