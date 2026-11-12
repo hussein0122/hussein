@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة ShortsPilot AR</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;padding:22px}
+main{max-width:1000px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:25px;margin:8px 0}.muted{color:#a9b5ce;font-size:13px}.panel{background:#151d32;border:1px solid #293552;border-radius:16px;padding:20px;margin:16px 0}
+.status{font-size:20px;font-weight:bold;margin:10px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+button{border:0;border-radius:10px;padding:12px 18px;font-weight:bold;cursor:pointer;background:#6d8cff;color:#071126}
+button.secondary{background:#273653;color:#e9efff}button:disabled{opacity:.5}
+.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #293552;padding:12px 0;flex-wrap:wrap}
+a{color:#9db3ff}.good{color:#7de0ad}.bad{color:#ff9ca9}.warn{color:#ffd37c}
+#message{min-height:24px;margin-top:12px;color:#b9c8e8}
+small{color:#9caecc}
+</style></head>
+<body><main>
+<div class="top"><div><h1>ShortsPilot AR</h1><div class="muted">مسجل الدخول: {{ admin_email }}</div></div>
+<form method="post" action="/logout"><input type="hidden" name="csrf" id="logout-csrf"><button class="secondary" type="submit">تسجيل الخروج</button></form></div>
+<section class="grid">
+<div class="panel"><div class="muted">حالة البوت</div><div class="status" id="bot-status">جارٍ التحميل…</div><small id="checked">—</small></div>
+<div class="panel"><div class="muted">آخر تشغيل</div><div class="status" id="last-run">—</div><small id="last-time">—</small></div>
+<div class="panel"><div class="muted">نتيجة آخر تشغيل</div><div class="status" id="last-result">—</div><small>من GitHub Actions</small></div>
+</section>
+<section class="panel"><h3>التحكم</h3><p class="muted">بدء تشغيل يدوي واحد. التشغيل يستخدم إعدادات النشر الموجودة في GitHub Actions وقد ينشر فيديو عامًا عند نجاحه.</p>
+<button id="run" onclick="runBot()">تشغيل البوت الآن</button> <button class="secondary" onclick="loadStatus()">تحديث الحالة</button>
+<div id="message" role="status"></div></section>
+<section class="panel"><h3>سجل التشغيلات الأخيرة</h3><div id="history" class="muted">جارٍ التحميل…</div></section>
+</main>
+<script>
+let csrf="";
+async function init(){const c=await fetch("/api/csrf");if(c.status===401){location.href="/login";return}csrf=(await c.json()).token;document.getElementById("logout-csrf").value=csrf;loadStatus()}
+async function loadStatus(){
+ const status=document.getElementById("bot-status");status.textContent="جارٍ التحديث…";
+ try{
+  const r=await fetch("/api/status");const d=await r.json();
+  if(!r.ok||!d.connected){status.textContent="غير متصل";status.className="status bad";document.getElementById("message").textContent=d.error||"تعذر جلب الحالة";return}
+  const x=d.latest;
+  if(!x){status.textContent="لا توجد تشغيلات";document.getElementById("last-run").textContent="—";document.getElementById("last-result").textContent="—"}
+  else{
+   status.textContent=x.status==="in_progress"?"يعمل الآن":x.conclusion==="success"?"يعمل — آخر تشغيل ناجح":x.status==="queued"?"في قائمة الانتظار":"آخر تشغيل فشل";
+   status.className="status "+(x.status==="in_progress"||x.status==="queued"?"warn":x.conclusion==="success"?"good":"bad");
+   document.getElementById("last-run").textContent="#"+x.run_number;
+   document.getElementById("last-result").textContent=x.conclusion||x.status;
+   document.getElementById("last-time").textContent=new Date(x.created_at).toLocaleString("ar-EG");
+  }
+  document.getElementById("checked").textContent="آخر تحديث: "+new Date().toLocaleTimeString("ar-EG");
+  document.getElementById("history").innerHTML=d.recent.map(v=>'<div class="row"><span>تشغيل #'+v.run_number+'</span><span>'+v.status+' / '+(v.conclusion||"—")+'</span><a target="_blank" rel="noopener" href="'+v.html_url+'">التفاصيل</a></div>').join("")||"لا توجد بيانات";
+ }catch(e){status.textContent="تعذر الاتصال";status.className="status bad"}
+}
+async function runBot(){
+ if(!confirm("هل تريد بدء تشغيل البوت؟ قد ينشر فيديو عامًا إذا نجح."))return;
+ const b=document.getElementById("run"),m=document.getElementById("message");b.disabled=true;m.textContent="جارٍ إرسال طلب التشغيل…";
+ try{const r=await fetch("/api/run",{method:"POST",headers:{"X-CSRF-Token":csrf}});const d=await r.json();m.textContent=d.message||d.error||"انتهى الطلب";if(d.ok)setTimeout(loadStatus,4000)}
+ catch(e){m.textContent="تعذر الاتصال بالخادم"}finally{b.disabled=false}
+}
+init();setInterval(loadStatus,60000);
+</script></body></html>
