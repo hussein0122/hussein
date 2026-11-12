@@ -52,8 +52,8 @@ def safe_oauth_details(exc: RefreshError) -> tuple[str, str]:
         secret = os.getenv(name, "").strip()
         if secret:
             description = description.replace(secret, "[REDACTED]")
-    description = re.sub(r"(?i)(access_token|refresh_token|client_secret)\\s*[:=]\\s*[^\\s,;]+", r"\\1=[REDACTED]", str(description))
-    description = re.sub(r"\\s+", " ", description).strip()[:300]
+    description = re.sub(r"(?i)(access_token|refresh_token|client_secret)\s*[:=]\s*[^\s,;]+", r"\1=[REDACTED]", str(description))
+    description = re.sub(r"\s+", " ", description).strip()[:300]
     return str(code)[:80], description
 
 
