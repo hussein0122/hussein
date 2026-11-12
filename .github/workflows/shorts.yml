@@ -104,7 +104,7 @@ jobs:
       - name: Generate one private Arabic Short
         env:
           LANGUAGE: ar
-          NICHES: "حقائق علمية,تاريخ,فضاء,تكنولوجيا,ألغاز,حيوانات,معلومات عامة"
+          NICHES: "ماذا لو؟,تجارب الجسم لمدة 30 يومًا,الكرياتين والرياضة,النوم والصحة,العادات اليومية,حقائق علمية مفاجئة,ألغاز وتحديات"
           TOPIC_SOURCES: niche
           SCRIPT_STYLE: auto
           SCRIPT_REVIEW: rewrite
@@ -136,7 +136,7 @@ jobs:
           MUSIC_VOLUME: "0.10"
           END_CTA: "تابعنا للمزيد"
           UPLOAD: "true"
-          YT_PRIVACY: private
+          YT_PRIVACY: public
           YT_DAILY_LIMIT: "1"
           SYNTHETIC_MEDIA: "true"
           KEEP_VIDEOS: "true"
