@@ -146,11 +146,14 @@ def status():
             workflow="ShortsPilot AR",
             latest=latest,
             recent=[{
+                "id": r.get("id"),
                 "run_number": r.get("run_number"),
                 "status": r.get("status"),
                 "conclusion": r.get("conclusion"),
                 "created_at": r.get("created_at"),
+                "run_started_at": r.get("run_started_at"),
                 "html_url": r.get("html_url"),
+                "event": r.get("event"),
             } for r in runs if r.get("path", "").endswith(WORKFLOW)][:6],
         )
     except requests.RequestException as exc:
@@ -173,6 +176,35 @@ def run_now():
         if response.status_code != 204:
             return jsonify(ok=False, error=f"GitHub رفض بدء التشغيل (HTTP {response.status_code})."), 502
         return jsonify(ok=True, message="تم إرسال طلب التشغيل إلى GitHub Actions. تابع الحالة من لوحة التحكم.")
+    except requests.RequestException as exc:
+        return jsonify(ok=False, error=f"تعذر الاتصال بـ GitHub: {type(exc).__name__}"), 502
+    except RuntimeError as exc:
+        return jsonify(ok=False, error=str(exc)), 503
+
+
+
+@app.post("/api/cancel")
+@login_required
+def cancel_run():
+    require_csrf()
+    payload = request.get_json(silent=True) or {}
+    run_id = payload.get("run_id")
+    if not isinstance(run_id, int) or run_id <= 0:
+        return jsonify(ok=False, error="رقم التشغيل غير صالح."), 400
+    try:
+        headers = github_headers()
+        check = requests.get(f"{API}/actions/runs/{run_id}", headers=headers, timeout=20)
+        if check.status_code != 200:
+            return jsonify(ok=False, error="لم أستطع التحقق من التشغيل المطلوب."), 404
+        run = check.json()
+        if not run.get("path", "").endswith(WORKFLOW):
+            return jsonify(ok=False, error="هذا التشغيل لا يخص بوت ShortsPilot."), 403
+        if run.get("status") not in ("queued", "in_progress", "waiting", "pending"):
+            return jsonify(ok=False, error="التشغيل انتهى بالفعل."), 409
+        response = requests.post(f"{API}/actions/runs/{run_id}/cancel", headers=headers, timeout=20)
+        if response.status_code not in (202, 409):
+            return jsonify(ok=False, error=f"GitHub رفض إيقاف التشغيل (HTTP {response.status_code})."), 502
+        return jsonify(ok=True, message="تم إرسال طلب الإيقاف إلى GitHub Actions.")
     except requests.RequestException as exc:
         return jsonify(ok=False, error=f"تعذر الاتصال بـ GitHub: {type(exc).__name__}"), 502
     except RuntimeError as exc:
