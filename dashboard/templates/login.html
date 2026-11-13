@@ -1,20 +1,19 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>دخول الأدمن | ShortsPilot</title>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10182b"><title>دخول الأدمن | ShortsPilot AR</title>
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0b1020;color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;padding:20px}
-.card{width:min(420px,100%);background:#151d32;border:1px solid #293552;border-radius:20px;padding:28px;box-shadow:0 20px 60px #0005}
-h1{font-size:24px;margin:0 0 8px}.muted{color:#a9b5ce;font-size:14px;margin-bottom:24px}
-label{display:block;margin:16px 0 7px;font-size:14px}input{width:100%;padding:14px;border-radius:10px;border:1px solid #354563;background:#0d1528;color:white;font-size:16px}
-button{width:100%;margin-top:22px;padding:14px;border:0;border-radius:10px;background:#6d8cff;color:#071126;font-weight:bold;font-size:16px}
-.error{background:#4b202d;color:#ffd9df;padding:12px;border-radius:9px;margin-top:14px;font-size:14px}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% -15%,#2b4172 0,transparent 50%),#0a1020;color:#f3f6ff;font-family:Tahoma,Arial,sans-serif}
+.card{width:min(430px,100%);padding:30px;background:linear-gradient(155deg,#172541,#111a2e);border:1px solid #2b3b5a;border-radius:22px;box-shadow:0 25px 80px #0005}
+.brand{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(145deg,#91b2ff,#647ee8);color:#10182b;font-size:26px;font-weight:900;margin-bottom:22px}
+h1{font-size:24px;margin:0 0 8px}.sub{color:#9aabc7;font-size:13px;line-height:1.8;margin:0 0 25px}
+label{display:block;margin:17px 0 8px;font-size:13px;color:#d9e3f8}input{width:100%;padding:14px;border-radius:11px;border:1px solid #354969;background:#0c1528;color:#fff;font-size:16px;outline:none}input:focus{border-color:#83a5ff;box-shadow:0 0 0 3px #83a5ff22}
+button{width:100%;margin-top:23px;padding:14px;border:0;border-radius:11px;background:#83a5ff;color:#10182b;font-size:15px;font-weight:800;cursor:pointer}
+.error{background:#4b202d;color:#ffd9df;padding:12px;border:1px solid #804254;border-radius:10px;margin-top:14px;font-size:13px}
+.secure{margin-top:22px;padding-top:17px;border-top:1px solid #293b59;color:#8294b4;font-size:11px;text-align:center}
 </style></head>
-<body><main class="card"><h1>ShortsPilot AR</h1><p class="muted">لوحة التحكم — دخول الأدمن المصرّح به فقط</p>
-<form method="post" autocomplete="on">
-<input type="hidden" name="csrf" value="{{ csrf_token() }}">
-<label for="email">البريد الإلكتروني</label><input id="email" name="email" type="email" autocomplete="username" required>
-<label for="password">كلمة مرور لوحة التحكم</label><input id="password" name="password" type="password" autocomplete="current-password" required>
-{% if error %}<div class="error">{{ error }}</div>{% endif %}
-<button type="submit">تسجيل الدخول</button></form></main></body></html>
+<body><main class="card"><div class="brand">S</div><h1>مرحبًا بك في ShortsPilot</h1><p class="sub">لوحة إدارة البوت الخاصة بك. الدخول متاح لحساب الأدمن المصرّح به فقط.</p>
+<form method="post" autocomplete="on"><input type="hidden" name="csrf" value="{{ csrf_token() }}">
+<label for="email">البريد الإلكتروني</label><input id="email" name="email" type="email" autocomplete="username" placeholder="البريد المصرح به" required>
+<label for="password">كلمة مرور لوحة التحكم</label><input id="password" name="password" type="password" autocomplete="current-password" placeholder="كلمة المرور" required>
+{% if error %}<div class="error" role="alert">{{ error }}</div>{% endif %}
+<button type="submit">تسجيل الدخول</button></form><div class="secure">اتصال محمي · لا تشارك بيانات الدخول مع أي شخص</div></main></body></html>
