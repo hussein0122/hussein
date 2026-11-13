@@ -107,6 +107,18 @@ def main() -> int:
         "score fallback footage against its actual search query",
     )
 
+    # Preserve explicitly requested multi-item topics instead of collapsing them to one example.
+    # The upstream prompt otherwise tells the model to choose ONE topic from any broad subject,
+    # which turned a five-animal brief into a Short entirely about horseshoe crabs.
+    replace_once(
+        root / "script.py",
+        '''If the subject is broad, choose ONE specific, surprising, lesser-known topic inside it.
+Format: {STYLES[style]}''',
+        '''If the subject explicitly requests multiple named examples or a numbered count, cover ALL requested examples in the Short and give each its own scene/visual. Do not collapse a multi-item brief to one example. If the subject is broad and does not specify multiple items, choose ONE specific, surprising, lesser-known topic inside it.
+Format: {STYLES[style]}''',
+        "preserve explicitly requested multi-item topics",
+    )
+
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
     script_path = root / "script.py"
     script_source = script_path.read_text(encoding="utf-8")
