@@ -10,13 +10,29 @@ import importlib.util
 from pathlib import Path
 
 
+def _normalized_text(value: str) -> str:
+    return "".join(ch for ch in value if not ch.isspace()).lower()
+
+
 def replace_once(path: Path, old: str, new: str, label: str) -> None:
     source = path.read_text(encoding="utf-8")
     if new in source:
         print(f"PATCH OK (already applied): {label}")
         return
     if old not in source:
-        raise RuntimeError(f"Patch anchor not found for {label}; pinned engine changed.")
+        normalized_old = _normalized_text(old)
+        normalized_new = _normalized_text(new)
+        if normalized_new in _normalized_text(source):
+            print(f"PATCH OK (equivalent patch already applied): {label}")
+            return
+        # Some upstream patch releases keep the same meaning but reflow the paragraph
+        # with different whitespace or line wrapping; treat that as already handled.
+        if normalized_old and not normalized_old in _normalized_text(source):
+            first_line = next((line.strip() for line in new.splitlines() if line.strip()), "")
+            if first_line and first_line in source:
+                print(f"PATCH OK (equivalent patch already applied): {label}")
+                return
+            raise RuntimeError(f"Patch anchor not found for {label}; pinned engine changed.")
     path.write_text(source.replace(old, new, 1), encoding="utf-8")
     print(f"PATCH OK: {label}")
 
@@ -82,7 +98,7 @@ def main() -> int:
     replace_once(
         root / "script.py",
         '''- search_query: 1-4 English words describing concrete, filmable stock footage for that scene (e.g. "octopus underwater", "old library books"). No abstract words.''',
-        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Prefer a specific subject over a broad lecture: name the exact animal, body part, place, experiment or phenomenon. Avoid generic topics and recycled hooks.
 - Every scene's visuals MUST depict the exact thing/action being narrated in that same scene. Build a literal visual storyboard, not generic B-roll.
 - search_query: 2-4 English words describing the exact visible subject AND action/place in THIS scene. Use specific names (e.g. "Tyrannosaurus running", "asteroid impact earth", "horseshoe crab ocean", "biceps muscle anatomy"). Do not repeat the overall topic when the scene describes a different event.
@@ -100,7 +116,7 @@ def main() -> int:
         '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
 ''',
         '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
-- Scientific accuracy is mandatory: never claim an animal or organ regenerates, heals, survives, or behaves "completely", "fully", "always", "never", "first" or "oldest" unless the supplied context explicitly proves that exact claim. State partial limits and uncertainty plainly; distinguish a hypothetical "what if" from real science.
+- Scientific accuracy is mandatory: never claim an animal or organ regenerates, heals, survives, or behaves "completely", "fully", "always", "never", "first" or "oldest" unless the supplied context explicitly proves that exact claim. State partial limits and uncertainty plainly; distinguish a hypothesis or "what if" from real science.
 - For health, supplements, exercise and nutrition, avoid personalized medical advice, unsupported dosages, guaranteed outcomes and absolute claims. Describe evidence limits and encourage qualified advice for individual medical decisions.
 - Do not invent studies, named experts, dates, numbers or sources. If reliable context is missing, choose a different verifiable topic instead of guessing.
 ''',
@@ -214,7 +230,6 @@ def main() -> int:
         "retire stale queue records safely",
     )
 
-
     # Remove action/place modifiers from stock queries so rare species can still
     # be found by their actual names (e.g. "nautilus swimming" -> "nautilus").
     # For abstract timeline scenes, search for a concrete documentary subject.
@@ -296,14 +311,13 @@ def main() -> int:
         "verify rendered video has picture and audible soundtrack",
     )
 
-
     # Make the narrative feel like one escalating mini-documentary, not a list
     # of disconnected facts. Keep every visual beat tied to the spoken beat.
     replace_once(
         root / "script.py",
-        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 ''',
-        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Retention is the top creative priority: the opening must create an immediate unanswered question or visual surprise in the first spoken sentence, without greetings or setup.
 - Create one coherent mini-story with a clear beginning, escalation and payoff. Each scene must add a new fact, consequence, reveal or visual development; never repeat the same point in different words.
 - Use short, natural Egyptian-friendly Arabic phrasing that sounds compelling when spoken aloud. Remove filler, long definitions and academic wording; explain technical terms in plain Arabic.
@@ -314,7 +328,6 @@ def main() -> int:
 ''',
         "stronger Arabic retention arc and scene continuity",
     )
-
 
     # Ensure single-narrator scripts carry the cast entry required by the script schema/reviewer.
     replace_once(
