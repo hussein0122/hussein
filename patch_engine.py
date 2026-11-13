@@ -487,6 +487,31 @@ Format: {STYLES[style]}''',
         "increase GPT-OSS completion budget to 16000 tokens",
     )
 
+    replace_once(
+        root / "llm.py",
+        '''            payload["max_completion_tokens"] = max(max_tokens, 16000)  # room for GPT-OSS reasoning and full JSON output''',
+        '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # enough for GPT-OSS reasoning while respecting the 8k TPM tier''',
+        "cap GPT-OSS completion budget at 8000 tokens",
+    )
+
+    # Improve the first spoken line using a concrete curiosity gap, not a generic
+    # numbered-list announcement. This directly addresses the 76/100 hook failure.
+    replace_once(
+        root / "script.py",
+        '''- Scene 1 is the hook: a bold claim or question that stops the scroll in under 2 seconds. Never "In this video", never a greeting.''',
+        '''- Scene 1 is the hook: a bold claim or question that stops the scroll in under 2 seconds. Never "In this video", never a greeting.
+- For Arabic Shorts, make the first spoken line 8-12 natural Egyptian-Arabic words. Lead with a surprising verified contrast, a vivid consequence, or a sharp question about the exact subject. Do NOT open with a numbered-list label such as "5 كائنات..." or a generic announcement. Name the subject immediately and create a clear unanswered question that the next scene begins to answer.''',
+        "strengthen Arabic opening hooks against generic list introductions",
+    )
+
+    # The reviewer must act on the exact weak point instead of making cosmetic edits.
+    replace_once(
+        root / "script.py",
+        '''automatic finding: sharpen the hook, cut filler, make vague lines concrete, remove any claim that may not be true,''',
+        '''automatic finding: sharpen the hook, cut filler, make vague lines concrete, remove any claim that may not be true. If the hook is criticized, replace the entire first spoken sentence with a clearly different 8-12-word Egyptian-Arabic curiosity hook; do not merely rephrase the title or add an adjective. Never use a list announcement as the opening,''',
+        "make Script Doctor rewrite weak hooks decisively",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
