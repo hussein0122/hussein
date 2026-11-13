@@ -346,7 +346,7 @@ Format: {STYLES[style]}''',
     # multiword species such as "horseshoe crab".
     replace_once(
         root / "media.py",
-        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.67]',
+        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]',
         'matched = [c for c in fresh if relevance(c, query or c.query) >= (0.50 if len(_terms(query or c.query)) <= 2 else 0.67)]',
         "use species-aware relevance threshold",
     )
