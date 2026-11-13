@@ -141,14 +141,30 @@ def main() -> int:
         "use current Gemini 3.8 Flash default",
     )
 
-    # Groq retired llama-3.3-70b-versatile for free/developer usage in Aug 2026.
-    # Use Groq's documented production replacement so automatic failover remains usable.
-    replace_once(
-        root / "llm.py",
-        '"llama-3.3-70b-versatile"),',
-        '"openai/gpt-oss-120b"),',
-        "use current Groq GPT-OSS 120B fallback model",
-    )
+    # Pin the Groq preset model by editing only the model literal inside the
+    # Groq preset block. Do not depend on upstream whitespace, line wrapping,
+    # trailing commas, or indentation (these changed between engine revisions).
+    llm_path = root / "llm.py"
+    llm_source = llm_path.read_text(encoding="utf-8")
+    groq_start = llm_source.find('Preset("groq"')
+    if groq_start < 0:
+        raise RuntimeError("Groq preset not found in pinned llm.py")
+    groq_end = llm_source.find("\n    Preset(", groq_start + 1)
+    if groq_end < 0:
+        groq_end = len(llm_source)
+    groq_block = llm_source[groq_start:groq_end]
+    if '"openai/gpt-oss-120b"' in groq_block:
+        print("PATCH OK (already applied): use current Groq GPT-OSS 120B fallback model")
+    else:
+        old_model = '"llama-3.3-70b-versatile"'
+        if old_model not in groq_block:
+            raise RuntimeError(
+                "Groq preset found, but its model literal is unexpected; refusing an unsafe replacement."
+            )
+        groq_block = groq_block.replace(old_model, '"openai/gpt-oss-120b"', 1)
+        llm_source = llm_source[:groq_start] + groq_block + llm_source[groq_end:]
+        llm_path.write_text(llm_source, encoding="utf-8")
+        print("PATCH OK: use current Groq GPT-OSS 120B fallback model")
 
     # GPT-OSS 120B supports Groq strict structured outputs. Use JSON Schema mode
     # instead of best-effort JSON Object mode to avoid provider-side JSON validation
