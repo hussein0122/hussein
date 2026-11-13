@@ -217,6 +217,24 @@ def main() -> int:
     )
 
 
+    # Remove action/place modifiers from stock queries so rare species can still
+    # be found by their actual names (e.g. "nautilus swimming" -> "nautilus").
+    # For abstract timeline scenes, search for a concrete documentary subject.
+    replace_once(
+        root / "media.py",
+        '''def simplify_query(query: str) -> str:
+    words = [w for w in re.findall(r"[A-Za-z]+", query.lower()) if w not in STOP_WORDS]
+    return " ".join(words[:2])
+''',
+        '''def simplify_query(query: str) -> str:
+    modifiers = {"swimming", "basking", "beach", "timeline", "evolution", "underwater", "closeup"}
+    words = [w for w in re.findall(r"[A-Za-z]+", query.lower())
+             if w not in STOP_WORDS and w not in modifiers]
+    return " ".join(words[:2]) if words else "ancient animals"
+''',
+        "simplify stock searches to concrete species and documentary subjects",
+    )
+
     # Raise the scene relevance bar: with short, specific English queries, 2/3
     # matching subject terms is a stronger minimum than a loose 1/2 overlap.
     replace_once(
