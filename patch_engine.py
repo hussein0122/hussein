@@ -231,6 +231,21 @@ Format: {STYLES[style]}''',
         "keep Groq GPT-OSS strict JSON mode on schema validation errors",
     )
 
+    # Groq's GPT-OSS reasoning endpoint requires parsed/hidden reasoning format
+    # when JSON response formats are requested; raw reasoning can trigger HTTP 400.
+    replace_once(
+        root / "llm.py",
+        '''        elif schema is not None and self._json_mode:
+            payload["response_format"] = {"type": "json_object"}
+''',
+        '''        elif schema is not None and self._json_mode:
+            payload["response_format"] = {"type": "json_object"}
+        if self.name == "groq" and self.model == "openai/gpt-oss-120b" and "response_format" in payload:
+            payload["reasoning_format"] = "parsed"
+''',
+        "set Groq GPT-OSS reasoning format for structured JSON responses",
+    )
+
     # Keep the LLM retry policy in one place. Earlier patch revisions first
     # changed 2/3s to 6/8s and then changed that result to 3/5s; that chained
     # transformation was fragile and could leave an unrecognized intermediate.
