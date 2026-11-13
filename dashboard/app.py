@@ -102,7 +102,9 @@ def login():
         email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
         stored_hash = os.environ.get("ADMIN_PASSWORD_HASH", "")
-        valid = bool(stored_hash) and email == ADMIN_EMAIL and check_password_hash(stored_hash, password)
+        configured_password = os.environ.get("ADMIN_PASSWORD", "")
+        password_ok = (bool(stored_hash) and check_password_hash(stored_hash, password)) or (bool(configured_password) and hmac.compare_digest(configured_password, password))
+        valid = email == ADMIN_EMAIL and password_ok
         if valid:
             session.clear()
             session.permanent = True
