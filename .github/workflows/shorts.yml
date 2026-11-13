@@ -116,7 +116,7 @@ jobs:
           TRENDS_GEO: EG
           SCRIPT_STYLE: auto
           SCRIPT_REVIEW: rewrite
-          SCRIPT_REVIEW_ROUNDS: "2"
+          SCRIPT_REVIEW_ROUNDS: "1"
           SCRIPT_MIN_SCORE: "80"
           SCRIPT_TARGET_SCORE: "80"
           TARGET_SECONDS: "35"
