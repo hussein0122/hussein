@@ -1,58 +1,105 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10182b">
 <title>لوحة ShortsPilot AR</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;padding:22px}
-main{max-width:1000px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-h1{font-size:25px;margin:8px 0}.muted{color:#a9b5ce;font-size:13px}.panel{background:#151d32;border:1px solid #293552;border-radius:16px;padding:20px;margin:16px 0}
-.status{font-size:20px;font-weight:bold;margin:10px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-button{border:0;border-radius:10px;padding:12px 18px;font-weight:bold;cursor:pointer;background:#6d8cff;color:#071126}
-button.secondary{background:#273653;color:#e9efff}button:disabled{opacity:.5}
-.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #293552;padding:12px 0;flex-wrap:wrap}
-a{color:#9db3ff}.good{color:#7de0ad}.bad{color:#ff9ca9}.warn{color:#ffd37c}
-#message{min-height:24px;margin-top:12px;color:#b9c8e8}
-small{color:#9caecc}
-</style></head>
-<body><main>
-<div class="top"><div><h1>ShortsPilot AR</h1><div class="muted">مسجل الدخول: {{ admin_email }}</div></div>
-<form method="post" action="/logout"><input type="hidden" name="csrf" id="logout-csrf"><button class="secondary" type="submit">تسجيل الخروج</button></form></div>
-<section class="grid">
-<div class="panel"><div class="muted">حالة البوت</div><div class="status" id="bot-status">جارٍ التحميل…</div><small id="checked">—</small></div>
-<div class="panel"><div class="muted">آخر تشغيل</div><div class="status" id="last-run">—</div><small id="last-time">—</small></div>
-<div class="panel"><div class="muted">نتيجة آخر تشغيل</div><div class="status" id="last-result">—</div><small>من GitHub Actions</small></div>
+:root{color-scheme:dark;--bg:#0a1020;--panel:#121d33;--panel2:#17243d;--line:#263653;--muted:#9aabc7;--text:#f3f6ff;--blue:#83a5ff;--green:#63d7a3;--red:#ff8796;--amber:#ffd27c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 85% -10%,#263b68 0,transparent 42%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+.shell{max-width:1120px;margin:auto;padding:22px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:8px 0 22px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(145deg,#91b2ff,#647ee8);display:grid;place-items:center;color:#10182b;font-size:23px;font-weight:900;box-shadow:0 10px 30px #5478dc44}
+h1{font-size:22px;margin:0 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.7}.user{font-size:12px;color:#b9c8e3}
+button{font-family:inherit;border:0;border-radius:11px;padding:12px 17px;font-weight:700;cursor:pointer;background:var(--blue);color:#10182b}
+button.secondary{background:#253653;color:#e6edff;border:1px solid #354969}button.danger{background:#512737;color:#ffdce2;border:1px solid #814254}button:disabled{opacity:.5;cursor:wait}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.panel{background:linear-gradient(155deg,#16233c,#111a2e);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 12px 34px #0002}
+.metric-label{font-size:13px;color:var(--muted)}.metric{font-size:21px;font-weight:800;margin:12px 0 5px}.status-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#7788a8;margin-left:7px}
+.good{color:var(--green)}.bad{color:var(--red)}.warn{color:var(--amber)}.good .status-dot{background:var(--green)}.bad .status-dot{background:var(--red)}.warn .status-dot{background:var(--amber)}
+.section{margin-top:16px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}.section h2{font-size:17px;margin:0}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.note{margin-top:14px;padding:12px 14px;border-radius:12px;background:#302817;border:1px solid #65512b;color:#ffe2a5;font-size:13px;line-height:1.8}
+.message{min-height:22px;color:#b8c9e8;font-size:13px;margin-top:12px}
+.run-row{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #263653}.run-row:last-child{border-bottom:0}.run-no{font-weight:800;color:#dbe5ff}.run-state{font-size:13px}.run-date{font-size:12px;color:var(--muted);margin-top:5px}.run-link{color:var(--blue);font-size:13px;text-decoration:none}.run-link:hover{text-decoration:underline}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}.foot{text-align:center;padding:24px 0;color:#7788a8;font-size:11px}
+form{margin:0}@media(max-width:720px){.shell{padding:15px}.grid{grid-template-columns:1fr}.panel{padding:16px}.top{align-items:flex-start}.run-row{grid-template-columns:65px 1fr;gap:8px}.run-link{grid-column:2}}
+</style>
+</head>
+<body><main class="shell">
+<header class="top">
+ <div class="brand"><div class="logo">S</div><div><h1>ShortsPilot AR</h1><div class="muted">مركز إدارة قناة اليوتيوب</div><div class="user">مسجل الدخول: {{ admin_email }}</div></div></div>
+ <form method="post" action="/logout"><input type="hidden" name="csrf" id="logout-csrf"><button class="secondary" type="submit">تسجيل الخروج</button></form>
+</header>
+<section class="grid" aria-live="polite">
+ <article class="panel"><div class="metric-label">حالة البوت</div><div class="metric" id="bot-status"><span class="status-dot"></span>جارٍ الاتصال</div><div class="muted" id="checked">ننتظر بيانات GitHub Actions</div></article>
+ <article class="panel"><div class="metric-label">آخر تشغيل</div><div class="metric" id="last-run">—</div><div class="muted" id="last-time">لم تصل بيانات بعد</div></article>
+ <article class="panel"><div class="metric-label">نتيجة آخر تشغيل</div><div class="metric" id="last-result">—</div><div class="muted">حالة المهمة على GitHub Actions</div></article>
 </section>
-<section class="panel"><h3>التحكم</h3><p class="muted">بدء تشغيل يدوي واحد. التشغيل يستخدم إعدادات النشر الموجودة في GitHub Actions وقد ينشر فيديو عامًا عند نجاحه.</p>
-<button id="run" onclick="runBot()">تشغيل البوت الآن</button> <button class="secondary" onclick="loadStatus()">تحديث الحالة</button>
-<div id="message" role="status"></div></section>
-<section class="panel"><h3>سجل التشغيلات الأخيرة</h3><div id="history" class="muted">جارٍ التحميل…</div></section>
+<section class="panel section">
+ <div class="section-head"><div><h2>التحكم في البوت</h2><div class="muted">تشغيل يدوي ومتابعة التنفيذ من مكان واحد</div></div><div class="actions"><button id="run" onclick="runBot()">▶ تشغيل البوت الآن</button><button class="danger" id="cancel" onclick="cancelBot()" hidden>■ إيقاف التشغيل</button><button class="secondary" id="refresh" onclick="loadStatus()">تحديث الحالة ↻</button></div></div>
+ <div class="note">تنبيه: إعداد النشر الحالي يرفع الفيديوهات للعامة تلقائيًا عند نجاح التشغيل. لن يبدأ أي تشغيل إلا بعد تأكيدك.</div>
+ <div id="message" class="message" role="status"></div>
+</section>
+<section class="panel section">
+ <div class="section-head"><div><h2>سجل التشغيلات</h2><div class="muted">آخر 6 تشغيلات مسجلة على GitHub Actions</div></div><span class="muted" id="connection">غير محدّث</span></div>
+ <div id="history"><div class="empty">جارٍ تحميل سجل التشغيلات…</div></div>
+</section>
+<div class="foot">ShortsPilot AR · لوحة خاصة بالأدمن</div>
 </main>
 <script>
-let csrf="";
-async function init(){const c=await fetch("/api/csrf");if(c.status===401){location.href="/login";return}csrf=(await c.json()).token;document.getElementById("logout-csrf").value=csrf;loadStatus()}
+let csrf="", activeRunId=null, busy=false;
+const el=id=>document.getElementById(id);
+function stateLabel(r){if(r==="queued"||r==="waiting"||r==="pending")return "في قائمة الانتظار";if(r==="in_progress")return "يعمل الآن";if(r==="success")return "نجاح";if(r==="failure")return "فشل";if(r==="cancelled")return "تم الإيقاف";return r||"—"}
+function stateClass(r){if(r==="success")return "good";if(r==="failure"||r==="cancelled")return "bad";if(r==="queued"||r==="waiting"||r==="pending"||r==="in_progress")return "warn";return ""}
+function fmt(v){if(!v)return "—";try{return new Date(v).toLocaleString("ar-EG")}catch(_){return v}}
+async function init(){try{const r=await fetch("/api/csrf");if(r.status===401){location.href="/login";return}const d=await r.json();csrf=d.token;el("logout-csrf").value=csrf;await loadStatus()}catch(_){el("bot-status").textContent="تعذر الاتصال"}}
 async function loadStatus(){
- const status=document.getElementById("bot-status");status.textContent="جارٍ التحديث…";
+ if(busy)return;
+ el("refresh").disabled=true;
  try{
-  const r=await fetch("/api/status");const d=await r.json();
-  if(!r.ok||!d.connected){status.textContent="غير متصل";status.className="status bad";document.getElementById("message").textContent=d.error||"تعذر جلب الحالة";return}
-  const x=d.latest;
-  if(!x){status.textContent="لا توجد تشغيلات";document.getElementById("last-run").textContent="—";document.getElementById("last-result").textContent="—"}
-  else{
-   status.textContent=x.status==="in_progress"?"يعمل الآن":x.conclusion==="success"?"يعمل — آخر تشغيل ناجح":x.status==="queued"?"في قائمة الانتظار":"آخر تشغيل فشل";
-   status.className="status "+(x.status==="in_progress"||x.status==="queued"?"warn":x.conclusion==="success"?"good":"bad");
-   document.getElementById("last-run").textContent="#"+x.run_number;
-   document.getElementById("last-result").textContent=x.conclusion||x.status;
-   document.getElementById("last-time").textContent=new Date(x.created_at).toLocaleString("ar-EG");
-  }
-  document.getElementById("checked").textContent="آخر تحديث: "+new Date().toLocaleTimeString("ar-EG");
-  document.getElementById("history").innerHTML=d.recent.map(v=>'<div class="row"><span>تشغيل #'+v.run_number+'</span><span>'+v.status+' / '+(v.conclusion||"—")+'</span><a target="_blank" rel="noopener" href="'+v.html_url+'">التفاصيل</a></div>').join("")||"لا توجد بيانات";
- }catch(e){status.textContent="تعذر الاتصال";status.className="status bad"}
+  const r=await fetch("/api/status",{headers:{"Accept":"application/json"}});
+  const d=await r.json();
+  if(r.status===401){location.href="/login";return}
+  if(!r.ok||!d.connected){el("bot-status").textContent="غير متصل";el("bot-status").className="metric bad";el("message").textContent=d.error||"تعذر جلب حالة البوت";el("connection").textContent="مشكلة اتصال";return}
+  const x=d.latest;activeRunId=x&&["queued","in_progress","waiting","pending"].includes(x.status)?x.id:null;
+  el("bot-status").className="metric "+(x?stateClass(x.status==="completed"?x.conclusion:x.status):"");
+  el("bot-status").innerHTML='<span class="status-dot"></span>'+ (x?(x.status==="completed"?stateLabel(x.conclusion):stateLabel(x.status)):"لا توجد تشغيلات");
+  el("last-run").textContent=x?"#"+x.run_number:"—";
+  el("last-time").textContent=x?fmt(x.created_at):"لم يتم تسجيل تشغيل";
+  el("last-result").textContent=x?stateLabel(x.conclusion||x.status):"—";
+  el("last-result").className="metric "+(x?stateClass(x.conclusion||x.status):"");
+  el("checked").textContent="آخر تحديث: "+new Date().toLocaleTimeString("ar-EG");
+  el("connection").textContent="متصل بـ GitHub ✓";
+  el("cancel").hidden=!activeRunId;
+  el("run").disabled=!!activeRunId;
+  const history=el("history");history.replaceChildren();
+  if(!d.recent.length){history.innerHTML='<div class="empty">لا توجد تشغيلات حتى الآن</div>'}
+  d.recent.forEach(v=>{
+   const row=document.createElement("div");row.className="run-row";
+   const no=document.createElement("div");no.className="run-no";no.textContent="#"+v.run_number;
+   const info=document.createElement("div");
+   const st=document.createElement("div");st.className="run-state "+stateClass(v.conclusion||v.status);st.textContent=stateLabel(v.status==="completed"?v.conclusion:v.status);
+   const date=document.createElement("div");date.className="run-date";date.textContent=fmt(v.created_at);
+   info.append(st,date);
+   const link=document.createElement("a");link.className="run-link";link.href=v.html_url;link.target="_blank";link.rel="noopener noreferrer";link.textContent="تفاصيل التشغيل ↗";
+   row.append(no,info,link);history.append(row);
+  });
+ }catch(_){el("bot-status").textContent="تعذر الاتصال";el("bot-status").className="metric bad"}
+ finally{el("refresh").disabled=false}
 }
 async function runBot(){
- if(!confirm("هل تريد بدء تشغيل البوت؟ قد ينشر فيديو عامًا إذا نجح."))return;
- const b=document.getElementById("run"),m=document.getElementById("message");b.disabled=true;m.textContent="جارٍ إرسال طلب التشغيل…";
- try{const r=await fetch("/api/run",{method:"POST",headers:{"X-CSRF-Token":csrf}});const d=await r.json();m.textContent=d.message||d.error||"انتهى الطلب";if(d.ok)setTimeout(loadStatus,4000)}
- catch(e){m.textContent="تعذر الاتصال بالخادم"}finally{b.disabled=false}
+ if(busy||activeRunId)return;
+ if(!confirm("هل تريد تشغيل البوت الآن؟ قد ينشر فيديو عامًا على يوتيوب إذا نجح."))return;
+ busy=true;el("run").disabled=true;el("message").textContent="جارٍ إرسال طلب التشغيل…";
+ try{const r=await fetch("/api/run",{method:"POST",headers:{"X-CSRF-Token":csrf,"Accept":"application/json"}});const d=await r.json();el("message").textContent=d.message||d.error||"انتهى الطلب";if(d.ok)setTimeout(loadStatus,3500)}
+ catch(_){el("message").textContent="تعذر الاتصال بالخادم"}
+ finally{busy=false;el("run").disabled=!!activeRunId}
+}
+async function cancelBot(){
+ if(!activeRunId||busy)return;
+ if(!confirm("هل تريد طلب إيقاف التشغيل الحالي؟ قد يحتاج GitHub لحظات لتنفيذ الإيقاف."))return;
+ busy=true;el("cancel").disabled=true;el("message").textContent="جارٍ إرسال طلب الإيقاف…";
+ try{const r=await fetch("/api/cancel",{method:"POST",headers:{"Content-Type":"application/json","X-CSRF-Token":csrf,"Accept":"application/json"},body:JSON.stringify({run_id:activeRunId})});const d=await r.json();el("message").textContent=d.message||d.error||"انتهى الطلب";setTimeout(loadStatus,2500)}
+ catch(_){el("message").textContent="تعذر الاتصال بالخادم"}
+ finally{busy=false;el("cancel").disabled=false}
 }
 init();setInterval(loadStatus,60000);
 </script></body></html>
