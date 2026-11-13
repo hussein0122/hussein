@@ -18,8 +18,8 @@ def _normalized_text(value: str) -> str:
 def _flexible_pattern(value: str) -> str:
     """Build a regex that tolerates upstream indentation and line-wrap changes."""
     import re
-    parts = [re.escape(part) for part in re.split(r"\\s+", value.strip()) if part]
-    return r"\\s+".join(parts)
+    parts = [re.escape(part) for part in re.split(r"\s+", value.strip()) if part]
+    return r"\s+".join(parts)
 
 
 def replace_once(path: Path, old: str, new: str, label: str) -> None:
@@ -200,7 +200,7 @@ def main() -> int:
     llm_path = root / "llm.py"
     llm_source = llm_path.read_text(encoding="utf-8")
     retry_pattern = re.compile(
-        r"with_retries\\(_call,\\s*attempts=\\d+,\\s*base_delay=[0-9.]+,\\s*label=f\"LLM \\{p\\}\"\\)"
+        r"with_retries\(_call,\s*attempts=\d+,\s*base_delay=[0-9.]+,\s*label=f\"LLM \{p\}\"\)"
     )
     retry_matches = list(retry_pattern.finditer(llm_source))
     if len(retry_matches) != 1:
