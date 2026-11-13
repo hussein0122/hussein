@@ -62,7 +62,18 @@ jobs:
       - name: Apply and verify Shorts quality patches
         run: |
           python patch_engine.py
-          python -m compileall -q purffle_shorts
+          python - <<'PY'
+          import compileall
+          import importlib.util
+          from pathlib import Path
+          spec = importlib.util.find_spec("purffle_shorts")
+          if not spec or not spec.submodule_search_locations:
+              raise RuntimeError("purffle_shorts package path not found")
+          package_dir = Path(next(iter(spec.submodule_search_locations)))
+          if not compileall.compile_dir(str(package_dir), quiet=1, force=True):
+              raise RuntimeError(f"Compilation failed for {package_dir}")
+          print("Installed engine compilation: OK", package_dir)
+          PY
           # A second pass must be idempotent; imports must succeed before any API calls.
           python patch_engine.py
           python - <<'PY'
