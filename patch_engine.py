@@ -108,10 +108,15 @@ def main() -> int:
     )
 
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
-    replace_once(
-        root / "script.py",
-        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.''',
-        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
+    script_path = root / "script.py"
+    script_source = script_path.read_text(encoding="utf-8")
+    if "Make the topic highly curiosity-driven for Arabic viewers:" in script_source:
+        print("PATCH OK (already applied): Arabic curiosity and visual-match script brief")
+    else:
+        replace_once(
+            script_path,
+            '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.''',
+            '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
 - Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Prefer a specific subject over a broad lecture: name the exact animal, body part, place, experiment or phenomenon. Avoid generic topics and recycled hooks.
 - Every scene's visuals MUST depict the exact thing/action being narrated in that same scene. Build a literal visual storyboard, not generic B-roll.
@@ -119,10 +124,9 @@ def main() -> int:
 - image_prompt: one detailed English sentence for the exact same moment. Prefer photorealistic documentary/cinematic footage and scientifically accurate environments, lighting and anatomy. For dinosaurs/extinction, show the actual animal, asteroid, impact winter, fire or aftermath only when that is what the narration says; do not use generic galaxy/space footage.
 - Visual style hierarchy: (1) real documentary wildlife/nature/science footage, (2) photorealistic scientific reconstruction or realistic 3D render for events that cannot be filmed today, (3) clean educational diagram/animation ONLY when explaining an internal process, anatomy or mechanism. Never use childish cartoons, clip-art, random abstract shapes or decorative filler.
 - For anatomy, use realistic medical 3D illustration with only the named muscle/organ highlighted; for historical extinct animals, use plausible scientifically grounded photorealistic reconstruction; for living animals, show the exact species in its natural habitat.
-- Never use generic landscapes, buildings, people, gym footage or unrelated animals as substitutes. If the exact visual cannot be sourced, request a neutral cinematic background rather than misleading footage.
-''',
-        "Arabic curiosity and visual-match script brief",
-    )
+- Never use generic landscapes, buildings, people, gym footage or unrelated animals as substitutes. If the exact visual cannot be sourced, request a neutral cinematic background rather than misleading footage.''',
+            "Arabic curiosity and visual-match script brief",
+        )
 
     # Tighten scientific accuracy, especially for health and regeneration claims.
     replace_once(
