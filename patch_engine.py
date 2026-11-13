@@ -373,6 +373,9 @@ Format: {STYLES[style]}''',
 ''',
         '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Retention is the top creative priority: the opening must create an immediate unanswered question or visual surprise in the first spoken sentence, without greetings or setup.
+- Make the first sentence a specific, high-impact hook (about 8-14 Arabic words): start with a startling but verified fact, a direct "تخيل لو..." scenario clearly labeled as hypothetical, or a sharp contrast that challenges an obvious assumption. Name the exact creature/object/event immediately; avoid vague openings such as "هل تعلم" or "في فيديو النهارده".
+- The hook must promise a payoff that the Short actually delivers. Open a curiosity gap, do not reveal the full explanation in the first line, and move directly into the first concrete example. No fake danger, exaggerated superlatives, unsupported "الأقدم/الأول/الوحيد", or misleading claims.
+- Before finalizing, silently test three different opening lines and choose the strongest one for curiosity, clarity, factual accuracy and natural Egyptian Arabic. Do not include the alternatives in the script.
 - Create one coherent mini-story with a clear beginning, escalation and payoff. Each scene must add a new fact, consequence, reveal or visual development; never repeat the same point in different words.
 - Use short, natural Egyptian-friendly Arabic phrasing that sounds compelling when spoken aloud. Remove filler, long definitions and academic wording; explain technical terms in plain Arabic.
 - Keep the strongest reveal for the ending, but plant enough clues that the ending feels earned. Do not resolve the opening question too early.
