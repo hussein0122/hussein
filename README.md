@@ -111,18 +111,18 @@ https://www.googleapis.com/auth/youtube.force-ssl
 
 ### إعداد النشر
 
-1. افتح Render وسجّل الدخول باستخدام GitHub، ثم أنشئ **New Blueprint** واختر هذا المستودع.
-2. وافق على إنشاء خدمة `shortspilot-admin` من ملف `render.yaml`.
-3. في إعدادات Environment للخدمة، أضف المتغيرين التاليين يدويًا ولا ترسلهما في المحادثة:
+1. افتح Vercel واستورد المستودع `hussein0122/hussein` من GitHub، واترك Root Directory في جذر المستودع.
+2. في إعدادات Environment أضف المتغيرات التالية يدويًا:
+   - `SESSION_SECRET`: قيمة عشوائية طويلة لا تقل عن 32 حرفًا.
    - `ADMIN_PASSWORD_HASH`: بصمة كلمة مرور جديدة خاصة بلوحة التحكم، وليست كلمة مرور Google.
-   - `GITHUB_ACTIONS_TOKEN`: Fine-grained Personal Access Token محدود لهذا المستودع، مع صلاحية **Actions: Read and write** وMetadata: Read-only.
-4. أنشئ بصمة كلمة المرور محليًا على جهازك بعد تثبيت Flask:
+   - `GITHUB_ACTIONS_TOKEN`: Fine-grained Personal Access Token لهذا المستودع فقط، مع صلاحية **Actions: Read and write** وMetadata: Read-only.
+3. أنشئ بصمة كلمة المرور محليًا بعد تثبيت Flask:
    ```bash
    pip install "Flask>=3.1,<4"
    python -c "from werkzeug.security import generate_password_hash; import getpass; print(generate_password_hash(getpass.getpass('New dashboard password: '), method='scrypt'))"
    ```
-   انسخ البصمة الناتجة فقط إلى `ADMIN_PASSWORD_HASH` في Vercel. لا ترسل كلمة المرور أو البصمة في المحادثة ولا تضعهما في GitHub.
-3. انشر المشروع واستخدم رابط Vercel الناتج. البريد المسموح الوحيد هو `husseinsead3@gmail.com`.
-6. تعرض اللوحة آخر تشغيلات GitHub Actions، وحالة التشغيل، وتتيح إرسال طلب تشغيل يدوي وطلب إيقاف التشغيل الجاري بعد التحقق من أنه تابع لهذا الـworkflow. الإيقاف يرسل طلبًا إلى GitHub وقد يستغرق لحظات. زر التشغيل قد ينشر فيديو عامًا لأن الـworkflow الحالي مضبوط على `YT_PRIVACY=public`. الواجهة متجاوبة مع الهاتف وتحدّث حالة التشغيل كل دقيقة.
+   انسخ البصمة الناتجة فقط إلى `ADMIN_PASSWORD_HASH` في Vercel.
+4. انشر المشروع واستخدم رابط Vercel الناتج. البريد المسموح الوحيد هو `husseinsead3@gmail.com`.
 
+تعرض اللوحة آخر تشغيلات GitHub Actions، وحالة التشغيل، وتتيح إرسال طلب تشغيل يدوي وطلب إيقاف التشغيل الجاري بعد التحقق من أنه تابع لهذا الـworkflow. زر التشغيل قد ينشر فيديو عامًا لأن `YT_PRIVACY=public`. الواجهة متجاوبة مع الهاتف وتحدّث الحالة كل دقيقة. اللوحة غير منشورة حتى تكمل إعداد Vercel بنفسك.
 لا تضع GitHub token أو كلمة المرور أو SESSION_SECRET في ملفات المستودع. نشر اللوحة يتطلب موافقتك داخل حساب Vercel وإضافة المتغيرات بنفسك؛ لوحة التحكم غير منشورة حتى يتم ذلك.
