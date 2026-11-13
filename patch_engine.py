@@ -110,8 +110,9 @@ def main() -> int:
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
     replace_once(
         root / "script.py",
-        '''- search_query: 1-4 English words describing concrete, filmable stock footage for that scene (e.g. "octopus underwater", "old library books"). No abstract words.''',
-        '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
+        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.''',
+        '''- Every line earns its place: concrete details, numbers, names. Only well-established facts; no made-up statistics.
+- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or visual surprise, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Prefer a specific subject over a broad lecture: name the exact animal, body part, place, experiment or phenomenon. Avoid generic topics and recycled hooks.
 - Every scene's visuals MUST depict the exact thing/action being narrated in that same scene. Build a literal visual storyboard, not generic B-roll.
 - search_query: 2-4 English words describing the exact visible subject AND action/place in THIS scene. Use specific names (e.g. "Tyrannosaurus running", "asteroid impact earth", "horseshoe crab ocean", "biceps muscle anatomy"). Do not repeat the overall topic when the scene describes a different event.
@@ -119,7 +120,7 @@ def main() -> int:
 - Visual style hierarchy: (1) real documentary wildlife/nature/science footage, (2) photorealistic scientific reconstruction or realistic 3D render for events that cannot be filmed today, (3) clean educational diagram/animation ONLY when explaining an internal process, anatomy or mechanism. Never use childish cartoons, clip-art, random abstract shapes or decorative filler.
 - For anatomy, use realistic medical 3D illustration with only the named muscle/organ highlighted; for historical extinct animals, use plausible scientifically grounded photorealistic reconstruction; for living animals, show the exact species in its natural habitat.
 - Never use generic landscapes, buildings, people, gym footage or unrelated animals as substitutes. If the exact visual cannot be sourced, request a neutral cinematic background rather than misleading footage.
-''',
+- search_query: 1-4 English words describing concrete, filmable stock footage for that scene (e.g. "octopus underwater", "old library books"). No abstract words.''',
         "Arabic curiosity and visual-match script brief",
     )
 
