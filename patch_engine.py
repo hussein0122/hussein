@@ -483,13 +483,6 @@ Format: {STYLES[style]}''',
     replace_once(
         root / "llm.py",
         '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # room for hidden reasoning tokens''',
-        '''            payload["max_completion_tokens"] = max(max_tokens, 16000)  # room for GPT-OSS reasoning and full JSON output''',
-        "increase GPT-OSS completion budget to 16000 tokens",
-    )
-
-    replace_once(
-        root / "llm.py",
-        '''            payload["max_completion_tokens"] = max(max_tokens, 16000)  # room for GPT-OSS reasoning and full JSON output''',
         '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # enough for GPT-OSS reasoning while respecting the 8k TPM tier''',
         "cap GPT-OSS completion budget at 8000 tokens",
     )
