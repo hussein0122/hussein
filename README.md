@@ -24,7 +24,10 @@
 | `YT_CLIENT_ID` | OAuth Client ID |
 | `YT_CLIENT_SECRET` | OAuth Client Secret من نفس التطبيق |
 | `YT_REFRESH_TOKEN` | Refresh token من نفس التطبيق |
-| `GROQ_API_KEY` | مزود كتابة السكريبت الأساسي (مطلوب) |\n| `OPENROUTER_API_KEY` | بديل احتياطي موصى بإضافته |\n| `DEEPSEEK_API_KEY` | بديل احتياطي موصى بإضافته |\n| `GEMINI_API_KEY` | بديل احتياطي؛ يخضع لحصة Google |
+| `GROQ_API_KEY` | مزود كتابة السكريبت الأساسي (مطلوب) |
+| `OPENROUTER_API_KEY` | بديل احتياطي موصى بإضافته |
+| `DEEPSEEK_API_KEY` | بديل احتياطي موصى بإضافته |
+| `GEMINI_API_KEY` | بديل احتياطي؛ يخضع لحصة Google |
 | `PIXABAY_API_KEY` | لقطات الفيديو |
 
 لا ترسل أي قيمة سرية في المحادثة أو تضعها في ملفات المستودع.
