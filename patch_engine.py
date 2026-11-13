@@ -145,8 +145,8 @@ def main() -> int:
     # Use Groq's documented production replacement so automatic failover remains usable.
     replace_once(
         root / "llm.py",
-        '           "llama-3.3-70b-versatile"),',
-        '           "openai/gpt-oss-120b"),',
+        '"llama-3.3-70b-versatile"),',
+        '"openai/gpt-oss-120b"),',
         "use current Groq GPT-OSS 120B fallback model",
     )
 
