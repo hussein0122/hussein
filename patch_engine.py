@@ -321,31 +321,34 @@ Format: {STYLES[style]}''',
         "retire stale queue records safely",
     )
 
-    # Remove action/place modifiers from stock queries so rare species can still
-    # be found by their actual names (e.g. "nautilus swimming" -> "nautilus").
-    # For abstract timeline scenes, search for a concrete documentary subject.
+    # Remove habitat/era modifiers so rare species are searched by their exact names.
+    # Examples: "nautilus deep ocean" -> "nautilus"; "tuatara New Zealand forest" -> "tuatara".
     replace_once(
         root / "media.py",
         '''def simplify_query(query: str) -> str:
-    words = [w for w in re.findall(r"[A-Za-z]+", query.lower()) if w not in STOP_WORDS]
-    return " ".join(words[:2])
-''',
+     words = [w for w in re.findall(r"[A-Za-z]+", query.lower()) if w not in STOP_WORDS]
+     return " ".join(words[:2])
+ ''',
         '''def simplify_query(query: str) -> str:
-    modifiers = {"swimming", "basking", "beach", "timeline", "evolution", "underwater", "closeup"}
-    words = [w for w in re.findall(r"[A-Za-z]+", query.lower())
-             if w not in STOP_WORDS and w not in modifiers]
-    return " ".join(words[:2]) if words else "ancient animals"
-''',
-        "simplify stock searches to concrete species and documentary subjects",
+     modifiers = {
+         "swimming", "basking", "beach", "timeline", "evolution", "underwater",
+         "closeup", "deep", "ocean", "forest", "ancient", "lineage", "fossil",
+         "new", "zealand", "today", "modern", "wildlife", "documentary"
+     }
+     words = [w for w in re.findall(r"[A-Za-z]+", query.lower())
+              if w not in STOP_WORDS and w not in modifiers]
+     return " ".join(words[:2]) if words else "ancient animals"
+ ''',
+        "simplify stock searches to exact animal names",
     )
 
-    # Raise the scene relevance bar: with short, specific English queries, 2/3
-    # matching subject terms is a stronger minimum than a loose 1/2 overlap.
+    # Match one-word species by their name, while requiring both words for
+    # multiword species such as "horseshoe crab".
     replace_once(
         root / "media.py",
-        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]',
         'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.67]',
-        "raise minimum stock-footage subject match to 67 percent",
+        'matched = [c for c in fresh if relevance(c, query or c.query) >= (0.50 if len(_terms(query or c.query)) <= 2 else 0.67)]',
+        "use species-aware relevance threshold",
     )
 
     # A weakly scored script is not allowed to reach rendering/upload. The editor
