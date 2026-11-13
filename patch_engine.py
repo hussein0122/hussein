@@ -11,29 +11,42 @@ from pathlib import Path
 
 
 def _normalized_text(value: str) -> str:
-    return "".join(ch for ch in value if not ch.isspace()).lower()
+    """Normalize whitespace only; preserve punctuation and identifiers."""
+    return "".join(ch for ch in value if not ch.isspace())
+
+
+def _flexible_pattern(value: str) -> str:
+    """Build a regex that tolerates upstream indentation and line-wrap changes."""
+    import re
+    parts = [re.escape(part) for part in re.split(r"\\s+", value.strip()) if part]
+    return r"\\s+".join(parts)
 
 
 def replace_once(path: Path, old: str, new: str, label: str) -> None:
+    """Apply one idempotent patch, tolerating whitespace-only upstream changes."""
+    import re
+
     source = path.read_text(encoding="utf-8")
-    if new in source:
+    if new in source or _normalized_text(new) in _normalized_text(source):
         print(f"PATCH OK (already applied): {label}")
         return
-    if old not in source:
-        normalized_old = _normalized_text(old)
-        normalized_new = _normalized_text(new)
-        if normalized_new in _normalized_text(source):
-            print(f"PATCH OK (equivalent patch already applied): {label}")
-            return
-        # Some upstream patch releases keep the same meaning but reflow the paragraph
-        # with different whitespace or line wrapping; treat that as already handled.
-        if normalized_old and not normalized_old in _normalized_text(source):
-            first_line = next((line.strip() for line in new.splitlines() if line.strip()), "")
-            if first_line and first_line in source:
-                print(f"PATCH OK (equivalent patch already applied): {label}")
-                return
-            raise RuntimeError(f"Patch anchor not found for {label}; pinned engine changed.")
-    path.write_text(source.replace(old, new, 1), encoding="utf-8")
+
+    if old in source:
+        source = source.replace(old, new, 1)
+    else:
+        # Match the old anchor independent of indentation/line wrapping, then
+        # replace only that one occurrence. Never silently accept a missing semantic anchor.
+        pattern = _flexible_pattern(old)
+        matches = list(re.finditer(pattern, source, flags=re.MULTILINE))
+        if len(matches) != 1:
+            raise RuntimeError(
+                f"Patch anchor not found or ambiguous for {label} "
+                f"(whitespace-tolerant matches: {len(matches)})."
+            )
+        match = matches[0]
+        source = source[:match.start()] + new + source[match.end():]
+
+    path.write_text(source, encoding="utf-8")
     print(f"PATCH OK: {label}")
 
 
@@ -179,29 +192,37 @@ def main() -> int:
         "enable Groq strict JSON Schema mode for GPT-OSS 120B",
     )
 
-    # Gemini can temporarily return HTTP 503 during demand spikes. Give the
-    # provider a bounded retry window before the pipeline marks generation failed.
-    replace_once(
-        root / "llm.py",
-        '''                result = with_retries(_call, attempts=2, base_delay=3, label=f"LLM {p}")
-''',
-        '''                result = with_retries(_call, attempts=6, base_delay=8, label=f"LLM {p}")
-''',
-        "retry transient LLM overloads with bounded backoff",
+    # Keep the LLM retry policy in one place. Earlier patch revisions first
+    # changed 2/3s to 6/8s and then changed that result to 3/5s; that chained
+    # transformation was fragile and could leave an unrecognized intermediate.
+    # Normalize any known upstream/previous-patch variant directly to 3 attempts.
+    import re
+    llm_path = root / "llm.py"
+    llm_source = llm_path.read_text(encoding="utf-8")
+    retry_pattern = re.compile(
+        r"with_retries\\(_call,\\s*attempts=\\d+,\\s*base_delay=[0-9.]+,\\s*label=f\"LLM \\{p\\}\"\\)"
     )
-    # Cloud LLM calls should fail over promptly instead of spending many minutes
-    # timing out against an overloaded primary provider.
+    retry_matches = list(retry_pattern.finditer(llm_source))
+    if len(retry_matches) != 1:
+        raise RuntimeError(
+            "Expected exactly one LLM with_retries call in llm.py; "
+            f"found {len(retry_matches)}. Refusing an unsafe retry-policy patch."
+        )
+    retry_call = 'with_retries(_call, attempts=3, base_delay=5, label=f"LLM {p}")'
+    if retry_matches[0].group(0) == retry_call:
+        print("PATCH OK (already applied): use three bounded LLM retries")
+    else:
+        m = retry_matches[0]
+        llm_source = llm_source[:m.start()] + retry_call + llm_source[m.end():]
+        llm_path.write_text(llm_source, encoding="utf-8")
+        print("PATCH OK: use three bounded LLM retries")
+
+    # Cloud calls must time out quickly enough to allow the configured fallback.
     replace_once(
         root / "llm.py",
-        '            timeout = 600 if self.preset.local else 180',
-        '            timeout = 600 if self.preset.local else 75',
+        'timeout = 600 if self.preset.local else 180',
+        'timeout = 600 if self.preset.local else 75',
         "bound cloud LLM request timeouts before provider failover",
-    )
-    replace_once(
-        root / "llm.py",
-        'result = with_retries(_call, attempts=6, base_delay=8, label=f"LLM {p}")',
-        'result = with_retries(_call, attempts=3, base_delay=5, label=f"LLM {p}")',
-        "use three bounded retries before trying the next LLM provider",
     )
 
     # A single-run GitHub job must never sleep for hours waiting for YouTube quota.
