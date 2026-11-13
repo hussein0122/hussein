@@ -58,10 +58,17 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install "git+https://github.com/Chamanrajragu/purffle-shorts.git@38d49cd956319a73cf983153816acdbda3dc0e0c"
           python -m pip install -r requirements.txt
-      - name: Apply verified Shorts quality patches
+      - name: Apply and verify Shorts quality patches
         run: |
           python patch_engine.py
           python -m compileall -q purffle_shorts
+          # A second pass must be idempotent; imports must succeed before any API calls.
+          python patch_engine.py
+          python - <<'PY'
+          from purffle_shorts import config, llm, media, pipeline, script, utils
+          print("Preflight imports: OK")
+          print("LLM retry helper:", utils.with_retries.__name__)
+          PY
       - name: Check Gemini free-tier model access
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -106,6 +113,7 @@ jobs:
           LLM_PROVIDER: groq
           LLM_MODEL: "openai/gpt-oss-120b"
           LLM_FALLBACKS: "gemini"
+          LLM_MAX_RETRY_WAIT: "45"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
