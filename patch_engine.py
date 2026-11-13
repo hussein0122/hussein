@@ -81,9 +81,7 @@ def main() -> int:
     # Give the model a clear creative brief for curiosity hooks and literal, scene-level visuals.
     replace_once(
         root / "script.py",
-        '''- search_query: 1-4 English words describing concrete, filmable stock footage for that scene (e.g. "octopus underwater", "old library books"). No abstract words.
-- image_prompt: one vivid English sentence for an AI image of that scene, no text or letters in the image.
-''',
+        '''- search_query: 1-4 English words describing concrete, filmable stock footage for that scene (e.g. "octopus underwater", "old library books"). No abstract words.''',
         '''- Make the topic highly curiosity-driven for Arabic viewers: strange animals, surprising body facts, "what if?" scenarios, mysteries of nature, space, history and science. Use a strong question or surprising fact, then deliver a real payoff. Never invent a record, statistic, species, experiment or scientific claim.
 - Prefer a specific subject over a broad lecture: name the exact animal, body part, place, experiment or phenomenon. Avoid generic topics and recycled hooks.
 - Every scene's visuals MUST depict the exact thing/action being narrated in that same scene. Build a literal visual storyboard, not generic B-roll.
