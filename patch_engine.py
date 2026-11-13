@@ -299,6 +299,36 @@ def main() -> int:
         "stronger Arabic retention arc and scene continuity",
     )
 
+
+    # Ensure single-narrator scripts carry the cast entry required by the script schema/reviewer.
+    replace_once(
+        root / "script.py",
+        '''    else:
+        cast = []
+
+    description = re.sub(r"(?<!\w)#\w+", "", strip_emoji(str(data.get("description") or ""))).strip()
+''',
+        '''    else:
+        cast = ["Narrator"]
+
+    description = re.sub(r"(?<!\w)#\w+", "", strip_emoji(str(data.get("description") or ""))).strip()
+''',
+        "provide the required narrator cast entry for single-voice scripts",
+    )
+
+    # Keep the best draft and allow the next bounded review round to try another rewrite.
+    replace_once(
+        root / "script.py",
+        '''            log.info("Script Doctor rewrite scored %d, below the draft's %d: kept the draft", new_score, best_score)
+            break
+''',
+        '''            log.info("Script Doctor rewrite scored %d, below the draft's %d: kept the draft and will try another round",
+                     new_score, best_score)
+            continue
+''',
+        "continue bounded rewrite attempts after a weaker candidate",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
