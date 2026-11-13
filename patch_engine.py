@@ -209,6 +209,28 @@ Format: {STYLES[style]}''',
         "enable Groq strict JSON Schema mode for GPT-OSS 120B",
     )
 
+    # Do not silently downgrade Groq GPT-OSS strict schema failures to JSON Object mode.
+    # Groq documents strict structured outputs for this model; a downgrade caused the
+    # production json_validate_failed error seen in run #52.
+    replace_once(
+        root / "llm.py",
+        '''            generic = fmt == "json_schema" and ("http 400" in text or "http 422" in text)
+            if fmt and (named or generic):
+''',
+        '''            groq_gpt_oss = self.name == "groq" and self.model == "openai/gpt-oss-120b"
+            generic = fmt == "json_schema" and ("http 400" in text or "http 422" in text)
+            should_downgrade = named or generic
+            if groq_gpt_oss and fmt == "json_schema":
+                # Keep strict mode for schema validation errors. Downgrade only when
+                # the endpoint explicitly reports that the feature is unsupported.
+                should_downgrade = any(k in text for k in (
+                    "not supported", "unsupported", "does not support"
+                ))
+            if fmt and should_downgrade:
+''',
+        "keep Groq GPT-OSS strict JSON mode on schema validation errors",
+    )
+
     # Keep the LLM retry policy in one place. Earlier patch revisions first
     # changed 2/3s to 6/8s and then changed that result to 3/5s; that chained
     # transformation was fragile and could leave an unrecognized intermediate.
