@@ -347,6 +347,24 @@ def main() -> int:
         "continue bounded rewrite attempts after a weaker candidate",
     )
 
+    # Honor provider-supplied rate-limit windows (notably Groq HTTP 429 / TPM).
+    # The previous exponential backoff retried after 5/10 seconds even when Groq
+    # explicitly asked for 20-35 seconds, wasting requests and prolonging failures.
+    replace_once(
+        root / "utils.py",
+        '''            wait = base_delay * (2 ** (i - 1)) + random.uniform(0, 0.5)
+''',
+        '''            wait = base_delay * (2 ** (i - 1)) + random.uniform(0, 0.5)
+            # Prefer a server-provided retry window when present. Keep it bounded so
+            # a malformed response cannot stall a one-shot GitHub Actions job forever.
+            retry_hint = re.search(r"(?:try again in|retry after)\\s+([0-9]+(?:\\.[0-9]+)?)\\s*s", str(e), re.I)
+            if retry_hint:
+                wait = max(wait, float(retry_hint.group(1)) + 1.0)
+            wait = min(wait, float(os.getenv("LLM_MAX_RETRY_WAIT", "45")))
+''',
+        "respect provider Retry-After hints for rate limits",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
