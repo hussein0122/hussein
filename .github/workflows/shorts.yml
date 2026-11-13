@@ -124,7 +124,7 @@ jobs:
           AUDIENCE: الجمهور العربي
           LLM_PROVIDER: groq
           LLM_MODEL: "openai/gpt-oss-120b"
-          LLM_FALLBACKS: "gemini"
+          LLM_FALLBACKS: "openrouter,deepseek,gemini"
           LLM_MAX_RETRY_WAIT: "45"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
