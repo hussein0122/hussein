@@ -68,7 +68,7 @@ def main() -> int:
             if not fresh:
                 return None
             if fresh[0].source != "local":
-                matched = [c for c in fresh if relevance(c, query or c.query) >= 0.34]
+                matched = [c for c in fresh if relevance(c, query or c.query) >= (0.50 if len(_terms(query or c.query)) <= 2 else 0.67)]
                 if not matched:
                     log.info("Skipped unrelated stock results for visual query %r", query)
                     return None
@@ -77,15 +77,6 @@ def main() -> int:
         "reject unrelated stock footage",
     )
 
-    # Enforce scene-level relevance: never fall back to broad topic footage, and reject weak matches.
-    replace_once(
-        root / "media.py",
-        '''                matched = [c for c in fresh if relevance(c, query or c.query) >= 0.34]
-''',
-        '''                matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]
-''',
-        "require strong scene-to-footage relevance",
-    )
     replace_once(
         root / "media.py",
         '''        for q in (query, simplify_query(query), simplify_query(topic), topic):
@@ -340,15 +331,6 @@ Format: {STYLES[style]}''',
      return " ".join(words[:2]) if words else "ancient animals"
  ''',
         "simplify stock searches to exact animal names",
-    )
-
-    # Match one-word species by their name, while requiring both words for
-    # multiword species such as "horseshoe crab".
-    replace_once(
-        root / "media.py",
-        'matched = [c for c in fresh if relevance(c, query or c.query) >= 0.50]',
-        'matched = [c for c in fresh if relevance(c, query or c.query) >= (0.50 if len(_terms(query or c.query)) <= 2 else 0.67)]',
-        "use species-aware relevance threshold",
     )
 
     # A weakly scored script is not allowed to reach rendering/upload. The editor
