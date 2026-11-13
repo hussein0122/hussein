@@ -1,10 +1,10 @@
 # ShortsPilot AR 🇪🇬
 
-مشروع سحابي لإنتاج YouTube Shorts عربية باستخدام PurffleShorts وGemini وEdge TTS وPixabay، مع رفع عام وتحليل أداء القناة ولوحة تحكم إدارية.
+مشروع آلي لإنتاج YouTube Shorts عربية باستخدام محرك PurffleShorts، ونماذج Groq مع بدائل اختيارية، وEdge TTS المصري، وPixabay، وGitHub Actions. يتضمن رفعًا إلى YouTube، وقراءة Analytics، وردودًا اختيارية على التعليقات، ولوحة إدارة تحتاج إلى نشر منفصل.
 
 ## إعداد التشغيل الحالي
 
-نستخدم `gemini-3.5-flash-lite` مع Edge TTS المصري وPixabay، من دون تفعيل فوترة مدفوعة.
+الإعداد الفعلي في Workflow الحالي يستخدم `groq:openai/gpt-oss-120b` أساسيًا، ثم OpenRouter وDeepSeek وGemini كبدائل بالترتيب. البدائل التي لا توجد مفاتيحها في GitHub Secrets يتم تخطيها. Groq على الخطة الحالية قد يفرض حدًا قدره 8,000 token/minute؛ لذلك لا يمكن ضمان استمرار التوليد عند ضغط الاستخدام أو نفاد الحصة.
 
 - GitHub Actions ينشئ Short واحدًا في كل تشغيل، مع جدول UTC ثلاث مرات يوميًا.
 - الرفع مضبوط على `public`، والحد الداخلي الحالي 3 فيديوهات يوميًا؛ حدود YouTube الفعلية تظل هي الحاكمة.
@@ -24,14 +24,14 @@
 | `YT_CLIENT_ID` | OAuth Client ID |
 | `YT_CLIENT_SECRET` | OAuth Client Secret من نفس التطبيق |
 | `YT_REFRESH_TOKEN` | Refresh token من نفس التطبيق |
-| `GEMINI_API_KEY` | كتابة السكريبت عبر Google AI Studio |
+| `GROQ_API_KEY` | مزود كتابة السكريبت الأساسي (مطلوب) |\n| `OPENROUTER_API_KEY` | بديل احتياطي موصى بإضافته |\n| `DEEPSEEK_API_KEY` | بديل احتياطي موصى بإضافته |\n| `GEMINI_API_KEY` | بديل احتياطي؛ يخضع لحصة Google |
 | `PIXABAY_API_KEY` | لقطات الفيديو |
 
 لا ترسل أي قيمة سرية في المحادثة أو تضعها في ملفات المستودع.
 
 ### صلاحيات OAuth المطلوبة
 
-يجب إنشاء Refresh Token باستخدام نفس OAuth Web Client ID وSecret، وبالصلاحيات الثلاث التالية:
+استخدم OAuth Client وRefresh Token الحاليين اللذين اجتازا فحص التشغيل. لا تنشئ عميلًا جديدًا ولا تغيّر نوع التطبيق لمجرد هذا الدليل. يجب أن يتضمن التفويض الصلاحيات الثلاث التالية:
 
 ```
 https://www.googleapis.com/auth/youtube.upload
@@ -44,14 +44,14 @@ https://www.googleapis.com/auth/yt-analytics.readonly
 - [OAuth 2.0 Playground](https://developers.google.com/oauthplayground)
 - [GitHub Actions Secrets](https://github.com/hussein0122/hussein/settings/secrets/actions)
 
-في OAuth Playground استخدم بيانات OAuth الخاصة بك، وتأكد أن Redirect URI الخاص بـ Playground مسجل في OAuth Web Client. فعّل YouTube Data API v3 وYouTube Analytics API في مشروع Google Cloud. لا تفعّل الفوترة ولا تضف بطاقة.
+إذا احتجت إلى إعادة التفويض، استخدم نفس نوع OAuth Client الذي أنشأته سابقًا، وسجّل Redirect URI المطلوب للأداة المستخدمة. فعّل YouTube Data API v3 وYouTube Analytics API في مشروع Google Cloud. لا ترسل Client Secret أو Refresh Token في المحادثة.
 
 ## خطوات التشغيل
 
 1. شغّل **ShortsPilot AR - Automated Arabic Shorts** يدويًا من GitHub Actions أو من لوحة التحكم بعد إعدادها. تنبيه: إعداد الرفع الحالي `public`، لذلك التشغيل الناجح قد ينشر الفيديو للعامة.
 2. يفحص الـ Workflow وجود الأسرار دون طباعة قيمها.
 3. يختبر تجديد OAuth، وقراءة القناة، والوصول إلى YouTube Analytics.
-4. يختبر Gemini ثم FFmpeg.
+4. يفحص توفر Gemini كبديل (وقد يفشل فحص الحصة دون إيقاف التشغيل)، ثم يختبر FFmpeg.
 5. يجمع تقرير آخر 28 يومًا من المشاهدات ومتوسط نسبة المشاهدة ومدة المشاهدة المقدرة والإعجابات والتعليقات والمشتركين المكتسبين.
 6. يشغّل PurffleShorts مع `LEARN_FROM_STATS=true` ليستخدم تاريخ المشاهدات والإعجابات والتعليقات في توجيه أفكار الفيديوهات التالية.
 7. يحاول إنتاج ورفع فيديو واحد بخصوصية `public` حسب إعدادات الـworkflow الحالية.
@@ -107,7 +107,7 @@ https://www.googleapis.com/auth/youtube.force-ssl
 
 ## لوحة تحكم الأدمن
 
-توجد واجهة إدارة آمنة في المجلد `dashboard/`، ويمكن نشرها مجانًا على Render باستخدام ملف `render.yaml`.
+توجد واجهة إدارة في المجلد `dashboard/`، مع نقطة دخول Vercel في `app.py` وملف `vercel.json`. الواجهة ليست منشورة تلقائيًا؛ يجب نشرها وربط متغيرات البيئة يدويًا. كما يوجد ملف Blueprint بديل لـRender، لكنه ليس شرطًا لتشغيل البوت.
 
 ### إعداد النشر
 
@@ -121,8 +121,8 @@ https://www.googleapis.com/auth/youtube.force-ssl
    pip install "Flask>=3.1,<4"
    python -c "from werkzeug.security import generate_password_hash; import getpass; print(generate_password_hash(getpass.getpass('New dashboard password: '), method='scrypt'))"
    ```
-   انسخ البصمة الناتجة فقط إلى `ADMIN_PASSWORD_HASH` في Render. لا ترسل كلمة المرور أو البصمة في المحادثة ولا تضعهما في GitHub.
-5. استخدم رابط الخدمة الذي يعطيه Render. البريد المسموح الوحيد هو `husseinsead3@gmail.com`.
+   انسخ البصمة الناتجة فقط إلى `ADMIN_PASSWORD_HASH` في Vercel. لا ترسل كلمة المرور أو البصمة في المحادثة ولا تضعهما في GitHub.
+3. انشر المشروع واستخدم رابط Vercel الناتج. البريد المسموح الوحيد هو `husseinsead3@gmail.com`.
 6. تعرض اللوحة آخر تشغيلات GitHub Actions، وحالة التشغيل، وتتيح إرسال طلب تشغيل يدوي وطلب إيقاف التشغيل الجاري بعد التحقق من أنه تابع لهذا الـworkflow. الإيقاف يرسل طلبًا إلى GitHub وقد يستغرق لحظات. زر التشغيل قد ينشر فيديو عامًا لأن الـworkflow الحالي مضبوط على `YT_PRIVACY=public`. الواجهة متجاوبة مع الهاتف وتحدّث حالة التشغيل كل دقيقة.
 
-`SESSION_SECRET` يُنشأ تلقائيًا بواسطة Render من ملف Blueprint. لا تضع GitHub token أو كلمة المرور في ملفات المستودع. الخطة المجانية قد توقف الخدمة عند عدم الاستخدام، لذلك قد يستغرق فتح اللوحة أول مرة بعض الوقت. إعداد الخدمة ونشرها يتطلبان موافقتك داخل حساب Render؛ لا يمكن تنفيذ هذه الخطوة من صلاحيات GitHub المتاحة هنا.
+لا تضع GitHub token أو كلمة المرور أو SESSION_SECRET في ملفات المستودع. نشر اللوحة يتطلب موافقتك داخل حساب Vercel وإضافة المتغيرات بنفسك؛ لوحة التحكم غير منشورة حتى يتم ذلك.
