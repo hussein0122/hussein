@@ -470,6 +470,23 @@ Format: {STYLES[style]}''',
         "respect provider Retry-After hints for rate limits",
     )
 
+    # GPT-OSS is a reasoning model, but the pinned upstream detector only
+    # recognizes o-series and GPT-5 names. Without this patch it sends the small
+    # legacy max_tokens value (typically 4000) instead of max_completion_tokens.
+    # Give Groq GPT-OSS enough room for both reasoning and the complete JSON document.
+    replace_once(
+        root / "llm.py",
+        '''        return bool(re.match(r"^(o\\d|gpt-5)", self.model.split("/")[-1]))''',
+        '''        return bool(re.match(r"^(o\\d|gpt-5|gpt-oss)", self.model.split("/")[-1]))''',
+        "recognize GPT-OSS as a reasoning model",
+    )
+    replace_once(
+        root / "llm.py",
+        '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # room for hidden reasoning tokens''',
+        '''            payload["max_completion_tokens"] = max(max_tokens, 16000)  # room for GPT-OSS reasoning and full JSON output''',
+        "increase GPT-OSS completion budget to 16000 tokens",
+    )
+
     print("Pinned engine quality patches verified.")
     return 0
 
