@@ -2,7 +2,7 @@ name: ShortsPilot AR - Offline Documentary Studio
 
 on:
   schedule:
-    - cron: "0 8,14,20 * * *"
+    - cron: "0 7,8,13,14,19,20 * * *"
   workflow_dispatch:
     inputs:
       topic_id:
@@ -18,7 +18,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-cairo-slot:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.slot.outputs.should_run }}
+    steps:
+      - name: Check local Cairo publishing time
+        id: slot
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import os
+          event = os.environ.get("GITHUB_EVENT_NAME", "")
+          now = datetime.now(ZoneInfo("Africa/Cairo"))
+          should_run = event != "schedule" or now.hour in (10, 16, 22)
+          print(f"Cairo local time: {now.isoformat()}; run={should_run}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"should_run={'true' if should_run else 'false'}\\n")
+          PY
   documentary:
+    needs: check-cairo-slot
+    if: needs.check-cairo-slot.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
