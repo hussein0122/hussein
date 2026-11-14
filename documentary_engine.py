@@ -52,7 +52,7 @@ def find_video(query, key, required_terms=None):
     terms = list(dict.fromkeys(terms))
     candidates=[]
     for hit in hits:
-        haystack = " ".join([str(hit.get("tags","")), str(hit.get("user",""))]).lower()
+        haystack = str(hit.get("tags","")).lower()
         normalized = haystack.replace("-", " ").replace("_", " ")
         matched = [term for term in terms if term in normalized]
         if not matched:
