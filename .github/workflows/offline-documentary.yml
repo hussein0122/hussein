@@ -1,0 +1,92 @@
+name: ShortsPilot AR - Offline Documentary Studio
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic_id:
+        description: "Optional topic ID from data/documentary_topics.json"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shorts-offline-documentary
+  cancel-in-progress: false
+
+jobs:
+  documentary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TIMEZONE: Africa/Cairo
+      YT_PRIVACY: public
+      DOCUMENTARY_TOPIC_ID: ${{ inputs.topic_id }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+      YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+      YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+      DOCUMENTARY_VOICE: ar-EG-ShakirNeural
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore documentary topic queue
+        uses: actions/cache/restore@v4
+        with:
+          path: data/documentary_queue.json
+          key: documentary-queue-${{ github.run_id }}
+          restore-keys: documentary-queue-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install media tools and Arabic fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core
+          ffmpeg -filters | grep -q subtitles
+          ffprobe -version
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt edge-tts
+      - name: Validate required secrets without printing values
+        run: |
+          set -euo pipefail
+          for name in PIXABAY_API_KEY YT_CLIENT_ID YT_CLIENT_SECRET YT_REFRESH_TOKEN; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required Actions secret: $name"
+              exit 1
+            fi
+          done
+          echo "Offline documentary prerequisites are present."
+      - name: Validate library and Python syntax
+        run: |
+          python -m py_compile documentary_engine.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path("data/documentary_topics.json").read_text(encoding="utf-8"))
+          assert len(data["topics"]) >= 8
+          for topic in data["topics"]:
+              assert len(topic["scenes"]) >= 5
+              for scene in topic["scenes"]:
+                  assert scene["query"] and scene["narration"] and scene["caption"]
+          print(f"Curated documentary library OK: {len(data['topics'])} complete topics")
+          PY
+      - name: Render and publish one prewritten documentary Short (no LLM)
+        run: python documentary_engine.py
+      - name: Save rendered video and production assets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-documentary-${{ github.run_id }}
+          path: documentary_output/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Save documentary topic queue
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/documentary_queue.json
+          key: documentary-queue-${{ github.run_id }}
