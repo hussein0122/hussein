@@ -18,31 +18,51 @@
           "query": "crocodile underwater swimming",
           "narration": "تخيّل تمساحًا ضخمًا لا يكتفي بصيد الأسماك، بل يستطيع مهاجمة حيوانات هائلة عاشت في زمن الديناصورات.",
           "caption": "تمساح من عالم العمالقة",
-          "visual": "لقطة تمساح يسبح تحت الماء"
+          "visual": "لقطة تمساح يسبح تحت الماء",
+          "required_terms": [
+            "crocodile",
+            "crocodiles"
+          ]
         },
         {
           "query": "crocodile close up jaws teeth",
           "narration": "في العصر الطباشيري عاشت تماسيح منقرضة مثل الديينوسوكس، ويُعتقد أن بعض أفرادها بلغ أطوالًا هائلة.",
           "caption": "الديينوسوكس العملاق",
-          "visual": "تفاصيل الفك والأسنان"
+          "visual": "تفاصيل الفك والأسنان",
+          "required_terms": [
+            "crocodile",
+            "crocodiles"
+          ]
         },
         {
           "query": "prehistoric dinosaur fossil museum",
           "narration": "كان هذا العالم مختلفًا تمامًا؛ أنهار ومستنقعات تعيش حولها ديناصورات، ومفترسات تنتظر قرب الماء.",
           "caption": "عالم العصر الطباشيري",
-          "visual": "أحفورة ديناصور أو متحف"
+          "visual": "أحفورة ديناصور أو متحف",
+          "required_terms": [
+            "crocodile",
+            "crocodiles"
+          ]
         },
         {
           "query": "alligator crocodile river nature",
           "narration": "لكن لا تخلط بينه وبين التماسيح الحالية. إنها أقارب بعيدة تشترك في سلالة قديمة، وليست النوع نفسه.",
           "caption": "أقارب وليسوا النوع نفسه",
-          "visual": "تمساح حديث في بيئته"
+          "visual": "تمساح حديث في بيئته",
+          "required_terms": [
+            "crocodile",
+            "crocodiles"
+          ]
         },
         {
           "query": "crocodile eyes water surface",
           "narration": "والأغرب أن أسلوب الصيد المتخفي قرب سطح الماء ما زال حاضرًا لدى التماسيح اليوم؛ إرث تطوري مذهل.",
           "caption": "إرث تطوري مستمر",
-          "visual": "عين تمساح فوق سطح الماء"
+          "visual": "عين تمساح فوق سطح الماء",
+          "required_terms": [
+            "crocodile",
+            "crocodiles"
+          ]
         }
       ]
     },
@@ -61,31 +81,51 @@
           "query": "horseshoe crab underwater ocean",
           "narration": "على شاطئ البحر قد ترى كائنًا يبدو كأنه خرج من فيلم خيال علمي؛ درع صلب وذيل طويل وشكل لا يشبه السرطانات المعتادة.",
           "caption": "كائن أقدم من الديناصورات",
-          "visual": "سرطان حدوة الحصان"
+          "visual": "سرطان حدوة الحصان",
+          "required_terms": [
+            "horseshoe crab",
+            "horseshoe"
+          ]
         },
         {
           "query": "horseshoe crab crawling beach",
           "narration": "إنه سرطان حدوة الحصان، ومجموعته التطورية أقدم بكثير من ظهور الديناصورات، وقد نجت عبر عصور جيولوجية طويلة.",
           "caption": "ناجي من عصور سحيقة",
-          "visual": "حركته على الشاطئ"
+          "visual": "حركته على الشاطئ",
+          "required_terms": [
+            "horseshoe crab",
+            "horseshoe"
+          ]
         },
         {
           "query": "horseshoe crab underside legs",
           "narration": "ورغم اسمه، فهو أقرب إلى العناكب والعقارب من السرطانات الحقيقية؛ وهذا ما يجعل شكله أكثر غرابة.",
           "caption": "ليس سرطانًا حقيقيًا",
-          "visual": "الجزء السفلي والأرجل"
+          "visual": "الجزء السفلي والأرجل",
+          "required_terms": [
+            "horseshoe crab",
+            "horseshoe"
+          ]
         },
         {
           "query": "medical laboratory blue liquid blood test",
           "narration": "أما المفاجأة فهي دمه الأزرق، الذي يحتوي مادة شديدة الحساسية للبكتيريا وتُستخدم مشتقاتها في اختبارات سلامة أدوية وحقن.",
           "caption": "دم أزرق لأسباب علمية",
-          "visual": "مختبر واختبارات طبية"
+          "visual": "مختبر واختبارات طبية",
+          "required_terms": [
+            "horseshoe crab",
+            "horseshoe"
+          ]
         },
         {
           "query": "horseshoe crabs spawning beach",
           "narration": "هذا الكائن ليس مجرد أحفورة حية؛ إنه جزء مهم من النظام الساحلي، وحمايته ضرورية لاستمرار دوره في الطبيعة.",
           "caption": "حمايته مسؤوليتنا",
-          "visual": "سرطانات على الشاطئ"
+          "visual": "سرطانات على الشاطئ",
+          "required_terms": [
+            "horseshoe crab",
+            "horseshoe"
+          ]
         }
       ]
     },
@@ -104,31 +144,46 @@
           "query": "coelacanth fish underwater",
           "narration": "لوقت طويل، اعتقد العلماء أن مجموعة كاملة من الأسماك اختفت من العالم منذ ملايين السنين.",
           "caption": "اعتقدوا أنها انقرضت",
-          "visual": "سمكة سيلاكانث"
+          "visual": "سمكة سيلاكانث",
+          "required_terms": [
+            "coelacanth"
+          ]
         },
         {
           "query": "deep sea fish underwater cave",
           "narration": "كانت أحافير السيلاكانث معروفة، ثم حدثت المفاجأة عام ألف وتسعمئة وثمانية وثلاثين، عندما عُثر على سمكة حيّة قرب جنوب أفريقيا.",
           "caption": "اكتشاف غيّر العلم",
-          "visual": "أعماق البحر"
+          "visual": "أعماق البحر",
+          "required_terms": [
+            "coelacanth"
+          ]
         },
         {
           "query": "coelacanth pectoral fins swimming",
           "narration": "زعانفها تشبه الأطراف اللحمية، وتتحرك بطريقة مميزة جعلت العلماء يدرسونها لفهم تطور الفقاريات.",
           "caption": "زعانف غير عادية",
-          "visual": "حركة الزعانف"
+          "visual": "حركة الزعانف",
+          "required_terms": [
+            "coelacanth"
+          ]
         },
         {
           "query": "museum coelacanth specimen",
           "narration": "لكن السمكة الحديثة ليست نسخة مطابقة من الأحافير القديمة؛ إنها نوع حي من سلالة قديمة استمرت فروع منها.",
           "caption": "ليست نسخة من الأحفورة",
-          "visual": "عينة في متحف"
+          "visual": "عينة في متحف",
+          "required_terms": [
+            "coelacanth"
+          ]
         },
         {
           "query": "deep ocean underwater blue",
           "narration": "والقصة تذكّرنا أن المحيطات ما زالت تخفي أسرارًا، وأن غياب الكائن عن أعيننا لا يعني دائمًا أنه اختفى.",
           "caption": "المحيطات ما زالت تخفي الأسرار",
-          "visual": "لقطة أعماق واسعة"
+          "visual": "لقطة أعماق واسعة",
+          "required_terms": [
+            "coelacanth"
+          ]
         }
       ]
     },
@@ -146,31 +201,46 @@
           "query": "nautilus swimming underwater",
           "narration": "في أعماق المحيط يعيش حيوان يحمل معه صدفة ملتفة تبدو كأنها تصميم هندسي بالغ الدقة.",
           "caption": "غواصة حية",
-          "visual": "نوتيلوس يسبح"
+          "visual": "نوتيلوس يسبح",
+          "required_terms": [
+            "nautilus"
+          ]
         },
         {
           "query": "nautilus shell spiral close up",
           "narration": "هذا هو النوتيلوس، أحد رأسيات الأرجل، وتكشف صدفتُه عن حجرات متتابعة يزداد حجمها مع نموه.",
           "caption": "صدفة مقسمة إلى حجرات",
-          "visual": "تفاصيل الصدفة"
+          "visual": "تفاصيل الصدفة",
+          "required_terms": [
+            "nautilus"
+          ]
         },
         {
           "query": "nautilus tentacles underwater closeup",
           "narration": "يستطيع التحكم في كمية الغاز والسائل داخل حجرات الصدفة ليساعده ذلك على ضبط الطفو والتحرك في الماء.",
           "caption": "يتحكم في طفو جسمه",
-          "visual": "المجسات والحركة"
+          "visual": "المجسات والحركة",
+          "required_terms": [
+            "nautilus"
+          ]
         },
         {
           "query": "nautilus swimming dark ocean",
           "narration": "أقارب النوتيلوس عاشوا منذ مئات الملايين من السنين، لكن الأنواع الموجودة اليوم ليست هي نفسها الأنواع القديمة.",
           "caption": "سلالة عريقة",
-          "visual": "النوتيلوس في الظلام"
+          "visual": "النوتيلوس في الظلام",
+          "required_terms": [
+            "nautilus"
+          ]
         },
         {
           "query": "coral reef deep sea underwater",
           "narration": "هذا التصميم الطبيعي يذكّرنا بأن بعض حلول البقاء قديمة جدًا، لكنها ما زالت تعمل بكفاءة في عالم المحيطات.",
           "caption": "هندسة الطبيعة",
-          "visual": "مشهد بحري ختامي"
+          "visual": "مشهد بحري ختامي",
+          "required_terms": [
+            "nautilus"
+          ]
         }
       ]
     },
@@ -188,31 +258,46 @@
           "query": "microscope tardigrade water bear",
           "narration": "هناك حيوان صغير جدًا قد لا تراه بعينك، لكنه من أكثر الكائنات إثارة لفضول العلماء.",
           "caption": "أصغر من حبة غبار",
-          "visual": "دب الماء تحت المجهر"
+          "visual": "دب الماء تحت المجهر",
+          "required_terms": [
+            "tardigrade"
+          ]
         },
         {
           "query": "tardigrade microscope closeup",
           "narration": "اسمه دب الماء، وله ثماني أرجل قصيرة ومخالب دقيقة، ويعيش غالبًا في البيئات الرطبة وبين طبقات الماء.",
           "caption": "ثماني أرجل صغيرة",
-          "visual": "تفاصيل الجسم"
+          "visual": "تفاصيل الجسم",
+          "required_terms": [
+            "tardigrade"
+          ]
         },
         {
           "query": "moss close up water droplets macro",
           "narration": "عندما تجف البيئة، تستطيع أنواع منه الدخول في حالة خاملة تقل فيها العمليات الحيوية إلى حد كبير.",
           "caption": "يدخل حالة خمول",
-          "visual": "طحالب وقطرات ماء"
+          "visual": "طحالب وقطرات ماء",
+          "required_terms": [
+            "tardigrade"
+          ]
         },
         {
           "query": "scientific laboratory microscope research",
           "narration": "في هذه الحالة أظهرت تجارب قدرة بعض الأنواع على تحمّل ظروف قاسية، لكن ذلك لا يعني أنها لا تُقهر أو تعيش بلا حدود.",
           "caption": "قدرة مذهلة وليست خارقة",
-          "visual": "باحث يفحص عينة"
+          "visual": "باحث يفحص عينة",
+          "required_terms": [
+            "tardigrade"
+          ]
         },
         {
           "query": "microscope scientific laboratory macro",
           "narration": "دب الماء مثال صغير على أن الحياة قد تطوّر حلولًا غير متوقعة لمواجهة الجفاف والضغط والبيئات الصعبة.",
           "caption": "عالم كامل في حجم مجهري",
-          "visual": "لقطة مجهرية ختامية"
+          "visual": "لقطة مجهرية ختامية",
+          "required_terms": [
+            "tardigrade"
+          ]
         }
       ]
     },
@@ -230,31 +315,56 @@
           "query": "volcano eruption ash plume",
           "narration": "انفجار بركاني هائل، عمود من الرماد يرتفع إلى السماء، ثم ومضات برق تشق السحابة السوداء.",
           "caption": "برق داخل سحابة بركانية",
-          "visual": "ثوران بركاني"
+          "visual": "ثوران بركاني",
+          "required_terms": [
+            "volcano",
+            "volcanic",
+            "lightning"
+          ]
         },
         {
           "query": "volcanic lightning eruption night",
           "narration": "هذه الظاهرة حقيقية وتُعرف باسم البرق البركاني، وقد رُصدت في ثورات بركانية مختلفة حول العالم.",
           "caption": "ظاهرة موثقة",
-          "visual": "برق بركاني ليلي"
+          "visual": "برق بركاني ليلي",
+          "required_terms": [
+            "volcano",
+            "volcanic",
+            "lightning"
+          ]
         },
         {
           "query": "volcanic ash particles closeup",
           "narration": "أثناء الانفجار تتصادم جزيئات الرماد وشظايا الصخور وقطرات الجليد، ويمكن أن تنفصل الشحنات الكهربائية بينها.",
           "caption": "تصادم الجزيئات يولّد شحنات",
-          "visual": "رماد بركاني"
+          "visual": "رماد بركاني",
+          "required_terms": [
+            "volcano",
+            "volcanic",
+            "lightning"
+          ]
         },
         {
           "query": "thunderstorm lightning clouds",
           "narration": "عندما يصبح فرق الشحنة كبيرًا بما يكفي، يحدث التفريغ الكهربائي الذي نراه على هيئة ومضة برق.",
           "caption": "تفريغ كهربائي",
-          "visual": "برق في السحب"
+          "visual": "برق في السحب",
+          "required_terms": [
+            "volcano",
+            "volcanic",
+            "lightning"
+          ]
         },
         {
           "query": "volcano plume aerial landscape",
           "narration": "إنها تذكير بقوة العمليات الطبيعية، وبأن البركان لا يطلق الحمم فقط؛ بل قد يصنع طقسًا كهربائيًا خاصًا به.",
           "caption": "الطبيعة أعقد مما نتخيل",
-          "visual": "لقطة جوية للبركان"
+          "visual": "لقطة جوية للبركان",
+          "required_terms": [
+            "volcano",
+            "volcanic",
+            "lightning"
+          ]
         }
       ]
     },
@@ -272,31 +382,51 @@
           "query": "deep sea ocean darkness underwater",
           "narration": "كلما نزلنا أعمق في المحيط، اختفى ضوء الشمس وانخفضت الحرارة وارتفع الضغط بشكل هائل.",
           "caption": "عالم بلا شمس",
-          "visual": "أعماق المحيط"
+          "visual": "أعماق المحيط",
+          "required_terms": [
+            "deep sea",
+            "deep-sea"
+          ]
         },
         {
           "query": "anglerfish bioluminescent deep sea",
           "narration": "بعض الكائنات تستخدم الإضاءة الحيوية، فتنتج ضوءًا يساعدها على جذب الفرائس أو التواصل أو التمويه.",
           "caption": "ضوء تصنعه الكائنات",
-          "visual": "سمكة أعماق مضيئة"
+          "visual": "سمكة أعماق مضيئة",
+          "required_terms": [
+            "deep sea",
+            "deep-sea"
+          ]
         },
         {
           "query": "giant tube worms hydrothermal vent",
           "narration": "وبالقرب من الفتحات الحرارية المائية، توجد أنظمة بيئية تعتمد على كائنات دقيقة تستمد الطاقة من تفاعلات كيميائية.",
           "caption": "حياة بلا ضوء الشمس",
-          "visual": "الديدان الأنبوبية والفتحات"
+          "visual": "الديدان الأنبوبية والفتحات",
+          "required_terms": [
+            "deep sea",
+            "deep-sea"
+          ]
         },
         {
           "query": "hydrothermal vent underwater smoke",
           "narration": "تسمى هذه العملية التخليق الكيميائي، وهي بديل عن البناء الضوئي في هذه البيئات الفريدة.",
           "caption": "التخليق الكيميائي",
-          "visual": "فتحة حرارية مائية"
+          "visual": "فتحة حرارية مائية",
+          "required_terms": [
+            "deep sea",
+            "deep-sea"
+          ]
         },
         {
           "query": "deep sea jellyfish glowing",
           "narration": "الأعماق ليست صحراء ميتة؛ إنها عالم مزدحم بتكيفات مذهلة لم نكتشف منها إلا القليل.",
           "caption": "ما زال الكثير مجهولًا",
-          "visual": "قنديل مضيء"
+          "visual": "قنديل مضيء",
+          "required_terms": [
+            "deep sea",
+            "deep-sea"
+          ]
         }
       ]
     },
@@ -314,31 +444,46 @@
           "query": "octopus underwater reef moving",
           "narration": "الأخطبوط لا يشبه أي حيوان آخر؛ ثمانية أذرع مرنة، وجسم قادر على تغيير لونه وملمسه بسرعة.",
           "caption": "ثمانية أذرع وذكاء مدهش",
-          "visual": "أخطبوط يتحرك"
+          "visual": "أخطبوط يتحرك",
+          "required_terms": [
+            "octopus"
+          ]
         },
         {
           "query": "octopus eye close up underwater",
           "narration": "يمتلك دماغًا مركزيًا، لكن نسبة كبيرة من خلاياه العصبية موجودة في أذرعه، ما يمنحها قدرة معالجة محلية للمعلومات.",
           "caption": "جهاز عصبي غير مألوف",
-          "visual": "عين الأخطبوط"
+          "visual": "عين الأخطبوط",
+          "required_terms": [
+            "octopus"
+          ]
         },
         {
           "query": "octopus camouflage coral reef",
           "narration": "يستطيع تغيير اللون والملمس للتمويه، مستخدمًا خلايا جلدية متخصصة تتحكم في الألوان والانعكاسات.",
           "caption": "تمويه لحظي",
-          "visual": "تمويه الأخطبوط"
+          "visual": "تمويه الأخطبوط",
+          "required_terms": [
+            "octopus"
+          ]
         },
         {
           "query": "octopus opening jar aquarium",
           "narration": "في تجارب عديدة أظهرت أخطبوطات قدرة على حل مشكلات والتعلم والتعامل مع أشياء جديدة، رغم أن سلوكها يختلف بين الأفراد.",
           "caption": "يتعلم ويحل المشكلات",
-          "visual": "أخطبوط يتفاعل مع جسم"
+          "visual": "أخطبوط يتفاعل مع جسم",
+          "required_terms": [
+            "octopus"
+          ]
         },
         {
           "query": "octopus swimming away underwater",
           "narration": "الأخطبوط يثبت أن الذكاء تطوّر بأشكال متعددة، وليس حكرًا على الحيوانات ذات العمود الفقري.",
           "caption": "الذكاء له أشكال كثيرة",
-          "visual": "لقطة ختامية للأخطبوط"
+          "visual": "لقطة ختامية للأخطبوط",
+          "required_terms": [
+            "octopus"
+          ]
         }
       ]
     },
