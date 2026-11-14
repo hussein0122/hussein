@@ -90,12 +90,12 @@ jobs:
           import json
           from pathlib import Path
           data=json.loads(Path("data/documentary_topics.json").read_text(encoding="utf-8"))
-          assert len(data["topics"]) >= 8
+          assert len(data["topics"]) == 50
           for topic in data["topics"]:
               assert len(topic["scenes"]) >= 5
               for scene in topic["scenes"]:
-                  assert scene["query"] and scene["narration"] and scene["caption"]
-          print(f"Curated documentary library OK: {len(data['topics'])} complete topics")
+                  assert scene["query"] and scene["narration"] and scene["caption"] and scene["required_terms"]
+          print(f"Curated documentary library OK: {len(data['topics'])} complete topics with tagged scenes")
           PY
       - name: Render and publish one prewritten documentary Short (no LLM)
         run: python documentary_engine.py
