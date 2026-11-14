@@ -35,7 +35,7 @@ jobs:
           should_run = event != "schedule" or now.hour in (10, 16, 22)
           print(f"Cairo local time: {now.isoformat()}; run={should_run}")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"should_run={'true' if should_run else 'false'}\\n")
+              output.write(f"should_run={'true' if should_run else 'false'}\n")
           PY
   documentary:
     needs: check-cairo-slot
