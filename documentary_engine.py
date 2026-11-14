@@ -30,10 +30,16 @@ def choose_topic(topics):
         raise RuntimeError(f"Unknown DOCUMENTARY_TOPIC_ID: {requested}")
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"completed":[]}
     completed = set(state.get("completed", []))
+    if len(completed) >= len(topics):
+        cycle = int(state.get("cycle", 0)) + 1
+        state = {"completed": [], "cycle": cycle}
+        STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        completed = set()
+        print(f"TOPIC_LIBRARY_CYCLE_RESET={cycle}; all 50 curated topics were used once.")
     for topic in topics:
         if topic["id"] not in completed:
             return topic
-    raise RuntimeError("All curated topics have been used. Add more reviewed scripts before repeating topics.")
+    raise RuntimeError("No unused curated topic is available.")
 
 def find_video(query, key, required_terms=None):
     response = requests.get(PIXABAY, params={"key":key,"q":query,"per_page":50,"safesearch":"true"}, timeout=45)
