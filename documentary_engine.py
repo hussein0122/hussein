@@ -51,9 +51,18 @@ def find_video(query, key, required_terms=None):
         terms = [x.lower() for x in query.replace("-", " ").split() if len(x) >= 4 and x.lower() not in stop]
     terms = list(dict.fromkeys(terms))
     candidates=[]
+    forbidden_visual_terms = (
+        "green screen", "greenscreen", "chroma key", "chroma-key",
+        "green background", "transparent background", "alpha channel",
+        "isolated on green", "overlay", "keying"
+    )
     for hit in hits:
         haystack = str(hit.get("tags","")).lower()
         normalized = haystack.replace("-", " ").replace("_", " ")
+        # Reject stock assets explicitly advertised as chroma/overlay elements.
+        if any(term in normalized for term in forbidden_visual_terms):
+            print(f"VISUAL_REJECT_CHROMA asset={hit.get('id')} tags={haystack}")
+            continue
         matched = [term for term in terms if term in normalized]
         if not matched:
             continue
@@ -61,15 +70,23 @@ def find_video(query, key, required_terms=None):
         for quality in ("large","medium","small","tiny"):
             item=videos.get(quality)
             if item and item.get("url") and item.get("width",0)>0 and item.get("height",0)>0:
+                width, height = int(item["width"]), int(item["height"])
+                # Avoid visibly soft low-resolution sources; prefer vertical footage when available.
+                if min(width, height) < 540:
+                    continue
                 relevance=len(matched)
-                resolution=item.get("width",0)*item.get("height",0)
-                candidates.append((relevance,resolution,item["url"],hit.get("id"),hit.get("tags","")))
+                resolution=width*height
+                portrait_bonus = 1 if height > width else 0
+                candidates.append((relevance,portrait_bonus,resolution,item["url"],hit.get("id"),haystack))
                 break
     if not candidates:
-        raise RuntimeError(f"No Pixabay clip passed subject relevance check for '{query}'. Required subject terms: {terms}. Refusing unrelated footage.")
+        raise RuntimeError(
+            f"No suitable full-scene Pixabay clip passed subject, chroma and resolution checks for '{query}'. "
+            f"Required subject terms: {terms}. Refusing unrelated, green-screen or low-resolution footage."
+        )
     candidates.sort(reverse=True)
-    relevance,resolution,url,asset_id,tags=candidates[0]
-    print(f"VISUAL_MATCH_OK asset={asset_id} matched_terms={relevance} tags={tags}")
+    relevance,portrait_bonus,resolution,url,asset_id,tags=candidates[0]
+    print(f"VISUAL_MATCH_OK asset={asset_id} matched_terms={relevance} portrait={portrait_bonus} pixels={resolution} tags={tags}")
     return url, asset_id
 
 def download(url, target):
@@ -113,8 +130,18 @@ def render_scene(video, voice, caption, target):
     duration=seconds(voice)+0.65
     ass=target.with_suffix(".ass")
     make_ass(ass,caption,duration)
-    vf=f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,fps=30,eq=contrast=1.06:saturation=1.12:gamma=0.98,subtitles={ass.as_posix()}"
-    run("ffmpeg","-y","-stream_loop","-1","-i",video,"-i",voice,"-t",f"{duration:.2f}","-vf",vf,"-map","0:v:0","-map","1:a:0","-af","loudnorm=I=-16:TP=-1.5:LRA=11","-c:v","libx264","-preset","veryfast","-crf","20","-c:a","aac","-b:a","160k","-shortest","-movflags","+faststart",target)
+    # Full-frame documentary treatment: no chroma-key layer, no cutout overlay.
+    # Keep native footage motion, add restrained camera push-in, clean grade and detail.
+    vf=(
+        "scale=1200:2134:force_original_aspect_ratio=increase,"
+        "crop=1080:1920,setsar=1,"
+        "zoompan=z='min(zoom+0.00012,1.035)':"
+        "x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1080x1920:fps=30,"
+        "eq=contrast=1.08:saturation=1.10:gamma=0.99,"
+        "unsharp=5:5:0.45:3:3:0.0,"
+        f"subtitles={ass.as_posix()}"
+    )
+    run("ffmpeg","-y","-stream_loop","-1","-i",video,"-i",voice,"-t",f"{duration:.2f}","-vf",vf,"-map","0:v:0","-map","1:a:0","-af","loudnorm=I=-16:TP=-1.5:LRA=11","-c:v","libx264","-preset","fast","-crf","18","-pix_fmt","yuv420p","-c:a","aac","-b:a","192k","-shortest","-movflags","+faststart",target)
     return duration
 
 def upload(path, topic):
