@@ -35,23 +35,36 @@ def choose_topic(topics):
             return topic
     raise RuntimeError("All curated topics have been used. Add more reviewed scripts before repeating topics.")
 
-def find_video(query, key):
-    response = requests.get(PIXABAY, params={"key":key,"q":query,"per_page":30,"safesearch":"true"}, timeout=45)
+def find_video(query, key, required_terms=None):
+    response = requests.get(PIXABAY, params={"key":key,"q":query,"per_page":50,"safesearch":"true"}, timeout=45)
     response.raise_for_status()
     hits = response.json().get("hits", [])
+    stop = {"in","the","and","with","close","up","face","body","moving","wild","feeding","behavior","documentary","natural","habitat"}
+    terms = [str(x).lower() for x in (required_terms or []) if str(x).strip()]
+    if not terms:
+        terms = [x.lower() for x in query.replace("-", " ").split() if len(x) >= 4 and x.lower() not in stop]
+    terms = list(dict.fromkeys(terms))
     candidates=[]
     for hit in hits:
+        haystack = " ".join([str(hit.get("tags","")), str(hit.get("user",""))]).lower()
+        normalized = haystack.replace("-", " ").replace("_", " ")
+        matched = [term for term in terms if term in normalized]
+        if not matched:
+            continue
         videos=hit.get("videos") or {}
         for quality in ("large","medium","small","tiny"):
             item=videos.get(quality)
             if item and item.get("url") and item.get("width",0)>0 and item.get("height",0)>0:
-                candidates.append((item.get("width",0)*item.get("height",0), item["url"], hit.get("id")))
+                relevance=len(matched)
+                resolution=item.get("width",0)*item.get("height",0)
+                candidates.append((relevance,resolution,item["url"],hit.get("id"),hit.get("tags","")))
                 break
     if not candidates:
-        raise RuntimeError(f"No relevant Pixabay video results for scene query: {query}")
+        raise RuntimeError(f"No Pixabay clip passed subject relevance check for '{query}'. Required subject terms: {terms}. Refusing unrelated footage.")
     candidates.sort(reverse=True)
-    # Stable selection per query; no random unrelated stock footage.
-    return candidates[0][1], candidates[0][2]
+    relevance,resolution,url,asset_id,tags=candidates[0]
+    print(f"VISUAL_MATCH_OK asset={asset_id} matched_terms={relevance} tags={tags}")
+    return url, asset_id
 
 def download(url, target):
     with requests.get(url, stream=True, timeout=(30,180)) as response:
@@ -129,7 +142,7 @@ def main():
     clips=[]
     for index,scene in enumerate(topic["scenes"],1):
         print(f"Preparing scene {index}/{len(topic['scenes'])}: {scene['visual']}")
-        url,asset_id=find_video(scene["query"],os.environ["PIXABAY_API_KEY"])
+        url,asset_id=find_video(scene["query"],os.environ["PIXABAY_API_KEY"],scene.get("required_terms"))
         raw=OUT/f"{topic['id']}_{index:02d}_source.mp4"
         voice=OUT/f"{topic['id']}_{index:02d}.mp3"
         clip=OUT/f"{topic['id']}_{index:02d}.mp4"
