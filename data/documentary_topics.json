@@ -341,6 +341,2400 @@
           "visual": "لقطة ختامية للأخطبوط"
         }
       ]
+    },
+    {
+      "id": "great-white-shark",
+      "title": "القرش الأبيض: صياد المحيط",
+      "description": "وثائقي عن القرش الأبيض. من أكبر الأسماك المفترسة وله دور مهم في توازن المحيط. يستشعر الروائح والإشارات الكهربائية الضعيفة.",
+      "tags": [
+        "shark",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "great white shark in natural habitat",
+          "narration": "تعرّف على القرش الأبيض. من أكبر الأسماك المفترسة وله دور مهم في توازن المحيط.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالقرش الأبيض — in natural habitat",
+          "required_terms": [
+            "shark"
+          ]
+        },
+        {
+          "query": "great white shark close up face body",
+          "narration": "والتفصيلة المدهشة: يستشعر الروائح والإشارات الكهربائية الضعيفة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالقرش الأبيض — close up face body",
+          "required_terms": [
+            "shark"
+          ]
+        },
+        {
+          "query": "great white shark moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات القرش الأبيض على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالقرش الأبيض — moving in wild",
+          "required_terms": [
+            "shark"
+          ]
+        },
+        {
+          "query": "great white shark feeding behavior",
+          "narration": "راقب حركة القرش الأبيض وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالقرش الأبيض — feeding behavior",
+          "required_terms": [
+            "shark"
+          ]
+        },
+        {
+          "query": "great white shark wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالقرش الأبيض — wildlife documentary",
+          "required_terms": [
+            "shark"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blue-whale",
+      "title": "الحوت الأزرق: أضخم حيوان",
+      "description": "وثائقي عن الحوت الأزرق. أكبر حيوان معروف ويتغذى على كائنات صغيرة تسمى الكريل. يصفّي الماء عبر صفائح البالين للحصول على الغذاء.",
+      "tags": [
+        "whale",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "blue whale in natural habitat",
+          "narration": "تعرّف على الحوت الأزرق. أكبر حيوان معروف ويتغذى على كائنات صغيرة تسمى الكريل.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالحوت الأزرق — in natural habitat",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "blue whale close up face body",
+          "narration": "والتفصيلة المدهشة: يصفّي الماء عبر صفائح البالين للحصول على الغذاء.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالحوت الأزرق — close up face body",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "blue whale moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الحوت الأزرق على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالحوت الأزرق — moving in wild",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "blue whale feeding behavior",
+          "narration": "راقب حركة الحوت الأزرق وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالحوت الأزرق — feeding behavior",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "blue whale wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالحوت الأزرق — wildlife documentary",
+          "required_terms": [
+            "whale"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elephant",
+      "title": "ذاكرة الفيل وروابط القطيع",
+      "description": "وثائقي عن الفيل. يعيش في مجموعات عائلية وروابط اجتماعية معقدة. خرطومه يجمع الشم واللمس والإمساك.",
+      "tags": [
+        "elephant",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "elephant in natural habitat",
+          "narration": "تعرّف على الفيل. يعيش في مجموعات عائلية وروابط اجتماعية معقدة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالفيل — in natural habitat",
+          "required_terms": [
+            "elephant"
+          ]
+        },
+        {
+          "query": "elephant close up face body",
+          "narration": "والتفصيلة المدهشة: خرطومه يجمع الشم واللمس والإمساك.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالفيل — close up face body",
+          "required_terms": [
+            "elephant"
+          ]
+        },
+        {
+          "query": "elephant moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الفيل على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالفيل — moving in wild",
+          "required_terms": [
+            "elephant"
+          ]
+        },
+        {
+          "query": "elephant feeding behavior",
+          "narration": "راقب حركة الفيل وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالفيل — feeding behavior",
+          "required_terms": [
+            "elephant"
+          ]
+        },
+        {
+          "query": "elephant wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالفيل — wildlife documentary",
+          "required_terms": [
+            "elephant"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cheetah",
+      "title": "الفهد الصياد وسرعة الانطلاق",
+      "description": "وثائقي عن الفهد الصياد. من أسرع الحيوانات البرية، لكن سرعته القصوى لا تدوم طويلًا. عموده الفقري المرن يساعده على خطوات واسعة.",
+      "tags": [
+        "cheetah",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "cheetah in natural habitat",
+          "narration": "تعرّف على الفهد الصياد. من أسرع الحيوانات البرية، لكن سرعته القصوى لا تدوم طويلًا.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالفهد الصياد — in natural habitat",
+          "required_terms": [
+            "cheetah"
+          ]
+        },
+        {
+          "query": "cheetah close up face body",
+          "narration": "والتفصيلة المدهشة: عموده الفقري المرن يساعده على خطوات واسعة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالفهد الصياد — close up face body",
+          "required_terms": [
+            "cheetah"
+          ]
+        },
+        {
+          "query": "cheetah moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الفهد الصياد على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالفهد الصياد — moving in wild",
+          "required_terms": [
+            "cheetah"
+          ]
+        },
+        {
+          "query": "cheetah feeding behavior",
+          "narration": "راقب حركة الفهد الصياد وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالفهد الصياد — feeding behavior",
+          "required_terms": [
+            "cheetah"
+          ]
+        },
+        {
+          "query": "cheetah wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالفهد الصياد — wildlife documentary",
+          "required_terms": [
+            "cheetah"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "snow-leopard",
+      "title": "نمر الثلوج: شبح الجبال",
+      "description": "وثائقي عن نمر الثلوج. فراؤه المموه يساعده على الاختفاء بين الصخور والثلوج. ذيله الطويل وأقدامه العريضة يساعدانه على التوازن.",
+      "tags": [
+        "leopard",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "snow leopard in natural habitat",
+          "narration": "تعرّف على نمر الثلوج. فراؤه المموه يساعده على الاختفاء بين الصخور والثلوج.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـنمر الثلوج — in natural habitat",
+          "required_terms": [
+            "leopard"
+          ]
+        },
+        {
+          "query": "snow leopard close up face body",
+          "narration": "والتفصيلة المدهشة: ذيله الطويل وأقدامه العريضة يساعدانه على التوازن.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـنمر الثلوج — close up face body",
+          "required_terms": [
+            "leopard"
+          ]
+        },
+        {
+          "query": "snow leopard moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات نمر الثلوج على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـنمر الثلوج — moving in wild",
+          "required_terms": [
+            "leopard"
+          ]
+        },
+        {
+          "query": "snow leopard feeding behavior",
+          "narration": "راقب حركة نمر الثلوج وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـنمر الثلوج — feeding behavior",
+          "required_terms": [
+            "leopard"
+          ]
+        },
+        {
+          "query": "snow leopard wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـنمر الثلوج — wildlife documentary",
+          "required_terms": [
+            "leopard"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "polar-bear",
+      "title": "الدب القطبي والحياة فوق الجليد",
+      "description": "وثائقي عن الدب القطبي. حياته مرتبطة بالجليد البحري ومناطق صيد الفقمات. طبقة الدهون والفراء الكثيف يعزلانه من البرد.",
+      "tags": [
+        "bear",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "polar bear in natural habitat",
+          "narration": "تعرّف على الدب القطبي. حياته مرتبطة بالجليد البحري ومناطق صيد الفقمات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالدب القطبي — in natural habitat",
+          "required_terms": [
+            "bear"
+          ]
+        },
+        {
+          "query": "polar bear close up face body",
+          "narration": "والتفصيلة المدهشة: طبقة الدهون والفراء الكثيف يعزلانه من البرد.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالدب القطبي — close up face body",
+          "required_terms": [
+            "bear"
+          ]
+        },
+        {
+          "query": "polar bear moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الدب القطبي على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالدب القطبي — moving in wild",
+          "required_terms": [
+            "bear"
+          ]
+        },
+        {
+          "query": "polar bear feeding behavior",
+          "narration": "راقب حركة الدب القطبي وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالدب القطبي — feeding behavior",
+          "required_terms": [
+            "bear"
+          ]
+        },
+        {
+          "query": "polar bear wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالدب القطبي — wildlife documentary",
+          "required_terms": [
+            "bear"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "komodo-dragon",
+      "title": "تنين كومودو: أكبر سحلية حية",
+      "description": "وثائقي عن تنين كومودو. أكبر سحلية حية ويعيش في جزر إندونيسيا. لسانه المتشعب يتتبع الروائح وله فك قوي وغدد سمية.",
+      "tags": [
+        "dragon",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "komodo dragon in natural habitat",
+          "narration": "تعرّف على تنين كومودو. أكبر سحلية حية ويعيش في جزر إندونيسيا.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـتنين كومودو — in natural habitat",
+          "required_terms": [
+            "dragon"
+          ]
+        },
+        {
+          "query": "komodo dragon close up face body",
+          "narration": "والتفصيلة المدهشة: لسانه المتشعب يتتبع الروائح وله فك قوي وغدد سمية.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـتنين كومودو — close up face body",
+          "required_terms": [
+            "dragon"
+          ]
+        },
+        {
+          "query": "komodo dragon moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات تنين كومودو على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـتنين كومودو — moving in wild",
+          "required_terms": [
+            "dragon"
+          ]
+        },
+        {
+          "query": "komodo dragon feeding behavior",
+          "narration": "راقب حركة تنين كومودو وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـتنين كومودو — feeding behavior",
+          "required_terms": [
+            "dragon"
+          ]
+        },
+        {
+          "query": "komodo dragon wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـتنين كومودو — wildlife documentary",
+          "required_terms": [
+            "dragon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mantis-shrimp",
+      "title": "الروبيان السرعوف ولكمته الخاطفة",
+      "description": "وثائقي عن الروبيان السرعوف. يمتلك أطرافًا أمامية تضرب بسرعة لفتح الأصداف. فقاعة التجويف الناتجة عن الضربة تضيف صدمة محلية.",
+      "tags": [
+        "shrimp",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "mantis shrimp in natural habitat",
+          "narration": "تعرّف على الروبيان السرعوف. يمتلك أطرافًا أمامية تضرب بسرعة لفتح الأصداف.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالروبيان السرعوف — in natural habitat",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "mantis shrimp close up face body",
+          "narration": "والتفصيلة المدهشة: فقاعة التجويف الناتجة عن الضربة تضيف صدمة محلية.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالروبيان السرعوف — close up face body",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "mantis shrimp moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الروبيان السرعوف على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالروبيان السرعوف — moving in wild",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "mantis shrimp feeding behavior",
+          "narration": "راقب حركة الروبيان السرعوف وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالروبيان السرعوف — feeding behavior",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "mantis shrimp wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالروبيان السرعوف — wildlife documentary",
+          "required_terms": [
+            "shrimp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "electric-eel",
+      "title": "الأنقليس الكهربائي: صدمة من جسمه",
+      "description": "وثائقي عن الأنقليس الكهربائي. خلايا متخصصة داخل جسمه تعمل كوحدات كهربائية. تزامن الخلايا ينتج تفريغًا للصيد والدفاع.",
+      "tags": [
+        "eel",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "electric eel in natural habitat",
+          "narration": "تعرّف على الأنقليس الكهربائي. خلايا متخصصة داخل جسمه تعمل كوحدات كهربائية.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالأنقليس الكهربائي — in natural habitat",
+          "required_terms": [
+            "eel"
+          ]
+        },
+        {
+          "query": "electric eel close up face body",
+          "narration": "والتفصيلة المدهشة: تزامن الخلايا ينتج تفريغًا للصيد والدفاع.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالأنقليس الكهربائي — close up face body",
+          "required_terms": [
+            "eel"
+          ]
+        },
+        {
+          "query": "electric eel moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الأنقليس الكهربائي على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالأنقليس الكهربائي — moving in wild",
+          "required_terms": [
+            "eel"
+          ]
+        },
+        {
+          "query": "electric eel feeding behavior",
+          "narration": "راقب حركة الأنقليس الكهربائي وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالأنقليس الكهربائي — feeding behavior",
+          "required_terms": [
+            "eel"
+          ]
+        },
+        {
+          "query": "electric eel wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالأنقليس الكهربائي — wildlife documentary",
+          "required_terms": [
+            "eel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pistol-shrimp",
+      "title": "الروبيان المسدس وفقاعة الصدمة",
+      "description": "وثائقي عن الروبيان المسدس. يغلق مخلبه بسرعة فيطلق نفثة ماء عالية السرعة. تتكون فقاعة تنهار وتنتج صوتًا وصدمة.",
+      "tags": [
+        "shrimp",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "pistol shrimp in natural habitat",
+          "narration": "تعرّف على الروبيان المسدس. يغلق مخلبه بسرعة فيطلق نفثة ماء عالية السرعة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالروبيان المسدس — in natural habitat",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "pistol shrimp close up face body",
+          "narration": "والتفصيلة المدهشة: تتكون فقاعة تنهار وتنتج صوتًا وصدمة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالروبيان المسدس — close up face body",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "pistol shrimp moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الروبيان المسدس على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالروبيان المسدس — moving in wild",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "pistol shrimp feeding behavior",
+          "narration": "راقب حركة الروبيان المسدس وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالروبيان المسدس — feeding behavior",
+          "required_terms": [
+            "shrimp"
+          ]
+        },
+        {
+          "query": "pistol shrimp wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالروبيان المسدس — wildlife documentary",
+          "required_terms": [
+            "shrimp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leaf-tailed-gecko",
+      "title": "الوزغة الورقية والتمويه",
+      "description": "وثائقي عن الوزغة الورقية. شكل جسمها وذيلها المسطح يشبهان الأوراق ولحاء الشجر. ألوانها ونقوشها وسكونها يصعب اكتشافها.",
+      "tags": [
+        "gecko",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "leaf tailed gecko in natural habitat",
+          "narration": "تعرّف على الوزغة الورقية. شكل جسمها وذيلها المسطح يشبهان الأوراق ولحاء الشجر.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالوزغة الورقية — in natural habitat",
+          "required_terms": [
+            "gecko"
+          ]
+        },
+        {
+          "query": "leaf tailed gecko close up face body",
+          "narration": "والتفصيلة المدهشة: ألوانها ونقوشها وسكونها يصعب اكتشافها.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالوزغة الورقية — close up face body",
+          "required_terms": [
+            "gecko"
+          ]
+        },
+        {
+          "query": "leaf tailed gecko moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الوزغة الورقية على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالوزغة الورقية — moving in wild",
+          "required_terms": [
+            "gecko"
+          ]
+        },
+        {
+          "query": "leaf tailed gecko feeding behavior",
+          "narration": "راقب حركة الوزغة الورقية وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالوزغة الورقية — feeding behavior",
+          "required_terms": [
+            "gecko"
+          ]
+        },
+        {
+          "query": "leaf tailed gecko wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالوزغة الورقية — wildlife documentary",
+          "required_terms": [
+            "gecko"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "axolotl",
+      "title": "الأكسولوتل وقدرة تجديد الأطراف",
+      "description": "وثائقي عن الأكسولوتل. حيوان برمائي يحتفظ بصفات يرقية حتى بعد بلوغه. يمكنه تجديد أطراف وأنسجة ويدرسه العلماء.",
+      "tags": [
+        "axolotl",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "axolotl in natural habitat",
+          "narration": "تعرّف على الأكسولوتل. حيوان برمائي يحتفظ بصفات يرقية حتى بعد بلوغه.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالأكسولوتل — in natural habitat",
+          "required_terms": [
+            "axolotl"
+          ]
+        },
+        {
+          "query": "axolotl close up face body",
+          "narration": "والتفصيلة المدهشة: يمكنه تجديد أطراف وأنسجة ويدرسه العلماء.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالأكسولوتل — close up face body",
+          "required_terms": [
+            "axolotl"
+          ]
+        },
+        {
+          "query": "axolotl moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الأكسولوتل على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالأكسولوتل — moving in wild",
+          "required_terms": [
+            "axolotl"
+          ]
+        },
+        {
+          "query": "axolotl feeding behavior",
+          "narration": "راقب حركة الأكسولوتل وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالأكسولوتل — feeding behavior",
+          "required_terms": [
+            "axolotl"
+          ]
+        },
+        {
+          "query": "axolotl wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالأكسولوتل — wildlife documentary",
+          "required_terms": [
+            "axolotl"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hummingbird",
+      "title": "الطائر الطنان والثبات في الهواء",
+      "description": "وثائقي عن الطائر الطنان. يستطيع الثبات والتحرك للخلف بحركة أجنحته. يحتاج إلى طاقة كبيرة ويتغذى باستمرار على الرحيق.",
+      "tags": [
+        "hummingbird",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "hummingbird in natural habitat",
+          "narration": "تعرّف على الطائر الطنان. يستطيع الثبات والتحرك للخلف بحركة أجنحته.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالطائر الطنان — in natural habitat",
+          "required_terms": [
+            "hummingbird"
+          ]
+        },
+        {
+          "query": "hummingbird close up face body",
+          "narration": "والتفصيلة المدهشة: يحتاج إلى طاقة كبيرة ويتغذى باستمرار على الرحيق.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالطائر الطنان — close up face body",
+          "required_terms": [
+            "hummingbird"
+          ]
+        },
+        {
+          "query": "hummingbird moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الطائر الطنان على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالطائر الطنان — moving in wild",
+          "required_terms": [
+            "hummingbird"
+          ]
+        },
+        {
+          "query": "hummingbird feeding behavior",
+          "narration": "راقب حركة الطائر الطنان وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالطائر الطنان — feeding behavior",
+          "required_terms": [
+            "hummingbird"
+          ]
+        },
+        {
+          "query": "hummingbird wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالطائر الطنان — wildlife documentary",
+          "required_terms": [
+            "hummingbird"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "peregrine-falcon",
+      "title": "الشاهين وسرعة الانقضاض",
+      "description": "وثائقي عن الصقر الشاهين. يصل إلى سرعات مذهلة أثناء الانقضاض. جسمه الانسيابي وأجنحته المدببة تساعده على الصيد.",
+      "tags": [
+        "falcon",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "peregrine falcon in natural habitat",
+          "narration": "تعرّف على الصقر الشاهين. يصل إلى سرعات مذهلة أثناء الانقضاض.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالصقر الشاهين — in natural habitat",
+          "required_terms": [
+            "falcon"
+          ]
+        },
+        {
+          "query": "peregrine falcon close up face body",
+          "narration": "والتفصيلة المدهشة: جسمه الانسيابي وأجنحته المدببة تساعده على الصيد.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالصقر الشاهين — close up face body",
+          "required_terms": [
+            "falcon"
+          ]
+        },
+        {
+          "query": "peregrine falcon moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الصقر الشاهين على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالصقر الشاهين — moving in wild",
+          "required_terms": [
+            "falcon"
+          ]
+        },
+        {
+          "query": "peregrine falcon feeding behavior",
+          "narration": "راقب حركة الصقر الشاهين وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالصقر الشاهين — feeding behavior",
+          "required_terms": [
+            "falcon"
+          ]
+        },
+        {
+          "query": "peregrine falcon wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالصقر الشاهين — wildlife documentary",
+          "required_terms": [
+            "falcon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "flamingo",
+      "title": "الفلامنجو وسر الوقوف على ساق واحدة",
+      "description": "وثائقي عن الفلامنجو. قد تقلل الوقفة على ساق واحدة فقدان الحرارة والجهد. يحصل على لونه الوردي من أصباغ غذائية.",
+      "tags": [
+        "flamingo",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "flamingo in natural habitat",
+          "narration": "تعرّف على الفلامنجو. قد تقلل الوقفة على ساق واحدة فقدان الحرارة والجهد.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالفلامنجو — in natural habitat",
+          "required_terms": [
+            "flamingo"
+          ]
+        },
+        {
+          "query": "flamingo close up face body",
+          "narration": "والتفصيلة المدهشة: يحصل على لونه الوردي من أصباغ غذائية.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالفلامنجو — close up face body",
+          "required_terms": [
+            "flamingo"
+          ]
+        },
+        {
+          "query": "flamingo moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الفلامنجو على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالفلامنجو — moving in wild",
+          "required_terms": [
+            "flamingo"
+          ]
+        },
+        {
+          "query": "flamingo feeding behavior",
+          "narration": "راقب حركة الفلامنجو وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالفلامنجو — feeding behavior",
+          "required_terms": [
+            "flamingo"
+          ]
+        },
+        {
+          "query": "flamingo wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالفلامنجو — wildlife documentary",
+          "required_terms": [
+            "flamingo"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meerkat",
+      "title": "الميركات: حارس الصحراء",
+      "description": "وثائقي عن الميركات. تتناوب أفراد المجموعة على مراقبة المفترسات. تستخدم أصوات إنذار وتتعاون في رعاية الصغار.",
+      "tags": [
+        "meerkat",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "meerkat in natural habitat",
+          "narration": "تعرّف على الميركات. تتناوب أفراد المجموعة على مراقبة المفترسات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالميركات — in natural habitat",
+          "required_terms": [
+            "meerkat"
+          ]
+        },
+        {
+          "query": "meerkat close up face body",
+          "narration": "والتفصيلة المدهشة: تستخدم أصوات إنذار وتتعاون في رعاية الصغار.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالميركات — close up face body",
+          "required_terms": [
+            "meerkat"
+          ]
+        },
+        {
+          "query": "meerkat moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الميركات على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالميركات — moving in wild",
+          "required_terms": [
+            "meerkat"
+          ]
+        },
+        {
+          "query": "meerkat feeding behavior",
+          "narration": "راقب حركة الميركات وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالميركات — feeding behavior",
+          "required_terms": [
+            "meerkat"
+          ]
+        },
+        {
+          "query": "meerkat wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالميركات — wildlife documentary",
+          "required_terms": [
+            "meerkat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beaver",
+      "title": "القندس: مهندس السدود",
+      "description": "وثائقي عن القندس. يبني السدود ليبطئ الماء ويصنع بيئة آمنة. بركه تنشئ موائل رطبة تستفيد منها أنواع كثيرة.",
+      "tags": [
+        "beaver",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "beaver in natural habitat",
+          "narration": "تعرّف على القندس. يبني السدود ليبطئ الماء ويصنع بيئة آمنة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالقندس — in natural habitat",
+          "required_terms": [
+            "beaver"
+          ]
+        },
+        {
+          "query": "beaver close up face body",
+          "narration": "والتفصيلة المدهشة: بركه تنشئ موائل رطبة تستفيد منها أنواع كثيرة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالقندس — close up face body",
+          "required_terms": [
+            "beaver"
+          ]
+        },
+        {
+          "query": "beaver moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات القندس على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالقندس — moving in wild",
+          "required_terms": [
+            "beaver"
+          ]
+        },
+        {
+          "query": "beaver feeding behavior",
+          "narration": "راقب حركة القندس وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالقندس — feeding behavior",
+          "required_terms": [
+            "beaver"
+          ]
+        },
+        {
+          "query": "beaver wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالقندس — wildlife documentary",
+          "required_terms": [
+            "beaver"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sea-otter",
+      "title": "ثعلب البحر واستخدام الأدوات",
+      "description": "وثائقي عن ثعلب البحر. قد يستخدم حجرًا لكسر الأصداف الصلبة. فراؤه الكثيف يحبس الهواء ويحافظ على الدفء.",
+      "tags": [
+        "otter",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "sea otter in natural habitat",
+          "narration": "تعرّف على ثعلب البحر. قد يستخدم حجرًا لكسر الأصداف الصلبة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـثعلب البحر — in natural habitat",
+          "required_terms": [
+            "otter"
+          ]
+        },
+        {
+          "query": "sea otter close up face body",
+          "narration": "والتفصيلة المدهشة: فراؤه الكثيف يحبس الهواء ويحافظ على الدفء.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـثعلب البحر — close up face body",
+          "required_terms": [
+            "otter"
+          ]
+        },
+        {
+          "query": "sea otter moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات ثعلب البحر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـثعلب البحر — moving in wild",
+          "required_terms": [
+            "otter"
+          ]
+        },
+        {
+          "query": "sea otter feeding behavior",
+          "narration": "راقب حركة ثعلب البحر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـثعلب البحر — feeding behavior",
+          "required_terms": [
+            "otter"
+          ]
+        },
+        {
+          "query": "sea otter wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـثعلب البحر — wildlife documentary",
+          "required_terms": [
+            "otter"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orca",
+      "title": "الأوركا: صياد اجتماعي",
+      "description": "وثائقي عن الأوركا. أكبر أفراد عائلة الدلافين وتعيش في مجموعات عائلية. تختلف طرق الصيد وتنتقل بعض السلوكيات بين الأجيال.",
+      "tags": [
+        "whale",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "orca whale in natural habitat",
+          "narration": "تعرّف على الأوركا. أكبر أفراد عائلة الدلافين وتعيش في مجموعات عائلية.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالأوركا — in natural habitat",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "orca whale close up face body",
+          "narration": "والتفصيلة المدهشة: تختلف طرق الصيد وتنتقل بعض السلوكيات بين الأجيال.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالأوركا — close up face body",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "orca whale moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الأوركا على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالأوركا — moving in wild",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "orca whale feeding behavior",
+          "narration": "راقب حركة الأوركا وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالأوركا — feeding behavior",
+          "required_terms": [
+            "whale"
+          ]
+        },
+        {
+          "query": "orca whale wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالأوركا — wildlife documentary",
+          "required_terms": [
+            "whale"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "narwhal",
+      "title": "النروال: حوت اليونيكورن",
+      "description": "وثائقي عن النروال. نابه الطويل في الحقيقة سن ممتد. قد يحتوي الناب على نهايات عصبية للمساعدة في الإحساس.",
+      "tags": [
+        "narwhal",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "narwhal in natural habitat",
+          "narration": "تعرّف على النروال. نابه الطويل في الحقيقة سن ممتد.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالنروال — in natural habitat",
+          "required_terms": [
+            "narwhal"
+          ]
+        },
+        {
+          "query": "narwhal close up face body",
+          "narration": "والتفصيلة المدهشة: قد يحتوي الناب على نهايات عصبية للمساعدة في الإحساس.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالنروال — close up face body",
+          "required_terms": [
+            "narwhal"
+          ]
+        },
+        {
+          "query": "narwhal moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات النروال على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالنروال — moving in wild",
+          "required_terms": [
+            "narwhal"
+          ]
+        },
+        {
+          "query": "narwhal feeding behavior",
+          "narration": "راقب حركة النروال وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالنروال — feeding behavior",
+          "required_terms": [
+            "narwhal"
+          ]
+        },
+        {
+          "query": "narwhal wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالنروال — wildlife documentary",
+          "required_terms": [
+            "narwhal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manta-ray",
+      "title": "المانتا: أجنحة عملاقة",
+      "description": "وثائقي عن سمكة المانتا. تسبح بزعانف عريضة وتلتقط العوالق من الماء. قد تزور محطات تنظيف تزيل فيها الأسماك الطفيليات.",
+      "tags": [
+        "ray",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "manta ray in natural habitat",
+          "narration": "تعرّف على سمكة المانتا. تسبح بزعانف عريضة وتلتقط العوالق من الماء.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـسمكة المانتا — in natural habitat",
+          "required_terms": [
+            "ray"
+          ]
+        },
+        {
+          "query": "manta ray close up face body",
+          "narration": "والتفصيلة المدهشة: قد تزور محطات تنظيف تزيل فيها الأسماك الطفيليات.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـسمكة المانتا — close up face body",
+          "required_terms": [
+            "ray"
+          ]
+        },
+        {
+          "query": "manta ray moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات سمكة المانتا على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـسمكة المانتا — moving in wild",
+          "required_terms": [
+            "ray"
+          ]
+        },
+        {
+          "query": "manta ray feeding behavior",
+          "narration": "راقب حركة سمكة المانتا وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـسمكة المانتا — feeding behavior",
+          "required_terms": [
+            "ray"
+          ]
+        },
+        {
+          "query": "manta ray wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـسمكة المانتا — wildlife documentary",
+          "required_terms": [
+            "ray"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mimic-octopus",
+      "title": "الأخطبوط المقلد والتنكر",
+      "description": "وثائقي عن الأخطبوط المقلد. يغير وضع أذرعه ولون جسمه ليشبه حيوانات أخرى. التقليد قد يربك المفترسات ويمنحه فرصة للهروب.",
+      "tags": [
+        "octopus",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "mimic octopus in natural habitat",
+          "narration": "تعرّف على الأخطبوط المقلد. يغير وضع أذرعه ولون جسمه ليشبه حيوانات أخرى.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالأخطبوط المقلد — in natural habitat",
+          "required_terms": [
+            "octopus"
+          ]
+        },
+        {
+          "query": "mimic octopus close up face body",
+          "narration": "والتفصيلة المدهشة: التقليد قد يربك المفترسات ويمنحه فرصة للهروب.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالأخطبوط المقلد — close up face body",
+          "required_terms": [
+            "octopus"
+          ]
+        },
+        {
+          "query": "mimic octopus moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الأخطبوط المقلد على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالأخطبوط المقلد — moving in wild",
+          "required_terms": [
+            "octopus"
+          ]
+        },
+        {
+          "query": "mimic octopus feeding behavior",
+          "narration": "راقب حركة الأخطبوط المقلد وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالأخطبوط المقلد — feeding behavior",
+          "required_terms": [
+            "octopus"
+          ]
+        },
+        {
+          "query": "mimic octopus wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالأخطبوط المقلد — wildlife documentary",
+          "required_terms": [
+            "octopus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jellyfish",
+      "title": "قنديل البحر وحركة بلا دماغ",
+      "description": "وثائقي عن قنديل البحر. يمتلك شبكة عصبية موزعة دون دماغ مركزي. خلاياه اللاسعة تلتقط الفرائس وتحميه.",
+      "tags": [
+        "jellyfish",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "jellyfish in natural habitat",
+          "narration": "تعرّف على قنديل البحر. يمتلك شبكة عصبية موزعة دون دماغ مركزي.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـقنديل البحر — in natural habitat",
+          "required_terms": [
+            "jellyfish"
+          ]
+        },
+        {
+          "query": "jellyfish close up face body",
+          "narration": "والتفصيلة المدهشة: خلاياه اللاسعة تلتقط الفرائس وتحميه.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـقنديل البحر — close up face body",
+          "required_terms": [
+            "jellyfish"
+          ]
+        },
+        {
+          "query": "jellyfish moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات قنديل البحر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـقنديل البحر — moving in wild",
+          "required_terms": [
+            "jellyfish"
+          ]
+        },
+        {
+          "query": "jellyfish feeding behavior",
+          "narration": "راقب حركة قنديل البحر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـقنديل البحر — feeding behavior",
+          "required_terms": [
+            "jellyfish"
+          ]
+        },
+        {
+          "query": "jellyfish wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـقنديل البحر — wildlife documentary",
+          "required_terms": [
+            "jellyfish"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "starfish",
+      "title": "نجم البحر وتجديد الأذرع",
+      "description": "وثائقي عن نجم البحر. ليس سمكة بل من شوكيات الجلد. بعض الأنواع تجدد أذرعًا مفقودة وتخرج معدتها للهضم.",
+      "tags": [
+        "star",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "sea star in natural habitat",
+          "narration": "تعرّف على نجم البحر. ليس سمكة بل من شوكيات الجلد.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـنجم البحر — in natural habitat",
+          "required_terms": [
+            "star"
+          ]
+        },
+        {
+          "query": "sea star close up face body",
+          "narration": "والتفصيلة المدهشة: بعض الأنواع تجدد أذرعًا مفقودة وتخرج معدتها للهضم.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـنجم البحر — close up face body",
+          "required_terms": [
+            "star"
+          ]
+        },
+        {
+          "query": "sea star moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات نجم البحر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـنجم البحر — moving in wild",
+          "required_terms": [
+            "star"
+          ]
+        },
+        {
+          "query": "sea star feeding behavior",
+          "narration": "راقب حركة نجم البحر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـنجم البحر — feeding behavior",
+          "required_terms": [
+            "star"
+          ]
+        },
+        {
+          "query": "sea star wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـنجم البحر — wildlife documentary",
+          "required_terms": [
+            "star"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sea-cucumber",
+      "title": "خيار البحر ومنظف القاع",
+      "description": "وثائقي عن خيار البحر. يتغذى على الرواسب والمواد العضوية ويعيد تدوير المغذيات. بعض الأنواع تملك وسائل دفاع كيميائية.",
+      "tags": [
+        "cucumber",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "sea cucumber in natural habitat",
+          "narration": "تعرّف على خيار البحر. يتغذى على الرواسب والمواد العضوية ويعيد تدوير المغذيات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـخيار البحر — in natural habitat",
+          "required_terms": [
+            "cucumber"
+          ]
+        },
+        {
+          "query": "sea cucumber close up face body",
+          "narration": "والتفصيلة المدهشة: بعض الأنواع تملك وسائل دفاع كيميائية.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـخيار البحر — close up face body",
+          "required_terms": [
+            "cucumber"
+          ]
+        },
+        {
+          "query": "sea cucumber moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات خيار البحر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـخيار البحر — moving in wild",
+          "required_terms": [
+            "cucumber"
+          ]
+        },
+        {
+          "query": "sea cucumber feeding behavior",
+          "narration": "راقب حركة خيار البحر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـخيار البحر — feeding behavior",
+          "required_terms": [
+            "cucumber"
+          ]
+        },
+        {
+          "query": "sea cucumber wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـخيار البحر — wildlife documentary",
+          "required_terms": [
+            "cucumber"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pufferfish",
+      "title": "السمكة المنتفخة ودفاعها",
+      "description": "وثائقي عن السمكة المنتفخة. تبتلع الماء أو الهواء لتصبح أكبر وأصعب على المفترسات. أنواع عديدة تحتوي سمًا عصبيًا وتختلف السمية بينها.",
+      "tags": [
+        "pufferfish",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "pufferfish in natural habitat",
+          "narration": "تعرّف على السمكة المنتفخة. تبتلع الماء أو الهواء لتصبح أكبر وأصعب على المفترسات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالسمكة المنتفخة — in natural habitat",
+          "required_terms": [
+            "pufferfish"
+          ]
+        },
+        {
+          "query": "pufferfish close up face body",
+          "narration": "والتفصيلة المدهشة: أنواع عديدة تحتوي سمًا عصبيًا وتختلف السمية بينها.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالسمكة المنتفخة — close up face body",
+          "required_terms": [
+            "pufferfish"
+          ]
+        },
+        {
+          "query": "pufferfish moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات السمكة المنتفخة على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالسمكة المنتفخة — moving in wild",
+          "required_terms": [
+            "pufferfish"
+          ]
+        },
+        {
+          "query": "pufferfish feeding behavior",
+          "narration": "راقب حركة السمكة المنتفخة وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالسمكة المنتفخة — feeding behavior",
+          "required_terms": [
+            "pufferfish"
+          ]
+        },
+        {
+          "query": "pufferfish wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالسمكة المنتفخة — wildlife documentary",
+          "required_terms": [
+            "pufferfish"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clownfish",
+      "title": "سمكة المهرج وشقائق النعمان",
+      "description": "وثائقي عن سمكة المهرج. تعيش بين لوامس شقائق النعمان التي تلسع أسماكًا أخرى. طبقة مخاطية خاصة تقلل استجابتها للسعات.",
+      "tags": [
+        "anemone",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "clownfish sea anemone in natural habitat",
+          "narration": "تعرّف على سمكة المهرج. تعيش بين لوامس شقائق النعمان التي تلسع أسماكًا أخرى.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـسمكة المهرج — in natural habitat",
+          "required_terms": [
+            "anemone"
+          ]
+        },
+        {
+          "query": "clownfish sea anemone close up face body",
+          "narration": "والتفصيلة المدهشة: طبقة مخاطية خاصة تقلل استجابتها للسعات.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـسمكة المهرج — close up face body",
+          "required_terms": [
+            "anemone"
+          ]
+        },
+        {
+          "query": "clownfish sea anemone moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات سمكة المهرج على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـسمكة المهرج — moving in wild",
+          "required_terms": [
+            "anemone"
+          ]
+        },
+        {
+          "query": "clownfish sea anemone feeding behavior",
+          "narration": "راقب حركة سمكة المهرج وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـسمكة المهرج — feeding behavior",
+          "required_terms": [
+            "anemone"
+          ]
+        },
+        {
+          "query": "clownfish sea anemone wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـسمكة المهرج — wildlife documentary",
+          "required_terms": [
+            "anemone"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anglerfish",
+      "title": "سمكة أبو الشص ومصباحها",
+      "description": "وثائقي عن سمكة أبو الشص. تحمل بعض الأنواع زائدة مضيئة لجذب الفرائس. قد تنتج بكتيريا متكافلة الضوء داخل الطُعم.",
+      "tags": [
+        "anglerfish",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "anglerfish in natural habitat",
+          "narration": "تعرّف على سمكة أبو الشص. تحمل بعض الأنواع زائدة مضيئة لجذب الفرائس.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـسمكة أبو الشص — in natural habitat",
+          "required_terms": [
+            "anglerfish"
+          ]
+        },
+        {
+          "query": "anglerfish close up face body",
+          "narration": "والتفصيلة المدهشة: قد تنتج بكتيريا متكافلة الضوء داخل الطُعم.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـسمكة أبو الشص — close up face body",
+          "required_terms": [
+            "anglerfish"
+          ]
+        },
+        {
+          "query": "anglerfish moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات سمكة أبو الشص على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـسمكة أبو الشص — moving in wild",
+          "required_terms": [
+            "anglerfish"
+          ]
+        },
+        {
+          "query": "anglerfish feeding behavior",
+          "narration": "راقب حركة سمكة أبو الشص وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـسمكة أبو الشص — feeding behavior",
+          "required_terms": [
+            "anglerfish"
+          ]
+        },
+        {
+          "query": "anglerfish wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـسمكة أبو الشص — wildlife documentary",
+          "required_terms": [
+            "anglerfish"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vampire-squid",
+      "title": "حبار مصاص الدماء: حقيقة الاسم",
+      "description": "وثائقي عن حبار مصاص الدماء. يعيش في أعماق فقيرة بالأكسجين ولا يمتص الدم. يتغذى على مواد عضوية متساقطة من الطبقات العليا.",
+      "tags": [
+        "squid",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "vampire squid in natural habitat",
+          "narration": "تعرّف على حبار مصاص الدماء. يعيش في أعماق فقيرة بالأكسجين ولا يمتص الدم.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـحبار مصاص الدماء — in natural habitat",
+          "required_terms": [
+            "squid"
+          ]
+        },
+        {
+          "query": "vampire squid close up face body",
+          "narration": "والتفصيلة المدهشة: يتغذى على مواد عضوية متساقطة من الطبقات العليا.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـحبار مصاص الدماء — close up face body",
+          "required_terms": [
+            "squid"
+          ]
+        },
+        {
+          "query": "vampire squid moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات حبار مصاص الدماء على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـحبار مصاص الدماء — moving in wild",
+          "required_terms": [
+            "squid"
+          ]
+        },
+        {
+          "query": "vampire squid feeding behavior",
+          "narration": "راقب حركة حبار مصاص الدماء وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـحبار مصاص الدماء — feeding behavior",
+          "required_terms": [
+            "squid"
+          ]
+        },
+        {
+          "query": "vampire squid wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـحبار مصاص الدماء — wildlife documentary",
+          "required_terms": [
+            "squid"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sea-turtle",
+      "title": "السلحفاة البحرية ورحلة العودة",
+      "description": "وثائقي عن السلحفاة البحرية. تقطع مسافات هائلة بين مناطق التغذية وشواطئ البيض. قد يساعد المجال المغناطيسي في الملاحة.",
+      "tags": [
+        "turtle",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "sea turtle in natural habitat",
+          "narration": "تعرّف على السلحفاة البحرية. تقطع مسافات هائلة بين مناطق التغذية وشواطئ البيض.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالسلحفاة البحرية — in natural habitat",
+          "required_terms": [
+            "turtle"
+          ]
+        },
+        {
+          "query": "sea turtle close up face body",
+          "narration": "والتفصيلة المدهشة: قد يساعد المجال المغناطيسي في الملاحة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالسلحفاة البحرية — close up face body",
+          "required_terms": [
+            "turtle"
+          ]
+        },
+        {
+          "query": "sea turtle moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات السلحفاة البحرية على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالسلحفاة البحرية — moving in wild",
+          "required_terms": [
+            "turtle"
+          ]
+        },
+        {
+          "query": "sea turtle feeding behavior",
+          "narration": "راقب حركة السلحفاة البحرية وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالسلحفاة البحرية — feeding behavior",
+          "required_terms": [
+            "turtle"
+          ]
+        },
+        {
+          "query": "sea turtle wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالسلحفاة البحرية — wildlife documentary",
+          "required_terms": [
+            "turtle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "penguin",
+      "title": "البطريق والتكيف مع البرد",
+      "description": "وثائقي عن البطريق. ريشه الكثيف ودهونه يعزلانه في الماء البارد. تحولت أجنحته إلى زعانف قوية للسباحة.",
+      "tags": [
+        "penguin",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "penguin in natural habitat",
+          "narration": "تعرّف على البطريق. ريشه الكثيف ودهونه يعزلانه في الماء البارد.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالبطريق — in natural habitat",
+          "required_terms": [
+            "penguin"
+          ]
+        },
+        {
+          "query": "penguin close up face body",
+          "narration": "والتفصيلة المدهشة: تحولت أجنحته إلى زعانف قوية للسباحة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالبطريق — close up face body",
+          "required_terms": [
+            "penguin"
+          ]
+        },
+        {
+          "query": "penguin moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات البطريق على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالبطريق — moving in wild",
+          "required_terms": [
+            "penguin"
+          ]
+        },
+        {
+          "query": "penguin feeding behavior",
+          "narration": "راقب حركة البطريق وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالبطريق — feeding behavior",
+          "required_terms": [
+            "penguin"
+          ]
+        },
+        {
+          "query": "penguin wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالبطريق — wildlife documentary",
+          "required_terms": [
+            "penguin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kangaroo",
+      "title": "الكنغر وقفزات توفير الطاقة",
+      "description": "وثائقي عن الكنغر. أوتاره المرنة تخزن طاقة الهبوط وتعيدها في القفزة. ذيله يساعده على التوازن وصغاره تنمو في الجراب.",
+      "tags": [
+        "kangaroo",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "kangaroo in natural habitat",
+          "narration": "تعرّف على الكنغر. أوتاره المرنة تخزن طاقة الهبوط وتعيدها في القفزة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالكنغر — in natural habitat",
+          "required_terms": [
+            "kangaroo"
+          ]
+        },
+        {
+          "query": "kangaroo close up face body",
+          "narration": "والتفصيلة المدهشة: ذيله يساعده على التوازن وصغاره تنمو في الجراب.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالكنغر — close up face body",
+          "required_terms": [
+            "kangaroo"
+          ]
+        },
+        {
+          "query": "kangaroo moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الكنغر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالكنغر — moving in wild",
+          "required_terms": [
+            "kangaroo"
+          ]
+        },
+        {
+          "query": "kangaroo feeding behavior",
+          "narration": "راقب حركة الكنغر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالكنغر — feeding behavior",
+          "required_terms": [
+            "kangaroo"
+          ]
+        },
+        {
+          "query": "kangaroo wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالكنغر — wildlife documentary",
+          "required_terms": [
+            "kangaroo"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "platypus",
+      "title": "خلد الماء: ثديي يبيض",
+      "description": "وثائقي عن خلد الماء. ثديي يبيض وله منقار جلدي وأقدام مكففة. مستقبلات كهربائية في منقاره تلتقط إشارات الفرائس.",
+      "tags": [
+        "platypus",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "platypus in natural habitat",
+          "narration": "تعرّف على خلد الماء. ثديي يبيض وله منقار جلدي وأقدام مكففة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـخلد الماء — in natural habitat",
+          "required_terms": [
+            "platypus"
+          ]
+        },
+        {
+          "query": "platypus close up face body",
+          "narration": "والتفصيلة المدهشة: مستقبلات كهربائية في منقاره تلتقط إشارات الفرائس.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـخلد الماء — close up face body",
+          "required_terms": [
+            "platypus"
+          ]
+        },
+        {
+          "query": "platypus moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات خلد الماء على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـخلد الماء — moving in wild",
+          "required_terms": [
+            "platypus"
+          ]
+        },
+        {
+          "query": "platypus feeding behavior",
+          "narration": "راقب حركة خلد الماء وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـخلد الماء — feeding behavior",
+          "required_terms": [
+            "platypus"
+          ]
+        },
+        {
+          "query": "platypus wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـخلد الماء — wildlife documentary",
+          "required_terms": [
+            "platypus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "red-panda",
+      "title": "الباندا الأحمر ليس باندا صغيرًا",
+      "description": "وثائقي عن الباندا الأحمر. ينتمي إلى عائلة مستقلة ويعيش في غابات آسيوية. ذيله الكثيف يساعده على التوازن والتدفئة.",
+      "tags": [
+        "panda",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "red panda in natural habitat",
+          "narration": "تعرّف على الباندا الأحمر. ينتمي إلى عائلة مستقلة ويعيش في غابات آسيوية.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالباندا الأحمر — in natural habitat",
+          "required_terms": [
+            "panda"
+          ]
+        },
+        {
+          "query": "red panda close up face body",
+          "narration": "والتفصيلة المدهشة: ذيله الكثيف يساعده على التوازن والتدفئة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالباندا الأحمر — close up face body",
+          "required_terms": [
+            "panda"
+          ]
+        },
+        {
+          "query": "red panda moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الباندا الأحمر على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالباندا الأحمر — moving in wild",
+          "required_terms": [
+            "panda"
+          ]
+        },
+        {
+          "query": "red panda feeding behavior",
+          "narration": "راقب حركة الباندا الأحمر وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالباندا الأحمر — feeding behavior",
+          "required_terms": [
+            "panda"
+          ]
+        },
+        {
+          "query": "red panda wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالباندا الأحمر — wildlife documentary",
+          "required_terms": [
+            "panda"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sloth",
+      "title": "الكسلان وبطء الحركة",
+      "description": "وثائقي عن الكسلان. معدل الأيض منخفض وغذاؤه الورقي محدود الطاقة. مخالبه تساعده على التعلق وقد يحمل فراؤه طحالب.",
+      "tags": [
+        "sloth",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "sloth in natural habitat",
+          "narration": "تعرّف على الكسلان. معدل الأيض منخفض وغذاؤه الورقي محدود الطاقة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالكسلان — in natural habitat",
+          "required_terms": [
+            "sloth"
+          ]
+        },
+        {
+          "query": "sloth close up face body",
+          "narration": "والتفصيلة المدهشة: مخالبه تساعده على التعلق وقد يحمل فراؤه طحالب.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالكسلان — close up face body",
+          "required_terms": [
+            "sloth"
+          ]
+        },
+        {
+          "query": "sloth moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الكسلان على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالكسلان — moving in wild",
+          "required_terms": [
+            "sloth"
+          ]
+        },
+        {
+          "query": "sloth feeding behavior",
+          "narration": "راقب حركة الكسلان وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالكسلان — feeding behavior",
+          "required_terms": [
+            "sloth"
+          ]
+        },
+        {
+          "query": "sloth wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالكسلان — wildlife documentary",
+          "required_terms": [
+            "sloth"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chameleon",
+      "title": "الحرباء وتغيير اللون",
+      "description": "وثائقي عن الحرباء. بنى مجهرية في الجلد تغير انعكاس الضوء. اللون يرتبط بالتواصل والحرارة والحالة.",
+      "tags": [
+        "chameleon",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "chameleon in natural habitat",
+          "narration": "تعرّف على الحرباء. بنى مجهرية في الجلد تغير انعكاس الضوء.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالحرباء — in natural habitat",
+          "required_terms": [
+            "chameleon"
+          ]
+        },
+        {
+          "query": "chameleon close up face body",
+          "narration": "والتفصيلة المدهشة: اللون يرتبط بالتواصل والحرارة والحالة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالحرباء — close up face body",
+          "required_terms": [
+            "chameleon"
+          ]
+        },
+        {
+          "query": "chameleon moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات الحرباء على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالحرباء — moving in wild",
+          "required_terms": [
+            "chameleon"
+          ]
+        },
+        {
+          "query": "chameleon feeding behavior",
+          "narration": "راقب حركة الحرباء وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالحرباء — feeding behavior",
+          "required_terms": [
+            "chameleon"
+          ]
+        },
+        {
+          "query": "chameleon wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالحرباء — wildlife documentary",
+          "required_terms": [
+            "chameleon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "poison-dart-frog",
+      "title": "ضفدع السهام السام وألوان التحذير",
+      "description": "وثائقي عن ضفدع السهام السام. ألوانه الزاهية تحذر المفترسات من سميته. سموم بعض الأنواع ترتبط بمواد من الغذاء.",
+      "tags": [
+        "frog",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "poison dart frog in natural habitat",
+          "narration": "تعرّف على ضفدع السهام السام. ألوانه الزاهية تحذر المفترسات من سميته.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـضفدع السهام السام — in natural habitat",
+          "required_terms": [
+            "frog"
+          ]
+        },
+        {
+          "query": "poison dart frog close up face body",
+          "narration": "والتفصيلة المدهشة: سموم بعض الأنواع ترتبط بمواد من الغذاء.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـضفدع السهام السام — close up face body",
+          "required_terms": [
+            "frog"
+          ]
+        },
+        {
+          "query": "poison dart frog moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات ضفدع السهام السام على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـضفدع السهام السام — moving in wild",
+          "required_terms": [
+            "frog"
+          ]
+        },
+        {
+          "query": "poison dart frog feeding behavior",
+          "narration": "راقب حركة ضفدع السهام السام وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـضفدع السهام السام — feeding behavior",
+          "required_terms": [
+            "frog"
+          ]
+        },
+        {
+          "query": "poison dart frog wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـضفدع السهام السام — wildlife documentary",
+          "required_terms": [
+            "frog"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fire-salamander",
+      "title": "السمندر الناري وإفرازاته",
+      "description": "وثائقي عن السمندر الناري. بقعه الصفراء والسوداء تحذر المفترسات. ينشط في الرطوبة ويرتبط جزء من حياته بالماء.",
+      "tags": [
+        "salamander",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "fire salamander in natural habitat",
+          "narration": "تعرّف على السمندر الناري. بقعه الصفراء والسوداء تحذر المفترسات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالسمندر الناري — in natural habitat",
+          "required_terms": [
+            "salamander"
+          ]
+        },
+        {
+          "query": "fire salamander close up face body",
+          "narration": "والتفصيلة المدهشة: ينشط في الرطوبة ويرتبط جزء من حياته بالماء.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالسمندر الناري — close up face body",
+          "required_terms": [
+            "salamander"
+          ]
+        },
+        {
+          "query": "fire salamander moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات السمندر الناري على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالسمندر الناري — moving in wild",
+          "required_terms": [
+            "salamander"
+          ]
+        },
+        {
+          "query": "fire salamander feeding behavior",
+          "narration": "راقب حركة السمندر الناري وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالسمندر الناري — feeding behavior",
+          "required_terms": [
+            "salamander"
+          ]
+        },
+        {
+          "query": "fire salamander wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالسمندر الناري — wildlife documentary",
+          "required_terms": [
+            "salamander"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "honeybee",
+      "title": "نحلة العسل ورقصة الغذاء",
+      "description": "وثائقي عن نحلة العسل. رقصة الاهتزاز تنقل اتجاه مصدر الغذاء والمسافة. زاوية الرقص ومدته تساعد النحلات على الوصول.",
+      "tags": [
+        "bee",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "honey bee in natural habitat",
+          "narration": "تعرّف على نحلة العسل. رقصة الاهتزاز تنقل اتجاه مصدر الغذاء والمسافة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـنحلة العسل — in natural habitat",
+          "required_terms": [
+            "bee"
+          ]
+        },
+        {
+          "query": "honey bee close up face body",
+          "narration": "والتفصيلة المدهشة: زاوية الرقص ومدته تساعد النحلات على الوصول.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـنحلة العسل — close up face body",
+          "required_terms": [
+            "bee"
+          ]
+        },
+        {
+          "query": "honey bee moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات نحلة العسل على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـنحلة العسل — moving in wild",
+          "required_terms": [
+            "bee"
+          ]
+        },
+        {
+          "query": "honey bee feeding behavior",
+          "narration": "راقب حركة نحلة العسل وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـنحلة العسل — feeding behavior",
+          "required_terms": [
+            "bee"
+          ]
+        },
+        {
+          "query": "honey bee wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـنحلة العسل — wildlife documentary",
+          "required_terms": [
+            "bee"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ants",
+      "title": "مستعمرة النمل: مدينة منظمة",
+      "description": "وثائقي عن النمل. تترك النملات مسارات كيميائية لتوجيه الأخريات. تتوزع المهام بين الرعاية والدفاع وجمع الطعام.",
+      "tags": [
+        "ants",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "ants in natural habitat",
+          "narration": "تعرّف على النمل. تترك النملات مسارات كيميائية لتوجيه الأخريات.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالنمل — in natural habitat",
+          "required_terms": [
+            "ants"
+          ]
+        },
+        {
+          "query": "ants close up face body",
+          "narration": "والتفصيلة المدهشة: تتوزع المهام بين الرعاية والدفاع وجمع الطعام.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالنمل — close up face body",
+          "required_terms": [
+            "ants"
+          ]
+        },
+        {
+          "query": "ants moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات النمل على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالنمل — moving in wild",
+          "required_terms": [
+            "ants"
+          ]
+        },
+        {
+          "query": "ants feeding behavior",
+          "narration": "راقب حركة النمل وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالنمل — feeding behavior",
+          "required_terms": [
+            "ants"
+          ]
+        },
+        {
+          "query": "ants wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالنمل — wildlife documentary",
+          "required_terms": [
+            "ants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "firefly",
+      "title": "اليراعة وصناعة الضوء",
+      "description": "وثائقي عن اليراعة. ينتج الضوء من تفاعل كيميائي داخل أعضاء متخصصة. تستخدم أنواع كثيرة أنماط ومضات للتعرف على الشريك.",
+      "tags": [
+        "firefly",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "firefly in natural habitat",
+          "narration": "تعرّف على اليراعة. ينتج الضوء من تفاعل كيميائي داخل أعضاء متخصصة.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـاليراعة — in natural habitat",
+          "required_terms": [
+            "firefly"
+          ]
+        },
+        {
+          "query": "firefly close up face body",
+          "narration": "والتفصيلة المدهشة: تستخدم أنواع كثيرة أنماط ومضات للتعرف على الشريك.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـاليراعة — close up face body",
+          "required_terms": [
+            "firefly"
+          ]
+        },
+        {
+          "query": "firefly moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات اليراعة على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـاليراعة — moving in wild",
+          "required_terms": [
+            "firefly"
+          ]
+        },
+        {
+          "query": "firefly feeding behavior",
+          "narration": "راقب حركة اليراعة وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـاليراعة — feeding behavior",
+          "required_terms": [
+            "firefly"
+          ]
+        },
+        {
+          "query": "firefly wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـاليراعة — wildlife documentary",
+          "required_terms": [
+            "firefly"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orb-weaver-spider",
+      "title": "العنكبوت الناسج وهندسة الشبكة",
+      "description": "وثائقي عن العنكبوت الناسج. ينتج أنواعًا مختلفة من الحرير بخصائص ميكانيكية. يرصد الاهتزازات في الشبكة لتحديد مكان الفريسة.",
+      "tags": [
+        "spider",
+        "nature",
+        "documentary"
+      ],
+      "scenes": [
+        {
+          "query": "orb weaver spider in natural habitat",
+          "narration": "تعرّف على العنكبوت الناسج. ينتج أنواعًا مختلفة من الحرير بخصائص ميكانيكية.",
+          "caption": "اكتشف الكائن",
+          "visual": "لقطة محددة لـالعنكبوت الناسج — in natural habitat",
+          "required_terms": [
+            "spider"
+          ]
+        },
+        {
+          "query": "orb weaver spider close up face body",
+          "narration": "والتفصيلة المدهشة: يرصد الاهتزازات في الشبكة لتحديد مكان الفريسة.",
+          "caption": "تفصيلة مدهشة",
+          "visual": "لقطة محددة لـالعنكبوت الناسج — close up face body",
+          "required_terms": [
+            "spider"
+          ]
+        },
+        {
+          "query": "orb weaver spider moving in wild",
+          "narration": "في موطنه الطبيعي، تساعد هذه الصفات العنكبوت الناسج على البقاء والحصول على الغذاء.",
+          "caption": "كيف يعيش؟",
+          "visual": "لقطة محددة لـالعنكبوت الناسج — moving in wild",
+          "required_terms": [
+            "spider"
+          ]
+        },
+        {
+          "query": "orb weaver spider feeding behavior",
+          "narration": "راقب حركة العنكبوت الناسج وتفاعله مع البيئة؛ فكل تفصيلة لها وظيفة.",
+          "caption": "التكيف مع البيئة",
+          "visual": "لقطة محددة لـالعنكبوت الناسج — feeding behavior",
+          "required_terms": [
+            "spider"
+          ]
+        },
+        {
+          "query": "orb weaver spider wildlife documentary",
+          "narration": "هذه ليست حيلة، بل تكيفات حقيقية تشكلت عبر أجيال طويلة من التطور.",
+          "caption": "الخلاصة",
+          "visual": "لقطة محددة لـالعنكبوت الناسج — wildlife documentary",
+          "required_terms": [
+            "spider"
+          ]
+        }
+      ]
     }
   ]
 }
