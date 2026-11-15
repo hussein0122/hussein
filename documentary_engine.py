@@ -21,25 +21,67 @@ FONT = "Noto Sans Arabic"
 def run(*args):
     subprocess.run([str(x) for x in args], check=True)
 
-def choose_topic(topics):
+def read_queue_state():
+    return json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"completed": [], "deferred": []}
+
+def choose_topic(topics, attempted=None):
     requested = os.getenv("DOCUMENTARY_TOPIC_ID", "").strip()
     if requested:
         for topic in topics:
             if topic["id"] == requested:
                 return topic
         raise RuntimeError(f"Unknown DOCUMENTARY_TOPIC_ID: {requested}")
-    state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"completed":[]}
+
+    attempted = set(attempted or ())
+    state = read_queue_state()
     completed = set(state.get("completed", []))
+    deferred = set(state.get("deferred", []))
     if len(completed) >= len(topics):
         cycle = int(state.get("cycle", 0)) + 1
-        state = {"completed": [], "cycle": cycle}
+        state = {"completed": [], "deferred": [], "cycle": cycle}
         STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
-        completed = set()
-        print(f"TOPIC_LIBRARY_CYCLE_RESET={cycle}; all 50 curated topics were used once.")
-    for topic in topics:
-        if topic["id"] not in completed:
-            return topic
-    raise RuntimeError("No unused curated topic is available.")
+        completed, deferred = set(), set()
+        print(f"TOPIC_LIBRARY_CYCLE_RESET={cycle}; all curated topics were used once.")
+
+    candidates = [
+        topic for topic in topics
+        if topic["id"] not in completed
+        and topic["id"] not in deferred
+        and topic["id"] not in attempted
+    ]
+    if not candidates and deferred:
+        # Retry previously unavailable topics only after every other remaining
+        # topic has had a chance. The in-run attempted set prevents a loop.
+        state["deferred"] = []
+        STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+        candidates = [
+            topic for topic in topics
+            if topic["id"] not in completed and topic["id"] not in attempted
+        ]
+    return candidates[0] if candidates else None
+
+def defer_topic(topic_id, reason):
+    state = read_queue_state()
+    deferred = list(dict.fromkeys(state.get("deferred", [])))
+    if topic_id not in deferred:
+        deferred.append(topic_id)
+    state["deferred"] = deferred
+    state["last_deferred_reason"] = str(reason)[:300]
+    STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+
+def mark_topic_completed(topic, video_id):
+    state = read_queue_state()
+    completed = list(dict.fromkeys(state.get("completed", [])))
+    if topic["id"] not in completed:
+        completed.append(topic["id"])
+    state["completed"] = completed
+    state["deferred"] = [item for item in state.get("deferred", []) if item != topic["id"]]
+    state["last_video_id"] = video_id
+    state["last_title"] = topic["title"]
+    STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+
+class NoSuitableFootageError(RuntimeError):
+    """Raised when no truthful, full-scene stock clip passes visual checks."""
 
 def find_video(query, key, required_terms=None):
     response = requests.get(PIXABAY, params={"key":key,"q":query,"per_page":50,"safesearch":"true"}, timeout=45)
@@ -80,7 +122,7 @@ def find_video(query, key, required_terms=None):
                 candidates.append((relevance,portrait_bonus,resolution,item["url"],hit.get("id"),haystack))
                 break
     if not candidates:
-        raise RuntimeError(
+        raise NoSuitableFootageError(
             f"No suitable full-scene Pixabay clip passed subject, chroma and resolution checks for '{query}'. "
             f"Required subject terms: {terms}. Refusing unrelated, green-screen or low-resolution footage."
         )
@@ -169,13 +211,45 @@ def main():
     library=json.loads(LIBRARY.read_text(encoding="utf-8"))
     topics=library.get("topics",[])
     if not topics: raise RuntimeError("Documentary topic library is empty.")
-    topic=choose_topic(topics)
-    print(f"OFFLINE DOCUMENTARY: {topic['id']} — {topic['title']}")
     print("LLM_DISABLED=true; script, narration and scene plan are pre-authored.")
+
+    # Preflight every scene before downloading or rendering anything. If stock
+    # footage for a rare subject is unavailable, defer that topic and try the
+    # next curated topic rather than failing the entire scheduled publishing slot.
+    attempted=set()
+    topic=None
+    scene_sources=None
+    for _ in range(len(topics)):
+        candidate=choose_topic(topics, attempted)
+        if candidate is None:
+            break
+        topic=candidate
+        attempted.add(topic["id"])
+        print(f"OFFLINE DOCUMENTARY CANDIDATE: {topic['id']} — {topic['title']}")
+        prepared=[]
+        try:
+            for index,scene in enumerate(topic["scenes"],1):
+                print(f"Checking scene {index}/{len(topic['scenes'])}: {scene['visual']}")
+                url,asset_id=find_video(scene["query"],os.environ["PIXABAY_API_KEY"],scene.get("required_terms"))
+                prepared.append((scene,url,asset_id))
+        except NoSuitableFootageError as exc:
+            if os.getenv("DOCUMENTARY_TOPIC_ID", "").strip():
+                raise
+            defer_topic(topic["id"], exc)
+            print(f"TOPIC_DEFERRED_NO_MATCHING_FOOTAGE={topic['id']}: {exc}")
+            continue
+        scene_sources=prepared
+        break
+
+    if topic is None or scene_sources is None:
+        raise RuntimeError(
+            "No remaining documentary topic had suitable full-scene footage for every scene. "
+            "No video was rendered or published; deferred topics will be retried on a later run."
+        )
+
+    print(f"OFFLINE DOCUMENTARY SELECTED: {topic['id']} — {topic['title']}")
     clips=[]
-    for index,scene in enumerate(topic["scenes"],1):
-        print(f"Preparing scene {index}/{len(topic['scenes'])}: {scene['visual']}")
-        url,asset_id=find_video(scene["query"],os.environ["PIXABAY_API_KEY"],scene.get("required_terms"))
+    for index,(scene,url,asset_id) in enumerate(scene_sources,1):
         raw=OUT/f"{topic['id']}_{index:02d}_source.mp4"
         voice=OUT/f"{topic['id']}_{index:02d}.mp3"
         clip=OUT/f"{topic['id']}_{index:02d}.mp4"
@@ -192,11 +266,7 @@ def main():
     if duration<15 or duration>180: raise RuntimeError(f"Rendered duration outside Shorts target: {duration:.1f}s")
     print(f"RENDER_OK duration={duration:.1f}s size={final.stat().st_size}")
     video_id=upload(final,topic)
-    state=json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {"completed":[]}
-    state.setdefault("completed",[]).append(topic["id"])
-    state["last_video_id"]=video_id
-    state["last_title"]=topic["title"]
-    STATE.write_text(json.dumps(state,ensure_ascii=False,indent=2),encoding="utf-8")
+    mark_topic_completed(topic, video_id)
     print("TOPIC_MARKED_COMPLETE=true")
 
 if __name__=="__main__":
