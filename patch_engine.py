@@ -468,8 +468,8 @@ Format: {STYLES[style]}''',
     replace_once(
         root / "llm.py",
         '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # room for hidden reasoning tokens''',
-        '''            payload["max_completion_tokens"] = max(max_tokens, 8000)  # sufficient for short JSON generation without a huge completion ceiling''',
-        "cap GPT-OSS completion budget at 8000 tokens",
+        '''            payload["max_completion_tokens"] = min(max(max_tokens, 1024), 2048)  # cap per-call reservation to reduce Groq 8k TPM exhaustion''',
+        "cap GPT-OSS completion budget at 2048 tokens",
     )
 
     # Improve the first spoken line using a concrete curiosity gap, not a generic
