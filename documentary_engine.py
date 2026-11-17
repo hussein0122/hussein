@@ -16,6 +16,7 @@ LIBRARY = DATA / "documentary_topics.json"
 STATE = DATA / "documentary_queue.json"
 PIXABAY = "https://pixabay.com/api/videos/"
 VOICE = os.getenv("DOCUMENTARY_VOICE", "ar-EG-ShakirNeural")
+ACTIVE_VOICE = VOICE
 FONT = "Noto Sans Arabic"
 
 def run(*args):
@@ -141,11 +142,12 @@ def download(url, target):
         raise RuntimeError(f"Downloaded scene asset is unexpectedly small: {target}")
 
 async def tts(text, target):
+    global ACTIVE_VOICE
     # Edge TTS can intermittently return NoAudioReceived even for a valid voice.
-    # Retry the preferred Egyptian voice, then use a second Egyptian voice rather
+    # Retry the active Egyptian voice, then use a second Egyptian voice rather
     # than abandoning an otherwise fully rendered, scene-matched documentary.
     fallback_voice = os.getenv("DOCUMENTARY_FALLBACK_VOICE", "ar-EG-SalmaNeural").strip()
-    voices = list(dict.fromkeys(voice for voice in (VOICE, fallback_voice) if voice))
+    voices = list(dict.fromkeys(voice for voice in (ACTIVE_VOICE, fallback_voice) if voice))
     failures = []
 
     for voice in voices:
@@ -154,6 +156,7 @@ async def tts(text, target):
                 await edge_tts.Communicate(text, voice, rate="+0%", volume="+0%").save(str(target))
                 if not target.exists() or target.stat().st_size < 256:
                     raise RuntimeError("Edge TTS returned an empty or truncated audio file.")
+                ACTIVE_VOICE = voice
                 print(f"TTS_OK voice={voice} attempt={attempt}")
                 return voice
             except Exception as exc:
