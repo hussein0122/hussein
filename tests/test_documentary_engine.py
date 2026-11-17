@@ -60,7 +60,7 @@ class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "voice.mp3"
-            with patch.object(
+            with patch.object(engine, "ACTIVE_VOICE", engine.VOICE), patch.object(
                 engine.edge_tts, "Communicate",
                 side_effect=lambda *args, **kwargs: FakeCommunicate(*args, **kwargs)
             ), patch.object(engine.asyncio, "sleep", new_callable=AsyncMock):
@@ -86,15 +86,22 @@ class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "voice.mp3"
-            with patch.dict(os.environ, {"DOCUMENTARY_FALLBACK_VOICE": fallback}), patch.object(
+            second_target = Path(directory) / "voice_second_scene.mp3"
+            with patch.object(engine, "ACTIVE_VOICE", engine.VOICE), patch.dict(
+                os.environ, {"DOCUMENTARY_FALLBACK_VOICE": fallback}
+            ), patch.object(
                 engine.edge_tts, "Communicate",
                 side_effect=lambda *args, **kwargs: FakeCommunicate(*args, **kwargs)
             ), patch.object(engine.asyncio, "sleep", new_callable=AsyncMock):
                 selected_voice = await engine.tts("اختبار صوت عربي", target)
+                second_scene_voice = await engine.tts("مشهد تاني", second_target)
+                self.assertEqual(engine.ACTIVE_VOICE, fallback)
 
             self.assertEqual(selected_voice, fallback)
-            self.assertEqual(calls, [engine.VOICE, engine.VOICE, fallback])
+            self.assertEqual(second_scene_voice, fallback)
+            self.assertEqual(calls, [engine.VOICE, engine.VOICE, fallback, fallback])
             self.assertGreater(target.stat().st_size, 256)
+            self.assertGreater(second_target.stat().st_size, 256)
 
 
 if __name__ == "__main__":
