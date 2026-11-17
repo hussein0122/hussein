@@ -141,7 +141,34 @@ def download(url, target):
         raise RuntimeError(f"Downloaded scene asset is unexpectedly small: {target}")
 
 async def tts(text, target):
-    await edge_tts.Communicate(text, VOICE, rate="+0%", volume="+0%").save(str(target))
+    # Edge TTS can intermittently return NoAudioReceived even for a valid voice.
+    # Retry the preferred Egyptian voice, then use a second Egyptian voice rather
+    # than abandoning an otherwise fully rendered, scene-matched documentary.
+    fallback_voice = os.getenv("DOCUMENTARY_FALLBACK_VOICE", "ar-EG-SalmaNeural").strip()
+    voices = list(dict.fromkeys(voice for voice in (VOICE, fallback_voice) if voice))
+    failures = []
+
+    for voice in voices:
+        for attempt in range(1, 3):
+            try:
+                await edge_tts.Communicate(text, voice, rate="+0%", volume="+0%").save(str(target))
+                if not target.exists() or target.stat().st_size < 256:
+                    raise RuntimeError("Edge TTS returned an empty or truncated audio file.")
+                print(f"TTS_OK voice={voice} attempt={attempt}")
+                return voice
+            except Exception as exc:
+                target.unlink(missing_ok=True)
+                failures.append(f"{voice} attempt {attempt}: {type(exc).__name__}: {exc}")
+                print(f"TTS_ATTEMPT_FAILED voice={voice} attempt={attempt}/2 error={type(exc).__name__}")
+                if attempt < 2:
+                    await asyncio.sleep(1.5 * attempt)
+
+    raise RuntimeError(
+        "Edge TTS failed after bounded retries for voices "
+        + ", ".join(voices)
+        + ": "
+        + " | ".join(failures)
+    )
 
 def seconds(path):
     p=subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","default=noprint_wrappers=1:nokey=1",str(path)],capture_output=True,text=True,check=True)
