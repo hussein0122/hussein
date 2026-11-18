@@ -2,8 +2,15 @@ name: ShortsPilot AR - Offline Documentary Studio
 
 on:
   schedule:
-    # GitHub cron is UTC. Egypt is UTC+2 in November: 08:05/14:05/20:05 UTC = 10:05/16:05/22:05 Cairo.
-    - cron: "5 8,14,20 * * *"
+    # GitHub cron is UTC. Egypt UTC+2 (winter): 08:05/14:05/20:05.
+    # Egypt UTC+3 (summer): 07:05/13:05/19:05. The gate below admits only
+    # the intended 10:05, 16:05 and 22:05 Cairo slots (within 10 minutes).
+    - cron: "5 7 * * *"
+    - cron: "5 8 * * *"
+    - cron: "5 13 * * *"
+    - cron: "5 14 * * *"
+    - cron: "5 19 * * *"
+    - cron: "5 20 * * *"
   workflow_dispatch:
     inputs:
       topic_id:
@@ -19,7 +26,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check-cairo-slot:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.slot.outputs.should_run }}
+    steps:
+      - name: Check local Cairo publishing slot
+        id: slot
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          import os
+
+          event = os.environ.get("GITHUB_EVENT_NAME", "")
+          now = datetime.now(ZoneInfo("Africa/Cairo"))
+          slots = ((10, 5), (16, 5), (22, 5))
+          current_minute = now.hour * 60 + now.minute
+          nearest = min(abs(current_minute - (hour * 60 + minute)) for hour, minute in slots)
+          should_run = event != "schedule" or nearest <= 10
+
+          print(f"SLOT_CHECK={'PASS' if should_run else 'SKIP'} event={event} cairo_time={now.isoformat()} tolerance_minutes=10")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"should_run={'true' if should_run else 'false'}\\n")
+          PY
+
   documentary:
+    needs: check-cairo-slot
+    if: needs.check-cairo-slot.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
