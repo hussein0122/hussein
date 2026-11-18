@@ -88,26 +88,58 @@ def find_video(query, key, required_terms=None):
     response = requests.get(PIXABAY, params={"key":key,"q":query,"per_page":50,"safesearch":"true"}, timeout=45)
     response.raise_for_status()
     hits = response.json().get("hits", [])
-    stop = {"in","the","and","with","close","up","face","body","moving","wild","feeding","behavior","documentary","natural","habitat"}
+    stop = {
+        "in", "the", "and", "with", "close", "up", "face", "body", "moving",
+        "wild", "feeding", "behavior", "documentary", "natural", "habitat",
+        "on", "of", "at", "a", "an", "to", "from", "shot", "scene", "clip",
+    }
     terms = [str(x).lower() for x in (required_terms or []) if str(x).strip()]
     if not terms:
         terms = [x.lower() for x in query.replace("-", " ").split() if len(x) >= 4 and x.lower() not in stop]
     terms = list(dict.fromkeys(terms))
+    # A subject word alone is not enough: "octopus" can match a cartoon,
+    # toy, or fairground asset. Require at least one meaningful scene-context
+    # word from the query as well whenever the query supplies one.
+    query_terms = [
+        token.lower()
+        for token in query.replace("-", " ").replace("_", " ").split()
+        if len(token) >= 3
+        and token.lower() not in stop
+        and not any(token.lower() in subject or subject in token.lower() for subject in terms)
+    ]
+    query_terms = list(dict.fromkeys(query_terms))
     candidates=[]
     forbidden_visual_terms = (
         "green screen", "greenscreen", "chroma key", "chroma-key",
         "green background", "transparent background", "alpha channel",
         "isolated on green", "overlay", "keying"
     )
+    forbidden_context_terms = {
+        "santa", "christmas", "holiday", "holidays", "fairground", "carousel",
+        "ride", "toy", "plush", "costume", "ornament", "decoration",
+        "clipart", "illustration", "cartoon", "sticker", "logo", "icon",
+    }
     for hit in hits:
         haystack = str(hit.get("tags","")).lower()
         normalized = haystack.replace("-", " ").replace("_", " ")
+        tag_tokens = set(normalized.split())
         # Reject stock assets explicitly advertised as chroma/overlay elements.
         if any(term in normalized for term in forbidden_visual_terms):
             print(f"VISUAL_REJECT_CHROMA asset={hit.get('id')} tags={haystack}")
             continue
+        # Reject obvious non-documentary contexts even if the animal name appears.
+        if tag_tokens.intersection(forbidden_context_terms):
+            print(f"VISUAL_REJECT_NON_DOCUMENTARY asset={hit.get('id')} tags={haystack}")
+            continue
         matched = [term for term in terms if term in normalized]
         if not matched:
+            continue
+        context_matched = [term for term in query_terms if term in normalized]
+        if query_terms and not context_matched:
+            print(
+                f"VISUAL_REJECT_CONTEXT asset={hit.get('id')} "
+                f"required_context={query_terms} tags={haystack}"
+            )
             continue
         videos=hit.get("videos") or {}
         for quality in ("large","medium","small","tiny"):
@@ -129,7 +161,7 @@ def find_video(query, key, required_terms=None):
         )
     candidates.sort(reverse=True)
     relevance,portrait_bonus,resolution,url,asset_id,tags=candidates[0]
-    print(f"VISUAL_MATCH_OK asset={asset_id} matched_terms={relevance} portrait={portrait_bonus} pixels={resolution} tags={tags}")
+    print(f"VISUAL_MATCH_OK asset={asset_id} matched_terms={relevance} context_terms={query_terms} portrait={portrait_bonus} pixels={resolution} tags={tags}")
     return url, asset_id
 
 def download(url, target):
