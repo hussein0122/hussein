@@ -48,7 +48,7 @@ jobs:
 
           print(f"SLOT_CHECK={'PASS' if should_run else 'SKIP'} event={event} cairo_time={now.isoformat()} tolerance_minutes=10")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-              output.write(f"should_run={'true' if should_run else 'false'}\\n")
+              output.write(f"should_run={'true' if should_run else 'false'}\n")
           PY
 
   documentary:
