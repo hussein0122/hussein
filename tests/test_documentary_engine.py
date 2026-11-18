@@ -44,6 +44,43 @@ class DocumentaryQueueTests(unittest.TestCase):
         self.assertEqual(state["last_video_id"], "video123")
 
 
+    def test_find_video_rejects_non_documentary_subject_matches(self):
+        hits = [
+            {
+                "id": 1,
+                "tags": "octopus, santa, cartoon, 3d, sea, ocean, water",
+                "videos": {"large": {"url": "https://assets.invalid/santa.mp4", "width": 1920, "height": 1080}},
+            },
+            {
+                "id": 2,
+                "tags": "octopus, fair, folk festival, carousel, ride, fairground",
+                "videos": {"large": {"url": "https://assets.invalid/fairground.mp4", "width": 1920, "height": 1080}},
+            },
+            {
+                "id": 3,
+                "tags": "octopus, underwater, reef, coral, marine life, swimming",
+                "videos": {"large": {"url": "https://assets.invalid/relevant.mp4", "width": 1920, "height": 1080}},
+            },
+        ]
+
+        class FakeResponse:
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"hits": hits}
+
+        with patch.object(engine.requests, "get", return_value=FakeResponse()):
+            url, asset_id = engine.find_video(
+                "octopus underwater reef moving",
+                "test-key",
+                ["octopus"],
+            )
+
+        self.assertEqual(asset_id, 3)
+        self.assertIn("relevant.mp4", url)
+
+
 class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
     async def test_primary_voice_retries_transient_no_audio(self):
         calls = []
