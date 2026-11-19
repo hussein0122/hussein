@@ -7,6 +7,7 @@ from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 import documentary_engine as engine
+from cairo_slot_gate import evaluate_slot
 
 
 class DocumentaryQueueTests(unittest.TestCase):
@@ -139,6 +140,47 @@ class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(calls, [engine.VOICE, engine.VOICE, fallback, fallback])
             self.assertGreater(target.stat().st_size, 256)
             self.assertGreater(second_target.stat().st_size, 256)
+
+
+class CairoSlotGateTests(unittest.TestCase):
+    def test_winter_crons_map_to_each_cairo_slot(self):
+        expected = {
+            "5 8 * * *": "10:05",
+            "5 14 * * *": "16:05",
+            "5 20 * * *": "22:05",
+        }
+        for cron, slot in expected.items():
+            with self.subTest(cron=cron):
+                self.assertEqual(evaluate_slot("schedule", cron, 120), (True, slot))
+
+    def test_summer_crons_map_to_each_cairo_slot(self):
+        expected = {
+            "5 7 * * *": "10:05",
+            "5 13 * * *": "16:05",
+            "5 19 * * *": "22:05",
+        }
+        for cron, slot in expected.items():
+            with self.subTest(cron=cron):
+                self.assertEqual(evaluate_slot("schedule", cron, 180), (True, slot))
+
+    def test_inactive_season_crons_are_skipped(self):
+        self.assertEqual(
+            evaluate_slot("schedule", "5 7 * * *", 120),
+            (False, "inactive-season-or-unknown-cron"),
+        )
+        self.assertEqual(
+            evaluate_slot("schedule", "5 8 * * *", 180),
+            (False, "inactive-season-or-unknown-cron"),
+        )
+
+    def test_unknown_cron_is_skipped(self):
+        self.assertEqual(
+            evaluate_slot("schedule", "0 0 * * *", 120),
+            (False, "inactive-season-or-unknown-cron"),
+        )
+
+    def test_manual_dispatch_is_not_blocked_by_schedule_gate(self):
+        self.assertEqual(evaluate_slot("workflow_dispatch", "", 120), (True, "manual"))
 
 
 if __name__ == "__main__":
