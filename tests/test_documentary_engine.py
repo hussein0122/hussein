@@ -183,5 +183,24 @@ class CairoSlotGateTests(unittest.TestCase):
         self.assertEqual(evaluate_slot("workflow_dispatch", "", 120), (True, "manual"))
 
 
+class WorkflowPreflightTests(unittest.TestCase):
+    def test_cairo_gate_job_checks_out_repository_before_running_gate(self):
+        workflow_path = (
+            Path(__file__).resolve().parents[1]
+            / ".github"
+            / "workflows"
+            / "offline-documentary.yml"
+        )
+        workflow = workflow_path.read_text(encoding="utf-8")
+        gate_job = workflow.split("  check-cairo-slot:\n", 1)[1].split(
+            "\n  documentary:\n", 1
+        )[0]
+
+        checkout_position = gate_job.index("uses: actions/checkout@v4")
+        gate_position = gate_job.index("python cairo_slot_gate.py")
+        self.assertLess(checkout_position, gate_position)
+        self.assertIn("persist-credentials: false", gate_job)
+
+
 if __name__ == "__main__":
     unittest.main()
