@@ -32,6 +32,9 @@ jobs:
     outputs:
       should_run: ${{ steps.slot.outputs.should_run }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Check local Cairo publishing slot
         id: slot
         env:
