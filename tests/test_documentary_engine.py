@@ -4,7 +4,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from datetime import datetime, timedelta, timezone\nfrom unittest.mock import AsyncMock, Mock, patch
 
 import documentary_engine as engine
 from cairo_slot_gate import evaluate_slot
@@ -143,44 +143,121 @@ class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
 
 
 class CairoSlotGateTests(unittest.TestCase):
-    def test_winter_crons_map_to_each_cairo_slot(self):
-        expected = {
-            "5 8 * * *": "10:05",
-            "5 14 * * *": "16:05",
-            "5 20 * * *": "22:05",
-        }
-        for cron, slot in expected.items():
-            with self.subTest(cron=cron):
-                self.assertEqual(evaluate_slot("schedule", cron, 120), (True, slot))
+    @staticmethod
+    def cairo_time(hour, minute, offset=2, day=21):
+        return datetime(2026, 11, day, hour, minute, tzinfo=timezone(timedelta(hours=offset)))
 
-    def test_summer_crons_map_to_each_cairo_slot(self):
-        expected = {
-            "5 7 * * *": "10:05",
-            "5 13 * * *": "16:05",
-            "5 19 * * *": "22:05",
-        }
-        for cron, slot in expected.items():
+    def test_winter_crons_map_to_each_cairo_slot_when_on_time(self):
+        expected = [
+            ("5 8 * * *", "10:05", 10, 5),
+            ("5 14 * * *", "16:05", 16, 5),
+            ("5 20 * * *", "22:05", 22, 5),
+        ]
+        for cron, slot, hour, minute in expected:
             with self.subTest(cron=cron):
-                self.assertEqual(evaluate_slot("schedule", cron, 180), (True, slot))
+                self.assertEqual(
+                    evaluate_slot("schedule", cron, self.cairo_time(hour, minute)),
+                    (True, slot),
+                )
+
+    def test_summer_crons_map_to_each_cairo_slot_when_on_time(self):
+        expected = [
+            ("5 7 * * *", "10:05", 10, 5),
+            ("5 13 * * *", "16:05", 16, 5),
+            ("5 19 * * *", "22:05", 22, 5),
+        ]
+        for cron, slot, hour, minute in expected:
+            with self.subTest(cron=cron):
+                self.assertEqual(
+                    evaluate_slot("schedule", cron, self.cairo_time(hour, minute, offset=3)),
+                    (True, slot),
+                )
+
+    def test_run_within_thirty_minute_late_window_is_allowed(self):
+        self.assertEqual(
+            evaluate_slot("schedule", "5 14 * * *", self.cairo_time(16, 25)),
+            (True, "16:05"),
+        )
+
+    def test_hours_late_run_is_skipped_instead_of_publishing_stale_slot(self):
+        allowed, reason = evaluate_slot(
+            "schedule", "5 14 * * *", self.cairo_time(22, 28)
+        )
+        self.assertFalse(allowed)
+        self.assertIn("expired:16:05", reason)
+
+    def test_previous_day_late_run_is_skipped(self):
+        allowed, reason = evaluate_slot(
+            "schedule", "5 20 * * *", self.cairo_time(3, 8, day=22)
+        )
+        self.assertFalse(allowed)
+        self.assertIn("expired:22:05", reason)
+
+    def test_run_more_than_five_minutes_early_is_skipped(self):
+        allowed, reason = evaluate_slot(
+            "schedule", "5 8 * * *", self.cairo_time(9, 55)
+        )
+        self.assertFalse(allowed)
+        self.assertIn("too-early:10:05", reason)
 
     def test_inactive_season_crons_are_skipped(self):
         self.assertEqual(
-            evaluate_slot("schedule", "5 7 * * *", 120),
+            evaluate_slot("schedule", "5 7 * * *", self.cairo_time(10, 5)),
             (False, "inactive-season-or-unknown-cron"),
         )
         self.assertEqual(
-            evaluate_slot("schedule", "5 8 * * *", 180),
+            evaluate_slot("schedule", "5 8 * * *", self.cairo_time(10, 5, offset=3)),
             (False, "inactive-season-or-unknown-cron"),
         )
 
     def test_unknown_cron_is_skipped(self):
         self.assertEqual(
-            evaluate_slot("schedule", "0 0 * * *", 120),
+            evaluate_slot("schedule", "0 0 * * *", self.cairo_time(10, 5)),
             (False, "inactive-season-or-unknown-cron"),
         )
 
     def test_manual_dispatch_is_not_blocked_by_schedule_gate(self):
-        self.assertEqual(evaluate_slot("workflow_dispatch", "", 120), (True, "manual"))
+        self.assertEqual(
+            evaluate_slot("workflow_dispatch", "", self.cairo_time(22, 28)),
+            (True, "manual"),
+        )
+
+    def test_naive_datetime_is_rejected(self):
+        with self.assertRaisesRegex(ValueError, "timezone-aware"):
+            evaluate_slot("schedule", "5 8 * * *", datetime(2026, 11, 21, 10, 5))
+
+
+class YouTubeOAuthPreflightTests(unittest.TestCase):
+    def test_refresh_token_is_validated_before_rendering_path_can_continue(self):
+        credentials = Mock()
+        with patch.object(engine, "Credentials", return_value=credentials), patch.object(
+            engine, "Request", return_value="request"
+        ), patch.dict(
+            os.environ,
+            {
+                "YT_REFRESH_TOKEN": "test-refresh-token",
+                "YT_CLIENT_ID": "test-client-id",
+                "YT_CLIENT_SECRET": "test-client-secret",
+            },
+        ):
+            self.assertIs(engine.youtube_credentials(), credentials)
+        credentials.refresh.assert_called_once_with("request")
+
+    def test_invalid_grant_fails_closed_during_preflight(self):
+        credentials = Mock()
+        credentials.refresh.side_effect = RuntimeError("invalid_grant")
+        with patch.object(engine, "Credentials", return_value=credentials), patch.object(
+            engine, "Request", return_value="request"
+        ), patch.dict(
+            os.environ,
+            {
+                "YT_REFRESH_TOKEN": "test-refresh-token",
+                "YT_CLIENT_ID": "test-client-id",
+                "YT_CLIENT_SECRET": "test-client-secret",
+            },
+        ):
+            with self.assertRaisesRegex(RuntimeError, "invalid_grant"):
+                engine.youtube_credentials()
 
 
 class WorkflowPreflightTests(unittest.TestCase):
