@@ -248,10 +248,18 @@ def render_scene(video, voice, caption, target):
     run("ffmpeg","-y","-stream_loop","-1","-i",video,"-i",voice,"-t",f"{duration:.2f}","-vf",vf,"-map","0:v:0","-map","1:a:0","-af","loudnorm=I=-16:TP=-1.5:LRA=11","-c:v","libx264","-preset","fast","-crf","18","-pix_fmt","yuv420p","-c:a","aac","-b:a","192k","-shortest","-movflags","+faststart",target)
     return duration
 
-def upload(path, topic):
+def youtube_credentials():
+    """Refresh YouTube OAuth before expensive rendering; fail closed on invalid grants."""
     scopes=["https://www.googleapis.com/auth/youtube.upload","https://www.googleapis.com/auth/youtube.readonly"]
     creds=Credentials(token=None,refresh_token=os.environ["YT_REFRESH_TOKEN"].strip(),token_uri="https://oauth2.googleapis.com/token",client_id=os.environ["YT_CLIENT_ID"].strip(),client_secret=os.environ["YT_CLIENT_SECRET"].strip(),scopes=scopes)
     creds.refresh(Request())
+    print("YOUTUBE_OAUTH_PREFLIGHT_OK=true")
+    return creds
+
+def upload(path, topic, creds=None):
+    # Reuse credentials already validated before rendering; direct callers still
+    # get the same strict OAuth refresh validation.
+    creds = creds or youtube_credentials()
     yt=build("youtube","v3",credentials=creds,cache_discovery=False)
     title=topic["title"][:95]
     description=topic["description"]+"\n\nفيديو وثائقي تعليمي. لقطات المصادر المرئية من Pixabay، والسيناريو من مكتبة ShortsPilot AR التحريرية.\n\n#shorts #وثائقي #معلومات"
@@ -269,6 +277,9 @@ def main():
     required=["PIXABAY_API_KEY","YT_CLIENT_ID","YT_CLIENT_SECRET","YT_REFRESH_TOKEN"]
     missing=[x for x in required if not os.getenv(x,"").strip()]
     if missing: raise RuntimeError("Missing required GitHub Actions secrets: "+", ".join(missing))
+    # Validate the refresh token before downloading footage or rendering a video.
+    # An invalid/revoked token is a user-side OAuth repair, never a reason to bypass upload validation.
+    creds = youtube_credentials()
     DATA.mkdir(exist_ok=True); OUT.mkdir(exist_ok=True)
     library=json.loads(LIBRARY.read_text(encoding="utf-8"))
     topics=library.get("topics",[])
@@ -327,7 +338,7 @@ def main():
     duration=seconds(final)
     if duration<15 or duration>180: raise RuntimeError(f"Rendered duration outside Shorts target: {duration:.1f}s")
     print(f"RENDER_OK duration={duration:.1f}s size={final.stat().st_size}")
-    video_id=upload(final,topic)
+    video_id=upload(final,topic,creds)
     mark_topic_completed(topic, video_id)
     print("TOPIC_MARKED_COMPLETE=true")
 
