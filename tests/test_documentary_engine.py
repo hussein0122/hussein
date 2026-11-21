@@ -271,15 +271,12 @@ class YouTubeOAuthPreflightTests(unittest.TestCase):
             },
         ), patch.object(
             engine, "youtube_credentials", side_effect=RuntimeError("invalid_grant")
-        ) as oauth, patch.object(engine.DATA, "mkdir") as data_mkdir, patch.object(
-            engine.OUT, "mkdir"
-        ) as output_mkdir:
+        ) as oauth, patch.object(type(engine.DATA), "mkdir") as mkdir:
             with self.assertRaisesRegex(RuntimeError, "invalid_grant"):
                 engine.main()
 
         oauth.assert_called_once_with()
-        data_mkdir.assert_not_called()
-        output_mkdir.assert_not_called()
+        mkdir.assert_not_called()
 
 
 class WorkflowPreflightTests(unittest.TestCase):
