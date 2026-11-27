@@ -4,8 +4,8 @@ on:
   schedule:
     # GitHub cron is UTC. Egypt UTC+2 (winter): 08:05/14:05/20:05.
     # Egypt UTC+3 (summer): 07:05/13:05/19:05. The gate matches the fired
-    # cron to Cairo's current offset, so delayed runs are not discarded and
-    # the inactive season's duplicate cron is safely skipped.
+    # cron to Cairo's current offset. Only runs within the bounded 30-minute
+    # grace window are accepted; stale and inactive-season events are skipped.
     - cron: "5 7 * * *"
     - cron: "5 8 * * *"
     - cron: "5 13 * * *"
