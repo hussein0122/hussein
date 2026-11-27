@@ -1,0 +1,49 @@
+name: ShortsPilot AR - Safe CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: safe-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install offline test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt edge-tts
+      - name: Compile documentary modules
+        run: python -m py_compile documentary_engine.py cairo_slot_gate.py
+      - name: Run offline unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate curated documentary library
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path("data/documentary_topics.json").read_text(encoding="utf-8"))
+          topics = data["topics"]
+          assert len(topics) == 50
+          for topic in topics:
+              assert len(topic["scenes"]) >= 5
+              for scene in topic["scenes"]:
+                  assert scene["query"] and scene["narration"] and scene["caption"] and scene["required_terms"]
+          print(f"Curated documentary library OK: {len(topics)} complete topics")
+          PY
