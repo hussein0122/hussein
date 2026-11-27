@@ -1,10 +1,12 @@
 """Offline tests for documentary topic selection and visual-fidelity fallback."""
 import json
 import os
+import re
 import tempfile
 import unittest
 from pathlib import Path
-from datetime import datetime, timedelta, timezone\nfrom unittest.mock import AsyncMock, Mock, patch
+from datetime import datetime, timedelta, timezone
+from unittest.mock import AsyncMock, Mock, patch
 
 import documentary_engine as engine
 from cairo_slot_gate import evaluate_slot
@@ -80,6 +82,27 @@ class DocumentaryQueueTests(unittest.TestCase):
 
         self.assertEqual(asset_id, 3)
         self.assertIn("relevant.mp4", url)
+
+
+    def test_find_video_rejects_chroma_key_assets(self):
+        hits = [
+            {
+                "id": 4,
+                "tags": "octopus, underwater, reef, green screen, chroma key",
+                "videos": {"large": {"url": "https://assets.invalid/green.mp4", "width": 1920, "height": 1080}},
+            }
+        ]
+
+        class FakeResponse:
+            def raise_for_status(self):
+                return None
+
+            def json(self):
+                return {"hits": hits}
+
+        with patch.object(engine.requests, "get", return_value=FakeResponse()):
+            with self.assertRaises(engine.NoSuitableFootageError):
+                engine.find_video("octopus underwater reef", "test-key", ["octopus"])
 
 
 class DocumentaryTtsTests(unittest.IsolatedAsyncioTestCase):
@@ -296,6 +319,31 @@ class WorkflowPreflightTests(unittest.TestCase):
         gate_position = gate_job.index("python cairo_slot_gate.py")
         self.assertLess(checkout_position, gate_position)
         self.assertIn("persist-credentials: false", gate_job)
+
+
+    def test_only_documentary_workflow_has_schedule_trigger(self):
+        workflow_dir = Path(__file__).resolve().parents[1] / ".github" / "workflows"
+        scheduled = []
+        for workflow_path in sorted(workflow_dir.glob("*.yml")):
+            workflow = workflow_path.read_text(encoding="utf-8")
+            if re.search(r"(?m)^  schedule:\s*$", workflow):
+                scheduled.append(workflow_path.name)
+        self.assertEqual(scheduled, ["offline-documentary.yml"])
+
+    def test_ai_workflow_stays_manual_and_quality_threshold_is_at_least_80(self):
+        workflow_path = (
+            Path(__file__).resolve().parents[1]
+            / ".github"
+            / "workflows"
+            / "shorts.yml"
+        )
+        workflow = workflow_path.read_text(encoding="utf-8")
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotRegex(workflow, r"(?m)^  schedule:\s*$")
+        for variable in ("SCRIPT_MIN_SCORE", "SCRIPT_TARGET_SCORE"):
+            match = re.search(rf"(?m)^\s+{variable}:\s*[\"']?(\d+)", workflow)
+            self.assertIsNotNone(match, f"{variable} is missing")
+            self.assertGreaterEqual(int(match.group(1)), 80)
 
 
 if __name__ == "__main__":
